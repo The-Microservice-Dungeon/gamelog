@@ -1,0 +1,4 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
