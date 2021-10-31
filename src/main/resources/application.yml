@@ -7,6 +7,8 @@ spring:
       value-deserializer: "org.springframework.kafka.support.serializer.JsonDeserializer"
       properties:
         "[spring.json.trusted.packages]": "*"
+      enable-auto-commit: false
+      isolation-level: read_committed
     producer:
       key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
       value-serializer: "org.springframework.kafka.support.serializer.JsonSerializer"
