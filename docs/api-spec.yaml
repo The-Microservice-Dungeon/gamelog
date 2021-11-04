@@ -1,0 +1,195 @@
+openapi: 3.0.3
+
+info:
+  title: Game Log
+  version: 0.1.0
+
+paths:
+  /players/trophies:
+    summary: Get all granted trophies to all players
+    get:
+      tags:
+        - Trophy
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerTrophies'
+  /players/{id}/tropies:
+    summary: Get all granted trophies to one player
+    get:
+      tags:
+        - Trophy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: ba0e1deb-db59-4f07-a0d8-4def1f484d31
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trophy'
+        '404':
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /game/scoreboard:
+    summary: Get the global Scoreboard
+    get:
+      tags:
+        - Scoreboard
+      parameters:
+        - in: query
+          name: sort
+          description: Parameter indicates the property key to sort by
+          schema:
+            type: string
+            example: score
+          required: false
+        - in: query
+          name: order
+          description: Parameter indicates the order of the passed sort parameter
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scoreboard'
+  /game/scoreboard/{category}:
+    summary: Get the Scoreboard of one specific category
+    get:
+      tags:
+        - Scoreboard
+      parameters:
+        - in: path
+          name: category
+          schema:
+            type: string
+            example: trading
+          required: true
+        - in: query
+          name: sort
+          description: Parameter indicates the property key to sort by
+          schema:
+            type: string
+            example: score
+          required: false
+        - in: query
+          name: order
+          description: Parameter indicates the order of the passed sort parameter
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scoreboard'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    Player:
+      type: object
+      required:
+        - id
+      properties: 
+        id: 
+          type: string
+          format: uuid
+          example: ba0e1deb-db59-4f07-a0d8-4def1f484d31
+        name:
+          type: string
+          example: Team Blue
+    ScoreboardEntry:
+      type: object
+      required:
+        - player
+        - score
+      properties:
+        player:
+          $ref: '#/components/schemas/Player'
+        score:
+          type: integer
+          format: int32
+          example: 1234
+    Scoreboard:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScoreboardEntry'
+    Trophy:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id: 
+          type: string
+          format: uuid
+          example: ba0e1deb-db59-4f07-a0d8-4def1f484d31
+        name:
+          type: string
+          example: First Blood
+    PlayerTrophies:
+      type: object
+      properties:
+        player:
+          $ref: '#/components/schemas/Player'
+        trophies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trophy'
+    ApiError:
+      type: object
+      required:
+        - error
+        - message
+        - timestamp
+      properties:
+        error:
+          type: string
+          example: NotFoundException
+        message:
+          type: string
+          example: Resource not found
+        timestamp:
+          type: string
+          format: date-time
+          example: 2021-11-02T18:52:34+0000
+      
+tags:
+  - name: Trophy
+    description: Trophy System
+  - name: Scoreboard
+    description: Scoreboard
