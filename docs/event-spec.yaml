@@ -1,0 +1,10 @@
+asyncapi: '2.2.0'
+info:
+  title: GameLog
+  version: '0.1.0'
+  description: |
+    # 🚧 As of now we do not offer event interfaces
+
+defaultContentType: application/json
+
+channels: {}
