@@ -6,7 +6,10 @@ info:
 
 paths:
   /players/trophies:
-    summary: Get all granted trophies to all players
+    summary: >
+      Get all granted trophies to all players
+    description: >
+      TODO: is it located under the /players resource?
     get:
       tags:
         - Trophy
@@ -19,8 +22,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PlayerTrophies'
-  /players/{id}/tropies:
-    summary: Get all granted trophies to one player
+  /players/{id}/trophies:
+    summary: > 
+      Get all granted trophies to one player
+    description: >
+      TODO: is it located under the /players resource?
     get:
       tags:
         - Trophy
@@ -47,37 +53,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-  /game/scoreboard:
-    summary: Get the global Scoreboard
-    get:
-      tags:
-        - Scoreboard
-      parameters:
-        - in: query
-          name: sort
-          description: Parameter indicates the property key to sort by
-          schema:
-            type: string
-            example: score
-          required: false
-        - in: query
-          name: order
-          description: Parameter indicates the order of the passed sort parameter
-          schema:
-            type: string
-            enum:
-              - ASC
-              - DESC
-          required: false
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Scoreboard'
-  /game/scoreboard/{category}:
-    summary: Get the Scoreboard of one specific category
+
+  /scoreboards/{category}:
+    summary: >
+      Get the Scoreboard of one specific category
     get:
       tags:
         - Scoreboard
@@ -85,19 +64,11 @@ paths:
         - in: path
           name: category
           schema:
-            type: string
-            example: trading
+            $ref: '#/components/schemas/ScoreboardCategory'
           required: true
         - in: query
-          name: sort
-          description: Parameter indicates the property key to sort by
-          schema:
-            type: string
-            example: score
-          required: false
-        - in: query
           name: order
-          description: Parameter indicates the order of the passed sort parameter
+          description: Parameter indicates the score sort
           schema:
             type: string
             enum:
@@ -145,9 +116,18 @@ components:
           format: int32
           example: 1234
     Scoreboard:
-      type: array
-      items:
-        $ref: '#/components/schemas/ScoreboardEntry'
+      type: object
+      required: 
+        - scoreborad
+      properties:
+        scoreboard:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoreboardEntry'
+    ScoreboardCategory:
+      type: string
+      enum:
+        - global
     Trophy:
       type: object
       required:
