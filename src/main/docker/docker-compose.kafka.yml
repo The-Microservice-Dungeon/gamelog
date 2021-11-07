@@ -1,17 +1,18 @@
 version: '3.8'
 services:
   zookeeper:
-    container_name: zookeeper
     image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       - kafka_net
+    tmpfs: "/datalog"
 
   kafka:
-    container_name: kafkabroker
     image: confluentinc/cp-kafka:latest
+    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -24,6 +25,24 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka0 -Dcom.sun.management.jmxremote.rmi.port=9997
+    networks:
+      - kafka_net
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+      - zookeeper
+    ports:
+      - "8081:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
+      KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
+      KAFKA_CLUSTERS_0_JMXPORT: 9997
     networks:
       - kafka_net
 
