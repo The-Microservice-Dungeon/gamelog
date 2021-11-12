@@ -1,7 +1,7 @@
 asyncapi: '2.2.0'
 info:
   title: GameLog
-  version: '0.1.0'
+  version: '0.2.0'
   description: |
     # 🚧 As of now we do not offer event interfaces
 
@@ -10,77 +10,58 @@ defaultContentType: application/json
 channels: {}
 
 components:
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: Generated UUID of the event
+            example: 5bc9f935-32f1-4d7b-a90c-ff0e6e34125a
+          transactionId:
+            type: string
+            format: uuid
+            description: TransactionID if available or UUID of the entity concerned
+            example: 0cfc04f1-6df5-42c6-a19a-146128b8a3b4
+          version:
+            type: integer
+            description: Consecutive number for the comparability of the actuality of the event
+            example: 42
+          timestamp:
+            type: string
+            format: date-time
+            description: >
+              timestamp as specified in [time-format-decision](https://the-microservice-dungeon.github.io/decisionlog/decisions/time-format.html)
+            example: 2020-01-10T12:00:00Z
+          type:
+            type: string
+            description: The type of event
+            example: event-example-uploaded
   messages:
     ExampleMessage:
       description: >
         Example message component to clarify the structure of AsyncAPI 
         with schema definitions
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
         $ref: '#/components/schemas/ExampleEventSchema'
   schemas:
-    EventSchema:
-      type: object
-      description: >
-        Base Schema as defined in the [Event Structure Decision](https://the-microservice-dungeon.github.io/decisionlog/decisions/event-structure.html)
-      externalDocs: 
-        description: Event Structure Decision
-        url: https://the-microservice-dungeon.github.io/decisionlog/decisions/event-structure.html
-      required:
-        - id
-        - version
-        - timestamp
-        - type
-        - payload
-      additionalProperties:
-        readOnly: false
-        writeOnly: false
-        uniqueItems: false
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Generated UUID of the event
-          example: 5bc9f935-32f1-4d7b-a90c-ff0e6e34125a
-        key:
-          type: string
-          format: uuid
-          description: TransactionID if available or UUID of the entity concerned
-          example: 0cfc04f1-6df5-42c6-a19a-146128b8a3b4
-        version:
-          type: integer
-          description: Consecutive number for the comparability of the actuality of the event
-          example: 42
-        timestamp:
-          type: string
-          format: date-time
-          description: >
-            timestamp as specified in [time-format-decision](https://the-microservice-dungeon.github.io/decisionlog/decisions/time-format.html)
-          example: 2020-01-10T12:00:00Z
-        type: 
-          type: string
-          description: The type of event
-          example: event-example-uploaded
-        payload:
-          type: object
-          properties: {}
-          description: The event payload
     ExampleEventSchema:
       description: >
         Schema definition to clarify how to use the base event schema definition
         with a custom payload object.
-      allOf:
-        - $ref: '#/components/schemas/EventSchema'
-        - type: object
-          required:
-            - payload
-          properties:
-            payload:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                  example: 0cfc04f1-6df5-42c6-a19a-146128b8a3b4
-                field:
-                  type: string
-                  example: This is a field and it contains a string
+      type: object
+      required:
+        - id
+        - field
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 0cfc04f1-6df5-42c6-a19a-146128b8a3b4
+        field:
+          type: string
+          example: This is a field and it contains a string
