@@ -1,7 +1,7 @@
 asyncapi: '2.2.0'
 info:
   title: GameLog
-  version: '0.2.0'
+  version: '0.2.1'
   description: |
     # 🚧 As of now we do not offer event interfaces
 
@@ -11,9 +11,23 @@ channels: {}
 
 components:
   messageTraits:
-    CommonHeaders:
+    CommonKafkaMessage:
+      bindings:
+        kafka:
+          key:
+            type: string
+            format: uuid
+          bindingVersion: '0.1.0'
+      correlationId:
+        location: "$message.header#/transactionId"
       headers:
         type: object
+        required:
+          - eventId
+          - transactionId
+          - version
+          - timestamp
+          - type
         properties:
           eventId:
             type: string
@@ -42,10 +56,10 @@ components:
   messages:
     ExampleMessage:
       description: >
-        Example message component to clarify the structure of AsyncAPI 
+        Example message component to clarify the structure of AsyncAPI
         with schema definitions
       traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
+        - $ref: '#/components/messageTraits/CommonKafkaMessage'
       payload:
         $ref: '#/components/schemas/ExampleEventSchema'
   schemas:
