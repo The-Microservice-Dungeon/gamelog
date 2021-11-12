@@ -1,0 +1,71 @@
+@startuml
+
+'------------------
+'External Services
+'------------------
+package External_Services {
+  rectangle Game
+  rectangle Robot
+  rectangle Trading
+  rectangle Map
+}
+
+note top of External_Services
+  External services that are part
+  of the microservice dungeon
+  will fire events and log them
+  into Kafka
+end note
+
+'------------------
+'Kafka
+'------------------
+rectangle Kafka
+Map ---> Kafka
+Game ---> Kafka
+Robot ---> Kafka
+Trading ---> Kafka
+
+'------------------
+'GameLog
+'------------------
+rectangle GameLog
+Kafka --> GameLog
+GameLog ...> External_Services
+
+note right of GameLog
+  We as the GameLog service will
+  consume the events.
+
+  However, for some aspects it might
+  be required to send synchronous
+  requests to the services
+end note
+
+rectangle Scoreboard
+rectangle Trophies
+rectangle Metrics
+GameLog --> Scoreboard
+GameLog --> Trophies
+GameLog --> Metrics
+
+note bottom of Scoreboard
+  The GameLog will produce
+  a scoreboard based on the
+  consumed events
+end note
+
+note bottom of Trophies
+  The GameLog will grant
+  trophies to players
+end note
+
+note bottom of Metrics
+  As a "bonus" the GameLog will
+  provide metrics about the
+  consumed events and can
+  therefore be used as a
+  datasource for a live dashboard
+end note
+
+@enduml

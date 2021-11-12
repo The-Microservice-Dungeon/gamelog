@@ -1,0 +1,50 @@
+@startuml
+
+!include <logos/kafka>
+!include <logos/grafana>
+!include <logos/prometheus>
+!include <logos/mysql>
+
+package External_Services {
+  interface "REST" as GameREST
+  interface "REST" as RobotREST
+  interface "REST" as TradingREST
+  interface "REST" as MapREST
+  [Game] -down- GameREST
+  [Robot] -down- RobotREST
+  [Trading] -down- TradingREST
+  [Map] -down- MapREST
+}
+
+package Infrastructure {
+  queue "<$kafka>" as Kafka
+}
+
+package "GameLog" as GameLogPackage {
+  interface "REST" as GameLogREST
+  interface "Metrics" as GameLogMetrics
+  component "<$mysql> MySQL" as GameLogDB
+
+  GameLogREST -up- [GameLog]
+  GameLogMetrics -up- [GameLog]
+
+  [GameLog] .up..> GameREST
+  [GameLog] .up..> RobotREST
+  [GameLog] .up..> TradingREST
+  [GameLog] .up..> MapREST
+
+  [GameLog] --up-> Kafka
+
+  [GameLog] -> GameLogDB
+}
+
+package "Dashboard" {
+  component "<$prometheus> Prometheus" as Prometheus
+  component "<$grafana> Grafana" as Grafana
+
+  Prometheus --> GameLogMetrics
+  Grafana -> Prometheus
+  Grafana -> GameLogREST
+}
+
+@enduml

@@ -1,0 +1,68 @@
+@startuml
+
+start
+
+:Idle (Wait for game to begin);
+:Reset Scoreboard;
+:Reset Metrics;
+
+repeat
+  ':Idle (Wait for round to be started);
+  fork
+    partition "Event Consumption" {
+      while (event fired?) is (true)
+        :Consume Event;
+        :Save Event in Event Store;
+        :Update Event metric;
+      endwhile
+    }
+  fork again
+    :Idle (Wait for round to end);
+    fork
+      partition "Command Resolution" {
+        :Resolve executed commands in round;
+        :Save command and player association;
+      }
+    fork again
+      partition "Synchronous Calls" {
+        :Perform necessary synchronous calls
+        to retrieve data that is not
+        distributed using events.
+        (e.g. Player Wallet);
+        :Save result;
+        :Update metric;
+      }
+    end fork
+  end fork
+repeat while(game over?) is (false)
+
+
+
+stop
+
+/'(*) -> "Idle (Wait for game to begin)"
+--> "Reset Scoreboard"
+--> "Idle (Wait for round to start)"
+--> === S1 ===
+
+partition "Event Consumption" {
+  === S1 === --> "Consume Event"
+  --> === S2 ===
+  === S2 === --> "Save Event in Event Store"
+  === S2 === --> "Update Metric"
+  "Update Metric" --> === S3 ===
+  "Save Event in Event Store" --> === S3 ===
+}
+=== S1 === --> "Wait for round end"
+=== S3 === --> === S4 ===
+"Wait for round end" --> === S4 ===
+--> "Command Resolution"
+--> "Update Scoreboard Cache/Snapshot"
+
+if "Game is over" then
+  ->[true] "Grant Trophies"
+  --> "Idle (Wait for game to begin)"
+else
+  ->[false] "Idle (Wait for round to start)"
+endif'/
+@enduml

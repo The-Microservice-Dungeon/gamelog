@@ -2,31 +2,12 @@ openapi: 3.0.3
 
 info:
   title: Game Log
-  version: 0.1.0
+  version: 0.2.0
 
 paths:
-  /players/trophies:
-    summary: >
-      Get all granted trophies to all players
-    description: >
-      TODO: is it located under the /players resource?
-    get:
-      tags:
-        - Trophy
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PlayerTrophies'
   /players/{id}/trophies:
     summary: > 
       Get all granted trophies to one player
-    description: >
-      TODO: is it located under the /players resource?
     get:
       tags:
         - Trophy
@@ -44,9 +25,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Trophy'
+                $ref: '#/components/schemas/PlayerTrophyCabinet'
         '404':
           description: Player not found
           content:
@@ -95,6 +74,7 @@ components:
       type: object
       required:
         - id
+        - name
       properties: 
         id: 
           type: string
@@ -141,15 +121,15 @@ components:
         name:
           type: string
           example: First Blood
-    PlayerTrophies:
+    PlayerTrophyCabinet:
       type: object
+      required:
+        - trophies
       properties:
-        player:
-          $ref: '#/components/schemas/Player'
         trophies:
           type: array
           items:
-            $ref: '#/components/schemas/Trophy'
+            $ref: '#/components/schemas/Trophy'            
     ApiError:
       type: object
       required:
