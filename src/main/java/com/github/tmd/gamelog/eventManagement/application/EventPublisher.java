@@ -1,5 +1,6 @@
-package com.github.tmd.gamelog;
+package com.github.tmd.gamelog.eventManagement.application;
 
+import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,16 @@
-package com.github.tmd.gamelog;
+package com.github.tmd.gamelog.eventManagement.application.eventTypes;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Event {
+
+    @Id
+    @GeneratedValue
+    long id;
 
     private String createdAt;
     private String eventType;

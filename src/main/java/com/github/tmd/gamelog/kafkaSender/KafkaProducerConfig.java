@@ -1,28 +1,18 @@
-package com.github.tmd.gamelog.config;
+package com.github.tmd.gamelog.kafkaSender;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import com.github.tmd.gamelog.Event;
-import com.github.tmd.gamelog.User;
-import com.github.tmd.gamelog.gameEvent.MovementEvent;
+import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.core.RoutingKafkaTemplate;
 import org.springframework.kafka.support.ProducerListener;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -66,41 +56,6 @@ public class KafkaProducerConfig {
         return kafkaTemplate;
     }
 
-    @Bean
-    public RoutingKafkaTemplate routingTemplate(GenericApplicationContext context) {
-
-        // ProducerFactory with Bytes serializer
-        Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
-        DefaultKafkaProducerFactory<Object, Object> bytesPF = new DefaultKafkaProducerFactory<>(props);
-        context.registerBean(DefaultKafkaProducerFactory.class, "bytesPF", bytesPF);
-
-        // ProducerFactory with String serializer
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        DefaultKafkaProducerFactory<Object, Object> stringPF = new DefaultKafkaProducerFactory<>(props);
-
-        Map<Pattern, ProducerFactory<Object, Object>> map = new LinkedHashMap<>();
-        map.put(Pattern.compile(".*-bytes"), bytesPF);
-        map.put(Pattern.compile("reflectoring-.*"), stringPF);
-        return new RoutingKafkaTemplate(map);
-    }
-
-    @Bean
-    public ProducerFactory<String, User> userProducerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }
-
-    @Bean
-    public KafkaTemplate<String, User> userKafkaTemplate() {
-        return new KafkaTemplate<>(userProducerFactory());
-    }
-
 
     @Bean
     public ProducerFactory<String, Event> eventProducerFactory() {
@@ -114,20 +69,6 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTemplate<String, Event> eventKafkaTemplate() {
         return new KafkaTemplate<>(eventProducerFactory());
-    }
-
-    @Bean
-    public ProducerFactory<String, MovementEvent> movementEventProducerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }
-
-    @Bean
-    public KafkaTemplate<String, MovementEvent> movementEventKafkaTemplate() {
-        return new KafkaTemplate<>(movementEventProducerFactory());
     }
 
 }

@@ -1,7 +1,8 @@
-package com.github.tmd.gamelog.gameEvent;
+package com.github.tmd.gamelog.eventManagement.application.eventTypes;
 
-import com.github.tmd.gamelog.Event;
+import javax.persistence.Entity;
 
+@Entity
 public class MovementEvent extends Event {
 
     private int robotId;
@@ -9,6 +10,8 @@ public class MovementEvent extends Event {
     private int start;
 
     private int end;
+
+    private int round;
 
     public int getRobotId() {
         return robotId;
@@ -32,6 +35,14 @@ public class MovementEvent extends Event {
 
     public void setEnd(int end) {
         this.end = end;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public int getRound() {
+        return round;
     }
 
     @Override

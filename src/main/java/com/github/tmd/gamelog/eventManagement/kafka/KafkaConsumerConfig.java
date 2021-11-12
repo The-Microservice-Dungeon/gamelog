@@ -1,8 +1,7 @@
-package com.github.tmd.gamelog.config;
+package com.github.tmd.gamelog.eventManagement.kafka;
 
-import com.github.tmd.gamelog.Event;
-import com.github.tmd.gamelog.User;
-import com.github.tmd.gamelog.gameEvent.MovementEvent;
+import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
+import com.github.tmd.gamelog.eventManagement.application.eventTypes.MovementEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,19 +52,6 @@ class KafkaConsumerConfig {
         return factory;
     }
 
-    public ConsumerFactory<String, User> userConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "reflectoring-user");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(User.class));
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, User> userKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, User> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(userConsumerFactory());
-        return factory;
-    }
 
     public ConsumerFactory<String, Event> eventConsumerFactory() {
         Map<String, Object> props = new HashMap<>();

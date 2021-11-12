@@ -1,6 +1,6 @@
-package com.github.tmd.gamelog;
+package com.github.tmd.gamelog.eventManagement.application.listener;
 
-import com.github.tmd.gamelog.gameEvent.MovementEvent;
+import com.github.tmd.gamelog.eventManagement.application.eventTypes.MovementEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -13,7 +13,7 @@ public class MovementEventListener {
 
     @EventListener
     public void handleMovementEvent(MovementEvent event) {
-        LOG.info("EventListener: [{}]", event);
+        LOG.info("MovementEventListener: [{}]", event);
     }
 
 }
