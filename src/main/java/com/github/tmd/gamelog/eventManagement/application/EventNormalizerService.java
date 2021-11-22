@@ -12,20 +12,20 @@ public class EventNormalizerService {
 
         String eventType = event.getEventType();
 
-        switch (eventType) {
-            case "movement_event":
-                MovementEvent result = new MovementEvent();
-                result.setStart(1);
-                result.setEnd(1);
-                result.setRobotId(2);
-                break;
-            case "round_end_event":
-                RoundEndEvent result = new RoundEndEvent();
-                result.setRound(1);
-                break;
+        if (eventType.equals("movement_event")) {
+            MovementEvent result = new MovementEvent();
+            result.setStart(1);
+            result.setEnd(1);
+            result.setRobotId(2);
+            return result;
+        } else if (eventType.equals("round_end_event")) {
+            RoundEndEvent result = new RoundEndEvent();
+            result.setRound(1);
+            return result;
+        } else {
+            return new Event();
         }
 
-        return result;
     }
 
 }
