@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class RoundEndEventListener {
 
@@ -23,7 +25,7 @@ public class RoundEndEventListener {
 
         List<MovementEvent> movements = movementEventRepository.findByRound(1);
 
-        LOG.info("Movements: {}", movements.legth);
+        LOG.info("Movements: {}", movements.size());
 
         //sum Movement events
     }
