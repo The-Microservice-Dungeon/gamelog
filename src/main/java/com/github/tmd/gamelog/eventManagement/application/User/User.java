@@ -20,13 +20,10 @@ public class User {
 
     @Getter
     @Setter
-    int score;
+    int exampleScore;
 
-    public void decreaseScore(int decreaseBy) {
-        this.score -= decreaseBy;
-    }
+    @Getter
+    @Setter
+    int exampleScore2;
 
-    public void increaseScore(int increaseBy) {
-        this.score += increaseBy;
-    }
 }

@@ -1,8 +1,7 @@
 package com.github.tmd.gamelog.eventManagement.application;
 
-import com.github.tmd.gamelog.eventManagement.application.User.User;
-import com.github.tmd.gamelog.eventManagement.application.User.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -10,15 +9,15 @@ import java.util.List;
 @RestController
 public class ScoreboardController {
 
-    final UserRepository userRepository;
+    ScoreboardService scoreboardService;
 
-    public ScoreboardController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ScoreboardController(ScoreboardService scoreboardService) {
+        this.scoreboardService = scoreboardService;
     }
 
-    @GetMapping("/scoreboard")
-    public List<User> getScoreboard() {
-        return this.userRepository.findAllByOrderByScoreDesc();
+    @GetMapping("/scoreboards/{category}")
+    public List<ScoreboardEntry> getScoreboard(@PathVariable String category) {
+        return this.scoreboardService.getScoreboardByCategory(category);
     }
 
 }
