@@ -14,15 +14,6 @@ on:
     # or if there are changes to the current pull request
     types:
       [synchronize,opened]
-  # Also if you push on devops
-  push:
-    paths-ignore:
-      - 'swagger/**'
-      - '**/README.md'
-      - '**/.gitignore'
-    branches:
-      - 'devops'
-      # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   test:
