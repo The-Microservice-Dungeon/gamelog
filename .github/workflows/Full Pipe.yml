@@ -67,8 +67,8 @@ jobs:
       - name: Build to GitHub Container Registry
         # use jib plugin to build docker image
         run: >
-        mvn compile
-        com.google.cloud.tools:jib-maven-plugin:3.1.4:build
-        -Djib.to.image=ghcr.io/the-microservice-dungeon/gamelog/gamelogservice
-        -Djib.from.image=eclipse-temurin:17-alpine
+          mvn compile
+          com.google.cloud.tools:jib-maven-plugin:3.1.4:build
+          -Djib.to.image=ghcr.io/the-microservice-dungeon/gamelog/gamelogservice
+          -Djib.from.image=eclipse-temurin:17-alpine
 
