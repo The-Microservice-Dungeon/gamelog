@@ -1,4 +1,11 @@
 package com.github.tmd.gamelog.domain;
 
-public class Player {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class Player
+{
+    private String id;
 }
