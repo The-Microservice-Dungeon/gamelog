@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.kafkaSender;
 
-import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
+import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -58,7 +58,7 @@ public class KafkaProducerConfig {
 
 
     @Bean
-    public ProducerFactory<String, Event> eventProducerFactory() {
+    public ProducerFactory<String, KafkaEvent> eventProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -67,7 +67,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Event> eventKafkaTemplate() {
+    public KafkaTemplate<String, KafkaEvent> eventKafkaTemplate() {
         return new KafkaTemplate<>(eventProducerFactory());
     }
 

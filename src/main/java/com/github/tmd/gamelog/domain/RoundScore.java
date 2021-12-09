@@ -1,2 +1,4 @@
-package com.github.tmd.gamelog.domain;public class RoundScore {
+package com.github.tmd.gamelog.domain;
+
+public class RoundScore {
 }

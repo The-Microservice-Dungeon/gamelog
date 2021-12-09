@@ -1,2 +1,4 @@
-package com.github.tmd.gamelog.domain;public class RoundContext {
+package com.github.tmd.gamelog.domain;
+
+public class RoundContext {
 }

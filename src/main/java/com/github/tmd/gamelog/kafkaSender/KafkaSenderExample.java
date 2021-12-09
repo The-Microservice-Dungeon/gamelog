@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.kafkaSender;
 
-import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
+import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +12,15 @@ public class KafkaSenderExample {
 
     private final Logger LOG = LoggerFactory.getLogger(KafkaSenderExample.class);
 
-    private KafkaTemplate<String, Event> eventKafkaTemplate;
+    private KafkaTemplate<String, KafkaEvent> eventKafkaTemplate;
 
     @Autowired
-    KafkaSenderExample(KafkaTemplate<String, Event> eventKafkaTemplate) {
+    KafkaSenderExample(KafkaTemplate<String, KafkaEvent> eventKafkaTemplate) {
         this.eventKafkaTemplate = eventKafkaTemplate;
     }
 
 
-    void sendEvent(Event event) {
+    void sendEvent(KafkaEvent event) {
         LOG.info("Sending Json Serializer : {}", event);
         LOG.info("--------------------------------");
 

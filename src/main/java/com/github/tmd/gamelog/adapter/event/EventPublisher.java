@@ -1,6 +1,6 @@
-package com.github.tmd.gamelog.gameEventManagement.application;
+package com.github.tmd.gamelog.adapter.event;
 
-import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
+import com.github.tmd.gamelog.adapter.event.gameEvent.EventInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class EventPublisher {
 
     @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     EventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
@@ -19,15 +19,10 @@ public class EventPublisher {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventPublisher.class);
 
-    public void publish(final KafkaEvent event) {
-        // enrich event
-        EnrichEvent enrichEvent = new EnrichEvent(event);
+    public void publish(final EventInterface event)
+    {
         LOG.info("Publish enrich event for event [{}]", event);
-        applicationEventPublisher.publishEvent(enrichEvent);
-
-        // validate event
-        LOG.info("Publish validation event for event [{}]", event);
-        // applicationEventPublisher.publishEvent(event);
+        applicationEventPublisher.publishEvent(event);
     }
 
 }

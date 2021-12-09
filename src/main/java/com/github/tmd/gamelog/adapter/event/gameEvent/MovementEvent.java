@@ -1,13 +1,12 @@
-package com.github.tmd.gamelog.adapter.event.eventTypes;
+package com.github.tmd.gamelog.adapter.event.gameEvent;
 
-import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import com.github.tmd.gamelog.domain.GameContext;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class MovementEvent implements IEvent {
+public class MovementEvent implements EventInterface {
 
     private int robotId;
 
@@ -27,7 +26,6 @@ public class MovementEvent implements IEvent {
     }
 
     @Override
-    public void execute(GameContext gameContext) {
-
+    public void execute(GameContext roundScore) {
     }
 }

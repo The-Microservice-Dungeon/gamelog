@@ -1,23 +1,33 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
-import com.github.tmd.gamelog.gameEventManagement.application.EventPublisher;
+import com.github.tmd.gamelog.adapter.event.EventPublisher;
+import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
+import lombok.val;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaListeners {
+public class KafkaEventListeners {
 
-    private final Logger LOG = LoggerFactory.getLogger(KafkaListeners.class);
+    private final Logger LOG = LoggerFactory.getLogger(KafkaEventListeners.class);
+    private final EventPublisher eventPublisher;
 
-    @Autowired
-    EventPublisher eventPublisher;
+    public KafkaEventListeners(EventPublisher eventPublisher)
+    {
+        this.eventPublisher = eventPublisher;
+    }
 
-    @KafkaListener(id = "1", topics = "event", groupId = "reflectoring-user-mc", containerFactory = "kafkaJsonListenerContainerFactory")
-    void listenerWithMessageConverter(Event event) {
-        LOG.info("New Kafka Event [{}]", event);
-        eventPublisher.publish(event);
+    @KafkaListener(
+        id = "1",
+        topics = "event",
+        groupId = "reflectoring-user-mc",
+        containerFactory = "kafkaJsonListenerContainerFactory"
+    )
+    public void listenMovementTopic(ConsumerRecord<?, ?> kafkaEvent) {
+        System.out.println(kafkaEvent.headers());
+        System.out.println(kafkaEvent.value());
     }
 }

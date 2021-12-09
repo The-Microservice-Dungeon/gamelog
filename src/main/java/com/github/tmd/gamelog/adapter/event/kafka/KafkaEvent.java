@@ -1,12 +1,16 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
 
-import com.github.tmd.gamelog.adapter.event.eventTypes.AbstractEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
-
-public class Event extends AbstractEvent {
-
-    @Column()
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class KafkaEvent{
+    private String type;
     private String payload;
 }

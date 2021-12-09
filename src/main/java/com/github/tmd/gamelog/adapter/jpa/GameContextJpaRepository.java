@@ -1,2 +1,9 @@
-package com.github.tmd.gamelog.adapter.jpa;public class GameContextJpaRepository {
+package com.github.tmd.gamelog.adapter.jpa;
+
+import com.github.tmd.gamelog.domain.GameContext;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface GameContextJpaRepository extends JpaRepository<GameContext, String> {
 }

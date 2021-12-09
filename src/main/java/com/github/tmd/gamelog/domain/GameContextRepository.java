@@ -1,2 +1,7 @@
-package com.github.tmd.gamelog.domain;public interface GameContextRepository {
+package com.github.tmd.gamelog.domain;
+
+import java.util.Optional;
+
+public interface GameContextRepository {
+    Optional<GameContext> findByEventTransactionId(String eventTransactionId);
 }

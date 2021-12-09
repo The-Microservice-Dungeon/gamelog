@@ -1,7 +1,7 @@
-package com.github.tmd.gamelog.adapter.event.kafka;
+package com.github.tmd.gamelog.config;
 
-import com.github.tmd.gamelog.gameEventManagement.application.eventTypes.Event;
-import com.github.tmd.gamelog.gameEventManagement.application.eventTypes.MovementEvent;
+import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
+import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,16 +53,16 @@ class KafkaConsumerConfig {
     }
 
 
-    public ConsumerFactory<String, Event> eventConsumerFactory() {
+    public ConsumerFactory<String, KafkaEvent> eventConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "event");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Event.class));
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(KafkaEvent.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Event> eventKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Event> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, KafkaEvent> eventKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, KafkaEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(eventConsumerFactory());
         return factory;
     }

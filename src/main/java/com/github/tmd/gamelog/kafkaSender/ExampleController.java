@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.kafkaSender;
 
-import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
+import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,18 +15,14 @@ public class ExampleController {
 
     @GetMapping("/event/move")
     public void eventMove() {
-        Event event = new Event();
-        event.setEventType("movement_event");
-        event.setCreatedAt("now");
+        KafkaEvent event = new KafkaEvent();
         event.setPayload("{hihhiihiihihihihihih}");
         sender.sendEvent(event);
     }
 
     @GetMapping("/event/round/end")
     public void eventRoundEnd() {
-        Event event = new Event();
-        event.setEventType("round_end_event");
-        event.setCreatedAt("now");
+        KafkaEvent event = new KafkaEvent();
         event.setPayload("{hihhiihiihihihihihih}");
         sender.sendEvent(event);
     }
