@@ -9,12 +9,13 @@ import org.springframework.web.client.RestTemplate;
 @Setter
 @NoArgsConstructor
 public class RestQuery {
+    private String baseUrl;
     private String endpoint;
     private Class resultingClass;
     private RestTemplate restTemplate;
 
     public Object fetch()
     {
-        return restTemplate.getForObject(this.endpoint, this.resultingClass);
+        return restTemplate.getForObject(this.baseUrl + this.endpoint, this.resultingClass);
     }
 }

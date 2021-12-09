@@ -19,8 +19,8 @@ public class PlayerRepository implements com.github.tmd.gamelog.domain.PlayerRep
         RobotDto robotDto = this.robotServiceRestClient.fetchRobotById(robotId);
 
         Player player = new Player();
-        player.setId(robo);
+        player.setId(robotDto.getPlayer());
 
-        return null;
+        return player;
     }
 }
