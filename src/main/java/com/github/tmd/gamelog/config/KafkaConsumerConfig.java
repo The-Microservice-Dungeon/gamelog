@@ -1,7 +1,7 @@
-package com.github.tmd.gamelog.eventManagement.kafka;
+package com.github.tmd.gamelog.adapter.event.kafka;
 
-import com.github.tmd.gamelog.eventManagement.application.eventTypes.Event;
-import com.github.tmd.gamelog.eventManagement.application.eventTypes.MovementEvent;
+import com.github.tmd.gamelog.gameEventManagement.application.eventTypes.Event;
+import com.github.tmd.gamelog.gameEventManagement.application.eventTypes.MovementEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
