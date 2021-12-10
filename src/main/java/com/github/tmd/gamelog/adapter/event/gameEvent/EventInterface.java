@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.adapter.event.gameEvent;
 
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import com.github.tmd.gamelog.domain.Game;
+import com.github.tmd.gamelog.domain.RoundScore;
 
 public interface EventInterface {
     public static String getEventName()
@@ -9,7 +10,7 @@ public interface EventInterface {
         throw new RuntimeException("This method needs to be implemented");
     }
 
-    public void execute(Game gameContext);
+    public void execute(RoundScore gameContext);
 
     public static EventInterface fromKafkaEvent(KafkaEvent kafkaEvent)
     {

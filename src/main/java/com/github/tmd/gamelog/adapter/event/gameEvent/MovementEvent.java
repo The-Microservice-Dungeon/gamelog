@@ -2,17 +2,21 @@ package com.github.tmd.gamelog.adapter.event.gameEvent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
+import com.github.tmd.gamelog.adapter.rest.PlayerRepository;
 import com.github.tmd.gamelog.domain.Game;
+import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.RoundScore;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class MovementEvent implements EventInterface {
-    private int robotId;
+    private String robotId;
     private int start;
     private int end;
     private int round;
+    private String playerId;
 
     public static String getEventName()
     {
@@ -39,6 +43,7 @@ public class MovementEvent implements EventInterface {
     }
 
     @Override
-    public void execute(Game roundScore) {
+    public void execute(RoundScore roundScore) {
+
     }
 }
