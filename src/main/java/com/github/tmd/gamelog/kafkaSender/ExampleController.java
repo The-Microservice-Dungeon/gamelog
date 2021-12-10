@@ -17,6 +17,7 @@ public class ExampleController {
     public void eventMove() {
         KafkaEvent event = new KafkaEvent();
         event.setPayload("{hihhiihiihihihihihih}");
+        event.setType("movement ");
         sender.sendEvent(event);
     }
 

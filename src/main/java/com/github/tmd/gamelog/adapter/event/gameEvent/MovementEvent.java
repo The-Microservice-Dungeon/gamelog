@@ -31,6 +31,7 @@ public class MovementEvent implements EventInterface {
         } catch (Exception ignored) {
 
         }
+        return new MovementEvent();
     }
 
     @Override
@@ -44,6 +45,6 @@ public class MovementEvent implements EventInterface {
 
     @Override
     public void execute(RoundScore roundScore) {
-
+        roundScore.increaseMovementScoreBy(1);
     }
 }
