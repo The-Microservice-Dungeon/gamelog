@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.event.gameEvent.EventInterface;
 import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class KafkaEventHandler {
     private final PlayerRepository playerRepository;
     private final RoundScoreRepository roundScoreRepository;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public KafkaEventHandler(PlayerRepository playerRepository, RoundScoreRepository roundScoreRepository, RoundScoreJpsRepository roundScoreJpsRepository) {
         this.playerRepository = playerRepository;
@@ -25,7 +26,14 @@ public class KafkaEventHandler {
     public void handleEvent(KafkaEvent kafkaEvent)
     {
         if(MovementEvent.getEventName().equals(kafkaEvent.getType())) {
-            MovementEvent movementEvent = MovementEvent.fromKafkaEvent(kafkaEvent);
+            MovementEvent movementEvent;
+
+            try {
+                movementEvent = MovementEvent.fromKafkaEvent(kafkaEvent);
+            } catch (JsonProcessingException ignored) {
+                return;
+            }
+
             Player player = playerRepository.findByRobotId(movementEvent.getRobotId());
             movementEvent.setPlayerId(player.getId());
             String gameId = "";
