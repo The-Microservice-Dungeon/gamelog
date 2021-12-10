@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.event.gameEvent;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import com.github.tmd.gamelog.adapter.rest.PlayerRepository;
@@ -23,15 +24,11 @@ public class MovementEvent implements EventInterface {
         return "movement";
     }
 
-    public static MovementEvent fromKafkaEvent(KafkaEvent kafkaEvent)
+    public static MovementEvent fromKafkaEvent(KafkaEvent kafkaEvent) throws JsonProcessingException
     {
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(kafkaEvent.getPayload(), MovementEvent.class);
-        } catch (Exception ignored) {
 
-        }
-        return new MovementEvent();
+        return objectMapper.readValue(kafkaEvent.getPayload(), MovementEvent.class);
     }
 
     @Override
