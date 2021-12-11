@@ -71,4 +71,21 @@ jobs:
           com.google.cloud.tools:jib-maven-plugin:3.1.4:build
           -Djib.to.image=ghcr.io/the-microservice-dungeon/gamelog/gamelogservice
           -Djib.from.image=eclipse-temurin:17-alpine
+  deploy:
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: stop-pull-run
+        uses: appleboy/ssh-action@master
+        env:
+          SERVICE_NAME: gamelog
+        with:
+          host: cides03.gm.fh-koeln.de
+          username: ${{ secrets.PROD_USER }}
+          password: ${{ secrets.PROD_PWD }}
+          port: 22
+          envs: SERVICE_NAME
+          script: |
+            echo ${{ secrets.PROD_PWD }} | sudo -S docker-compose -f $SERVICE_NAME/service-compose.yml pull
+            echo ${{ secrets.PROD_PWD }} | sudo -S docker-compose -f $SERVICE_NAME/service-compose.yml up -d
 
