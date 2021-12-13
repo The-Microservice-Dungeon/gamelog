@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.event.gameEvent.EventInterface;
 import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
+import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpsRepository;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.adapter.rest.PlayerRepository;
@@ -26,12 +27,13 @@ public class KafkaEventHandler {
     public void handleEvent(KafkaEvent kafkaEvent)
     {
         if(MovementEvent.getEventName().equals(kafkaEvent.getType())) {
+            System.out.println("MovementEvent");
             MovementEvent movementEvent;
 
             try {
                 movementEvent = MovementEvent.fromKafkaEvent(kafkaEvent);
             } catch (JsonProcessingException ignored) {
-                return;
+                throw new RuntimeException();
             }
 
             Player player = playerRepository.findByRobotId(movementEvent.getRobotId());
@@ -40,6 +42,8 @@ public class KafkaEventHandler {
             String roundId = "";
             RoundScore roundScore = roundScoreRepository.findByGameAndRoundAndPlayer(gameId, roundId, player.getId());
             movementEvent.execute(roundScore);
+            System.out.println(roundScore.getMovementScore());
+            System.out.println("Score");
             roundScoreRepository.save(roundScore);
             return;
         }

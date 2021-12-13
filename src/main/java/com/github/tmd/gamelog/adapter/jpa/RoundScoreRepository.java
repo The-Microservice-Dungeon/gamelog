@@ -14,7 +14,9 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
 
     @Override
     public RoundScore findByGameAndRoundAndPlayer(String gameId, String roundId, String playerId) {
-        return null;
+        // TODO unmock
+        RoundScore roundScore = new RoundScore();
+        return roundScore;
     }
 
     @Override

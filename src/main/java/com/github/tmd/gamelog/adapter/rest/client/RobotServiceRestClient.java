@@ -20,11 +20,14 @@ public class RobotServiceRestClient extends AbstractRestClient {
 
     public RobotDto fetchRobotById(String id)
     {
-        RestQuery restQuery = this.createRestQuery();
+        RobotDto robotDto = new RobotDto();
+        robotDto.setPlayer("player1");
+        return robotDto;
+        /*RestQuery restQuery = this.createRestQuery();
 
         restQuery.setEndpoint("/robot/" + id);
         restQuery.setResultingClass(RobotDto.class);
 
-        return (RobotDto) restQuery.fetch();
+        return (RobotDto) restQuery.fetch();*/
     }
 }

@@ -2,7 +2,11 @@ package com.github.tmd.gamelog.domain;
 
 public class RoundScore {
 
-    int movementScore = 0;
+    int movementScore;
+
+    public RoundScore() {
+        this.movementScore = 0;
+    }
 
     public void increaseMovementScoreBy(int increase) {
         this.movementScore += increase;
