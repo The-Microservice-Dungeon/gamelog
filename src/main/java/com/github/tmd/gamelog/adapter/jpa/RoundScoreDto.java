@@ -19,11 +19,29 @@ public class RoundScoreDto {
     @GeneratedValue
     private Long id;
 
-    int movementScore;
+    private String game;
+    private String round;
+    private String player;
+
+    private int movementScore;
 
     public static RoundScoreDto fromRoundScore(RoundScore roundScore) {
         RoundScoreDto roundScoreDto = new RoundScoreDto();
-        roundScoreDto.movementScore = roundScore.getMovementScore();
+        roundScoreDto.setMovementScore(roundScore.getMovementScore());
+        roundScoreDto.setGame(roundScore.getGame());
+        roundScoreDto.setRound(roundScore.getRound());
+        roundScoreDto.setPlayer(roundScore.getPlayer());
         return roundScoreDto;
+    }
+
+    @Override
+    public String toString() {
+        return "RoundScoreDto{" +
+                "id=" + id +
+                ", game='" + game + '\'' +
+                ", round='" + round + '\'' +
+                ", player='" + player + '\'' +
+                ", movementScore=" + movementScore +
+                '}';
     }
 }

@@ -16,7 +16,7 @@ public class ExampleController {
     @GetMapping("/event/move")
     public void eventMove() {
         KafkaEvent event = new KafkaEvent();
-        event.setPayload("{\"start\": 1}");
+        event.setPayload("{\"start\": 3}");
         event.setType("movement");
         sender.sendEvent(event);
     }

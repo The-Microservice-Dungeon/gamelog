@@ -38,13 +38,13 @@ public class KafkaEventHandler {
 
             Player player = playerRepository.findByRobotId(movementEvent.getRobotId());
             movementEvent.setPlayerId(player.getId());
-            String gameId = "";
-            String roundId = "";
+            String gameId = "1";
+            String roundId = "1";
             RoundScore roundScore = roundScoreRepository.findByGameAndRoundAndPlayer(gameId, roundId, player.getId());
+            System.out.println(roundScore);
             movementEvent.execute(roundScore);
-            System.out.println(roundScore.getMovementScore());
-            System.out.println("Score");
             roundScoreRepository.save(roundScore);
+            System.out.println(roundScore);
             return;
         }
     }

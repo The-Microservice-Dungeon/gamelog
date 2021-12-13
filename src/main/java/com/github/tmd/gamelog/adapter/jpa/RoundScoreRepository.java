@@ -14,14 +14,26 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
 
     @Override
     public RoundScore findByGameAndRoundAndPlayer(String gameId, String roundId, String playerId) {
-        // TODO unmock
-        RoundScore roundScore = new RoundScore();
-        return roundScore;
+        RoundScoreDto roundScoreDto = roundScoreJpsRepository.findByGameAndRoundAndPlayer(gameId, roundId, playerId);
+        if (roundScoreDto == null) {
+            RoundScore roundScore = new RoundScore();
+            roundScore.setGame(gameId);
+            roundScore.setRound(roundId);
+            roundScore.setPlayer(playerId);
+            return roundScore;
+        }
+        return RoundScore.fromRoundScoreDto(roundScoreDto);
     }
 
     @Override
     public void save(RoundScore roundScore) {
-        RoundScoreDto roundScoreDto = RoundScoreDto.fromRoundScore(roundScore);
-        this.roundScoreJpsRepository.save(roundScoreDto);
+        RoundScoreDto existing = roundScoreJpsRepository.findByGameAndRoundAndPlayer(roundScore.getGame(), roundScore.getRound(), roundScore.getPlayer());
+        if (existing != null) {
+            existing.setMovementScore(roundScore.getMovementScore());
+            roundScoreJpsRepository.save(existing);
+        } else {
+            RoundScoreDto roundScoreDto = RoundScoreDto.fromRoundScore(roundScore);
+            this.roundScoreJpsRepository.save(roundScoreDto);
+        }
     }
 }
