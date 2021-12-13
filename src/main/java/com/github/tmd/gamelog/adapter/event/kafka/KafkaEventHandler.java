@@ -16,12 +16,10 @@ import org.springframework.stereotype.Component;
 public class KafkaEventHandler {
     private final PlayerRepository playerRepository;
     private final RoundScoreRepository roundScoreRepository;
-    private final ObjectMapper objectMapper;
 
-    public KafkaEventHandler(PlayerRepository playerRepository, RoundScoreRepository roundScoreRepository, RoundScoreJpsRepository roundScoreJpsRepository) {
+    public KafkaEventHandler(PlayerRepository playerRepository, RoundScoreRepository roundScoreRepository) {
         this.playerRepository = playerRepository;
         this.roundScoreRepository = roundScoreRepository;
-        this.objectMapper = new ObjectMapper();
     }
 
     public void handleEvent(KafkaEvent kafkaEvent)
@@ -41,11 +39,8 @@ public class KafkaEventHandler {
             String gameId = "1";
             String roundId = "1";
             RoundScore roundScore = roundScoreRepository.findByGameAndRoundAndPlayer(gameId, roundId, player.getId());
-            System.out.println(roundScore);
             movementEvent.execute(roundScore);
             roundScoreRepository.save(roundScore);
-            System.out.println(roundScore);
-            return;
         }
     }
 
