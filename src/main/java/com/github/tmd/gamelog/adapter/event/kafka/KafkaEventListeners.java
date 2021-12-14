@@ -2,21 +2,26 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tmd.gamelog.adapter.rest.CommandContextRepository;
+import com.github.tmd.gamelog.domain.CommandContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.kafka.common.header.Header;
+import org.msgpack.core.annotations.VisibleForTesting;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class KafkaEventListeners {
 
-    private final Logger LOG = LoggerFactory.getLogger(KafkaEventListeners.class);
     private final KafkaEventHandler kafkaEventHandler;
+    private final CommandContextRepository commandContextRepository;
 
-    public KafkaEventListeners(KafkaEventHandler kafkaEventHandler)
+    public KafkaEventListeners(KafkaEventHandler kafkaEventHandler, CommandContextRepository commandContextRepository)
     {
         this.kafkaEventHandler = kafkaEventHandler;
+        this.commandContextRepository = commandContextRepository;
     }
 
     @KafkaListener(
@@ -26,14 +31,20 @@ public class KafkaEventListeners {
         containerFactory = "kafkaJsonListenerContainerFactory"
     )
     public void listenMovementTopic(ConsumerRecord<?, ?> kafkaEvent) {
-        System.out.println(kafkaEvent.headers());
-        System.out.println(kafkaEvent.value());
+        CommandContext commandContext = getCommandContext(kafkaEvent);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             KafkaEvent event = objectMapper.readValue((String)kafkaEvent.value(), KafkaEvent.class);
-            kafkaEventHandler.handleEvent(event);
+            kafkaEventHandler.handleEvent(event, commandContext);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    public CommandContext getCommandContext(ConsumerRecord<?, ?> kafkaEvent) {
+        Iterable<Header> transactionHeaders = kafkaEvent.headers().headers("transactionId");
+        String transactionId = new String(transactionHeaders.iterator().next().value(), StandardCharsets.UTF_8);
+
+        return this.commandContextRepository.findByTransactionId(transactionId);
     }
 }

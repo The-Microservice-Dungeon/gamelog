@@ -15,7 +15,7 @@ public class GameServiceRestClient extends AbstractRestClient {
 
     }
 
-    public Object getCommandContextForTransactionId(String transactionId) {
+    public CommandContext fetchCommandContextForTransactionId(String transactionId) {
         CommandContext result = new CommandContext();
         result.setGameId("1");
         result.setPlayerId("2");

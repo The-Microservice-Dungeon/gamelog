@@ -8,5 +8,6 @@ import lombok.Setter;
 public class CommandContext {
     private String gameId;
     private int round;
+    private String roundId;
     private String playerId;
 }

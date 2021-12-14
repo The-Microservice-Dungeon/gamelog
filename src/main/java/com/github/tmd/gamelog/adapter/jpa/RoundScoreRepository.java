@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
+import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.springframework.stereotype.Component;
 
@@ -12,20 +13,19 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
         this.roundScoreJpaRepository = roundScoreJpaRepository;
     }
 
-    @Override
-    public RoundScore findByGameAndRoundAndPlayer(String gameId, String roundId, String playerId) {
-        RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(gameId, roundId, playerId);
+    public RoundScore findByCommandContext(CommandContext commandContext) {
+        RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(commandContext.getGameId(), commandContext.getRoundId(), commandContext.getPlayerId());
         if (roundScoreDto == null) {
+            System.out.println("NULL");
             RoundScore roundScore = new RoundScore();
-            roundScore.setGame(gameId);
-            roundScore.setRound(roundId);
-            roundScore.setPlayer(playerId);
+            roundScore.setGame(commandContext.getGameId());
+            roundScore.setRound(commandContext.getRoundId());
+            roundScore.setPlayer(commandContext.getPlayerId());
             return roundScore;
         }
         return RoundScore.fromRoundScoreDto(roundScoreDto);
     }
 
-    @Override
     public void save(RoundScore roundScore) {
         RoundScoreDto existing = roundScoreJpaRepository.findByGameAndRoundAndPlayer(roundScore.getGame(), roundScore.getRound(), roundScore.getPlayer());
         if (existing != null) {

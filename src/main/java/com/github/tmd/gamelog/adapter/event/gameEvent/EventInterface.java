@@ -1,7 +1,6 @@
 package com.github.tmd.gamelog.adapter.event.gameEvent;
 
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
-import com.github.tmd.gamelog.domain.Game;
 import com.github.tmd.gamelog.domain.RoundScore;
 
 public interface EventInterface {

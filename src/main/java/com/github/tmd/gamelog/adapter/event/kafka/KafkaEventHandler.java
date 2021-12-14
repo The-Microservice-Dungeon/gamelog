@@ -4,21 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.adapter.rest.PlayerRepository;
+import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.springframework.stereotype.Component;
 
 @Component
 public class KafkaEventHandler {
-    private final PlayerRepository playerRepository;
     private final RoundScoreRepository roundScoreRepository;
 
-    public KafkaEventHandler(PlayerRepository playerRepository, RoundScoreRepository roundScoreRepository) {
-        this.playerRepository = playerRepository;
+    public KafkaEventHandler(RoundScoreRepository roundScoreRepository) {
         this.roundScoreRepository = roundScoreRepository;
     }
 
-    public void handleEvent(KafkaEvent kafkaEvent)
+    public void handleEvent(KafkaEvent kafkaEvent, CommandContext commandContext)
     {
         if(MovementEvent.getEventName().equals(kafkaEvent.getType())) {
             MovementEvent movementEvent;
@@ -29,11 +28,8 @@ public class KafkaEventHandler {
                 throw new RuntimeException();
             }
 
-            Player player = playerRepository.findByRobotId(movementEvent.getRobotId());
-            movementEvent.setPlayerId(player.getId());
-            String gameId = "1";
-            String roundId = "1";
-            RoundScore roundScore = roundScoreRepository.findByGameAndRoundAndPlayer(gameId, roundId, player.getId());
+            movementEvent.setPlayerId(commandContext.getPlayerId());
+            RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
             movementEvent.execute(roundScore);
             roundScoreRepository.save(roundScore);
 
