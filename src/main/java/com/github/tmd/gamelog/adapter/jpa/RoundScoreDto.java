@@ -26,6 +26,7 @@ public class RoundScoreDto {
     private int movementScore;
 
     public static RoundScoreDto fromRoundScore(RoundScore roundScore) {
+        //TODO: find better solution
         RoundScoreDto roundScoreDto = new RoundScoreDto();
         roundScoreDto.setMovementScore(roundScore.getMovementScore());
         roundScoreDto.setGame(roundScore.getGame());

@@ -25,7 +25,6 @@ public class KafkaEventHandler {
     public void handleEvent(KafkaEvent kafkaEvent)
     {
         if(MovementEvent.getEventName().equals(kafkaEvent.getType())) {
-            System.out.println("MovementEvent");
             MovementEvent movementEvent;
 
             try {
@@ -41,6 +40,8 @@ public class KafkaEventHandler {
             RoundScore roundScore = roundScoreRepository.findByGameAndRoundAndPlayer(gameId, roundId, player.getId());
             movementEvent.execute(roundScore);
             roundScoreRepository.save(roundScore);
+
+            //TODO: Accnowledge ?
         }
     }
 
