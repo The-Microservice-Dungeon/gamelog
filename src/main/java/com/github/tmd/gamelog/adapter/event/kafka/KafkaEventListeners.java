@@ -6,7 +6,6 @@ import com.github.tmd.gamelog.adapter.rest.CommandContextRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
-import org.msgpack.core.annotations.VisibleForTesting;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
