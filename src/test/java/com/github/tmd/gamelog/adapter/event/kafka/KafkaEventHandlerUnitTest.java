@@ -2,6 +2,8 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,10 +30,7 @@ public class KafkaEventHandlerUnitTest {
         KafkaEvent kafkaEvent = new KafkaEvent();
         kafkaEvent.setType("movement");
         kafkaEvent.setPayload("{}");
-        CommandContext commandContext = new CommandContext();
-        commandContext.setGameId("1");
-        commandContext.setRoundId("2");
-        commandContext.setPlayerId("3");
+        CommandContext commandContext = this.createGameContext();
 
         RoundScore roundScore = new RoundScore();
         roundScore.setGame("1");
@@ -46,4 +45,12 @@ public class KafkaEventHandlerUnitTest {
         assert roundScore.getMovementScore() == 2;
     }
 
+    // @todo redundant siehe RoundScoreRepositoryTest
+    private CommandContext createGameContext() {
+        CommandContext commandContext = new CommandContext();
+        commandContext.setPlayer(new Player("3"));
+        commandContext.setRound(new Round("1", 0, "2"));
+
+        return commandContext;
+    }
 }

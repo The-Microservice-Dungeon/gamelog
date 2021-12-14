@@ -4,6 +4,8 @@ import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.Round;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.invocation.Invocation;
@@ -31,9 +33,16 @@ public class KafkaEventHandlerFeatureTest{
         kafkaEvent.setType("movement");
         kafkaEvent.setPayload("{}");
         CommandContext commandContext = new CommandContext();
-        commandContext.setGameId("1");
-        commandContext.setRoundId("2");
-        commandContext.setPlayerId("3");
+
+        Round round = new Round();
+        round.setGameId("1");
+        round.setRoundId("2");
+
+        Player player = new Player();
+        player.setId("3");
+
+        commandContext.setRound(round);
+        commandContext.setPlayer(player);
 
         RoundScoreDto roundScoreDto = new RoundScoreDto();
         roundScoreDto.setGame("1");
@@ -41,7 +50,13 @@ public class KafkaEventHandlerFeatureTest{
         roundScoreDto.setPlayer("3");
         roundScoreDto.setMovementScore(1);
 
-        Mockito.when(roundScoreJpaRepository.findByGameAndRoundAndPlayer(commandContext.getGameId(), commandContext.getRoundId(), commandContext.getPlayerId())).thenReturn(roundScoreDto);
+        Mockito.when(
+            roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+                commandContext.getRound().getGameId(),
+                commandContext.getRound().getRoundId(),
+                commandContext.getPlayer().getId()
+            )
+        ).thenReturn(roundScoreDto);
         // Mockito.when(roundScoreJpaRepository.findByGameAndRoundAndPlayer(commandContext.getGameId(), commandContext.getRoundId(), commandContext.getPlayerId())).thenReturn(roundScoreDto.clone());
 
         kafkaEventHandler.handleEvent(kafkaEvent, commandContext);

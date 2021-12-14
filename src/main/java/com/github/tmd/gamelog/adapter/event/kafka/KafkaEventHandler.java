@@ -28,7 +28,7 @@ public class KafkaEventHandler {
                 throw new RuntimeException();
             }
 
-            movementEvent.setPlayerId(commandContext.getPlayerId());
+            movementEvent.setPlayerId(commandContext.getPlayer().getId());
             RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
             movementEvent.execute(roundScore);
             roundScoreRepository.save(roundScore);

@@ -4,6 +4,8 @@ import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
 import com.github.tmd.gamelog.adapter.rest.client.GameServiceRestClient;
 import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.Round;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
@@ -36,9 +38,8 @@ public class KafkaEventListenersFeatureTest {
         String playerId = "2";
         String roundId = "3";
         CommandContext commandContext = new CommandContext();
-        commandContext.setGameId(gameId);
-        commandContext.setPlayerId(playerId);
-        commandContext.setRoundId(roundId);
+        commandContext.setRound(new Round(gameId, 0, roundId));
+        commandContext.setPlayer(new Player(playerId));
 
         Mockito.when(gameServiceRestClient.fetchCommandContextForTransactionId(transactionId)).thenReturn(commandContext);
 
@@ -51,7 +52,12 @@ public class KafkaEventListenersFeatureTest {
 
         kafkaEventListeners.listenMovementTopic(kafkaEvent);
 
-        RoundScoreDto roundScoreDto = this.roundScoreJpaRepository.findByGameAndRoundAndPlayer(gameId, roundId, playerId);
+        RoundScoreDto roundScoreDto = this.roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+            gameId,
+            roundId,
+            playerId
+        );
+
         assert roundScoreDto != null;
         assert roundScoreDto.getMovementScore() == 1;
     }

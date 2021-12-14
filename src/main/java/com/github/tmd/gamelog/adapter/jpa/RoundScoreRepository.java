@@ -14,15 +14,22 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
     }
 
     public RoundScore findByCommandContext(CommandContext commandContext) {
-        RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(commandContext.getGameId(), commandContext.getRoundId(), commandContext.getPlayerId());
+        RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+                commandContext.getRound().getGameId(),
+                commandContext.getRound().getRoundId(),
+                commandContext.getPlayer().getId()
+        );
+
         if (roundScoreDto == null) {
             System.out.println("NULL");
             RoundScore roundScore = new RoundScore();
-            roundScore.setGame(commandContext.getGameId());
-            roundScore.setRound(commandContext.getRoundId());
-            roundScore.setPlayer(commandContext.getPlayerId());
+            roundScore.setGame(commandContext.getRound().getGameId());
+            roundScore.setRound(commandContext.getRound().getRoundId());
+            roundScore.setPlayer(commandContext.getPlayer().getId());
+
             return roundScore;
         }
+
         return RoundScore.fromRoundScoreDto(roundScoreDto);
     }
 

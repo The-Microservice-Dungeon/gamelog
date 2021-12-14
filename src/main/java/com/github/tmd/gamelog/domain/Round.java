@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Player
-{
-    private String id;
+public class Round {
+    private String gameId;
+    private int roundNumber;
+    private String roundId;
 }
