@@ -20,7 +20,7 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
     }
 
     public RoundScore findByCommandContext(CommandContext commandContext) {
-        RoundScoreDto roundScoreDto = fetchDtoByCommandContext(commandContext);
+        RoundScoreDto roundScoreDto = this.fetchDtoByCommandContext(commandContext);
 
         if(null == roundScoreDto) {
             return null;
@@ -30,12 +30,11 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
     }
 
     private RoundScoreDto fetchDtoByCommandContext(CommandContext commandContext) {
-        RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+        return roundScoreJpaRepository.findByGameAndRoundAndPlayer(
                 commandContext.getRound().getGameId(),
                 commandContext.getRound().getRoundId(),
                 commandContext.getPlayer().getId()
         );
-        return roundScoreDto;
     }
 
     public void upsert(RoundScore roundScore) {

@@ -1,19 +1,30 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
+import com.github.tmd.gamelog.adapter.event.kafka.KafkaEventHandler;
+import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class RoundScoreDtoConversionUnitTest {
 
+    private RoundScoreDtoMapper roundScoreDtoMapper;
+
+    @BeforeEach
+    void init() {
+        this.roundScoreDtoMapper = new RoundScoreDtoMapper();
+    }
+
     @Test
     public void RoundScoreToRoundScoreDto() {
         RoundScore roundScore = new RoundScore();
-        roundScore.setGame("0");
-        roundScore.setRound("1");
-        roundScore.setPlayer("2");
+
+        roundScore.setRound(new Round("0", 0, "1"));
+        roundScore.setPlayer(new Player("3"));
         roundScore.setMovementScore(3);
 
-        RoundScoreDto roundScoreDto = RoundScoreDto.fromRoundScore(roundScore);
+        RoundScoreDto roundScoreDto = this.roundScoreDtoMapper.mapEntityToDto(roundScore);
         assert roundScoreDto.getGame().equals("0");
         assert roundScoreDto.getRound().equals("1");
         assert roundScoreDto.getPlayer().equals("2");
@@ -28,10 +39,10 @@ public class RoundScoreDtoConversionUnitTest {
         roundScoreDto.setPlayer("2");
         roundScoreDto.setMovementScore(3);
 
-        RoundScore roundScore = RoundScore.fromRoundScoreDto(roundScoreDto);
-        assert roundScore.getGame().equals("0");
-        assert roundScore.getRound().equals("1");
-        assert roundScore.getPlayer().equals("2");
+        RoundScore roundScore = this.roundScoreDtoMapper.mapDtoToEntity(roundScoreDto);
+        assert roundScore.getRound().getGameId().equals("0");
+        assert roundScore.getRound().getRoundId().equals("1");
+        assert roundScore.getPlayer().getId().equals("2");
         assert roundScore.getMovementScore() == 3;
     }
 }

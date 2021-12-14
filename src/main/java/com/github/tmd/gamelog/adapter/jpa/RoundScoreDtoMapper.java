@@ -12,7 +12,7 @@ public class RoundScoreDtoMapper {
 
         roundScore.setRound(
             new Round(
-                roundScoreDto.getRound(),
+                roundScoreDto.getGame(),
                 roundScoreDto.getRoundNumber(),
                 roundScoreDto.getRound()
             )

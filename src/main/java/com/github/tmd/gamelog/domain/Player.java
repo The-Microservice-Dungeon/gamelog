@@ -12,4 +12,11 @@ import lombok.Setter;
 public class Player
 {
     private String id;
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

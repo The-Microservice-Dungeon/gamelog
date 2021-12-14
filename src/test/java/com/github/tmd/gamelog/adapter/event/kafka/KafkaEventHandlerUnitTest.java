@@ -33,9 +33,12 @@ public class KafkaEventHandlerUnitTest {
         CommandContext commandContext = this.createGameContext();
 
         RoundScore roundScore = new RoundScore();
-        roundScore.setGame("1");
-        roundScore.setRound("2");
-        roundScore.setPlayer("3");
+        roundScore.setRound(
+            new Round("0",0,"1")
+        );
+        roundScore.setPlayer(
+            new Player("2")
+        );
         roundScore.setMovementScore(1);
 
         Mockito.when(roundScoreRepository.findByCommandContext(commandContext)).thenReturn(roundScore);
