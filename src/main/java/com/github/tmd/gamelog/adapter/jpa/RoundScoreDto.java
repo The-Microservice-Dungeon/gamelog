@@ -21,6 +21,7 @@ public class RoundScoreDto implements Cloneable {
 
     private String game;
     private String round;
+    private int roundNumber;
     private String player;
 
     private int movementScore;
@@ -28,10 +29,12 @@ public class RoundScoreDto implements Cloneable {
     public static RoundScoreDto fromRoundScore(RoundScore roundScore) {
         //TODO: find better solution
         RoundScoreDto roundScoreDto = new RoundScoreDto();
+
         roundScoreDto.setMovementScore(roundScore.getMovementScore());
-        roundScoreDto.setGame(roundScore.getGame());
-        roundScoreDto.setRound(roundScore.getRound());
-        roundScoreDto.setPlayer(roundScore.getPlayer());
+        roundScoreDto.setGame(roundScore.getRound().getGameId());
+        roundScoreDto.setRound(roundScore.getRound().getRoundId());
+        roundScoreDto.setRoundNumber(roundScore.getRound().getRoundNumber());
+        roundScoreDto.setPlayer(roundScore.getPlayer().getId());
 
         return roundScoreDto;
     }

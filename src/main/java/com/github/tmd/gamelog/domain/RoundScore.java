@@ -1,17 +1,24 @@
 package com.github.tmd.gamelog.domain;
 
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class RoundScore {
-
+    private Player player;
+    private Round round;
     private int movementScore;
-    private String game;
-    private String round;
-    private String player;
+
+    public RoundScore(Player player, Round round) {
+        this();
+
+        this.player = player;
+        this.round = round;
+    }
 
     public RoundScore() {
         this.movementScore = 0;
@@ -25,23 +32,12 @@ public class RoundScore {
         return this.movementScore;
     }
 
-    public static RoundScore fromRoundScoreDto(RoundScoreDto roundScoreDto) {
-        RoundScore result = new RoundScore();
-        result.setMovementScore(roundScoreDto.getMovementScore());
-        result.setGame(roundScoreDto.getGame());
-        result.setRound(roundScoreDto.getRound());
-        result.setPlayer(roundScoreDto.getPlayer());
-
-        return result;
-    }
-
     @Override
     public String toString() {
         return "RoundScore{" +
-                "movementScore=" + movementScore +
-                ", game='" + game + '\'' +
-                ", round='" + round + '\'' +
-                ", player='" + player + '\'' +
+                "player=" + player +
+                ", round=" + round +
+                ", movementScore=" + movementScore +
                 '}';
     }
 }

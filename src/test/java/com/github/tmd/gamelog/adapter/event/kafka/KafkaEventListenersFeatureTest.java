@@ -61,5 +61,4 @@ public class KafkaEventListenersFeatureTest {
         assert roundScoreDto != null;
         assert roundScoreDto.getMovementScore() == 1;
     }
-
 }

@@ -3,9 +3,7 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
-import com.github.tmd.gamelog.adapter.rest.PlayerRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
-import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +28,16 @@ public class KafkaEventHandler {
 
             movementEvent.setPlayerId(commandContext.getPlayer().getId());
             RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
+
+            if(null == roundScore) {
+                roundScore = new RoundScore(
+                    commandContext.getPlayer(),
+                    commandContext.getRound()
+                );
+            }
+
             movementEvent.execute(roundScore);
-            roundScoreRepository.save(roundScore);
+            roundScoreRepository.upsert(roundScore);
 
             //TODO: Accnowledge ?
         }

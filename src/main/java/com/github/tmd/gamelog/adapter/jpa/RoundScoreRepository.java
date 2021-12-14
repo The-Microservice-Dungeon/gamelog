@@ -1,46 +1,60 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
 import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RoundScoreRepository implements com.github.tmd.gamelog.domain.RoundScoreRepository {
 
-    RoundScoreJpaRepository roundScoreJpaRepository;
+    private final RoundScoreDtoMapper roundScoreDtoMapper;
+    private final RoundScoreJpaRepository roundScoreJpaRepository;
 
-    public RoundScoreRepository(RoundScoreJpaRepository roundScoreJpaRepository) {
+    public RoundScoreRepository(
+        RoundScoreJpaRepository roundScoreJpaRepository,
+        RoundScoreDtoMapper roundScoreDtoMapper
+    ) {
         this.roundScoreJpaRepository = roundScoreJpaRepository;
+        this.roundScoreDtoMapper = roundScoreDtoMapper;
     }
 
     public RoundScore findByCommandContext(CommandContext commandContext) {
+        RoundScoreDto roundScoreDto = fetchDtoByCommandContext(commandContext);
+
+        if(null == roundScoreDto) {
+            return null;
+        }
+
+        return this.roundScoreDtoMapper.mapDtoToEntity(roundScoreDto);
+    }
+
+    private RoundScoreDto fetchDtoByCommandContext(CommandContext commandContext) {
         RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(
                 commandContext.getRound().getGameId(),
                 commandContext.getRound().getRoundId(),
                 commandContext.getPlayer().getId()
         );
-
-        if (roundScoreDto == null) {
-            System.out.println("NULL");
-            RoundScore roundScore = new RoundScore();
-            roundScore.setGame(commandContext.getRound().getGameId());
-            roundScore.setRound(commandContext.getRound().getRoundId());
-            roundScore.setPlayer(commandContext.getPlayer().getId());
-
-            return roundScore;
-        }
-
-        return RoundScore.fromRoundScoreDto(roundScoreDto);
+        return roundScoreDto;
     }
 
-    public void save(RoundScore roundScore) {
-        RoundScoreDto existing = roundScoreJpaRepository.findByGameAndRoundAndPlayer(roundScore.getGame(), roundScore.getRound(), roundScore.getPlayer());
-        if (existing != null) {
-            existing.setMovementScore(roundScore.getMovementScore());
-            roundScoreJpaRepository.save(existing);
-        } else {
-            RoundScoreDto roundScoreDto = RoundScoreDto.fromRoundScore(roundScore);
-            this.roundScoreJpaRepository.save(roundScoreDto);
+    public void upsert(RoundScore roundScore) {
+        RoundScoreDto databaseRoundScoreDto = this.fetchDtoByRoundScore(roundScore);
+        RoundScoreDto roundScoreDto = this.roundScoreDtoMapper.mapEntityToDto(roundScore);
+
+        if (databaseRoundScoreDto != null) {
+            roundScoreDto.setId(databaseRoundScoreDto.getId());
         }
+
+        this.roundScoreJpaRepository.save(roundScoreDto);
+    }
+
+
+    private RoundScoreDto fetchDtoByRoundScore(RoundScore roundScore) {
+        return this.roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+                roundScore.getRound().getGameId(),
+                roundScore.getRound().getRoundId(),
+                roundScore.getPlayer().getId()
+        );
     }
 }
