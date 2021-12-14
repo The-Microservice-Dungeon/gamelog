@@ -2,7 +2,6 @@ package com.github.tmd.gamelog.domain;
 
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
-
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ public class RoundScoreRepositoryTest {
     private RoundScoreJpaRepository roundScoreJpaRepository;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         roundScoreRepository = new RoundScoreRepository(roundScoreJpaRepository);
     }
 
