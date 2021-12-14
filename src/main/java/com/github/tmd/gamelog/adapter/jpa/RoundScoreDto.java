@@ -14,7 +14,6 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class RoundScoreDto {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -32,6 +31,7 @@ public class RoundScoreDto {
         roundScoreDto.setGame(roundScore.getGame());
         roundScoreDto.setRound(roundScore.getRound());
         roundScoreDto.setPlayer(roundScore.getPlayer());
+
         return roundScoreDto;
     }
 
