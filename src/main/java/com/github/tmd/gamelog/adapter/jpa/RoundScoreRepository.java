@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class RoundScoreRepository implements com.github.tmd.gamelog.domain.RoundScoreRepository {
 
-    RoundScoreJpsRepository roundScoreJpsRepository;
+    RoundScoreJpaRepository roundScoreJpaRepository;
 
-    public RoundScoreRepository(RoundScoreJpsRepository roundScoreJpsRepository) {
-        this.roundScoreJpsRepository = roundScoreJpsRepository;
+    public RoundScoreRepository(RoundScoreJpaRepository roundScoreJpaRepository) {
+        this.roundScoreJpaRepository = roundScoreJpaRepository;
     }
 
     @Override
     public RoundScore findByGameAndRoundAndPlayer(String gameId, String roundId, String playerId) {
-        RoundScoreDto roundScoreDto = roundScoreJpsRepository.findByGameAndRoundAndPlayer(gameId, roundId, playerId);
+        RoundScoreDto roundScoreDto = roundScoreJpaRepository.findByGameAndRoundAndPlayer(gameId, roundId, playerId);
         if (roundScoreDto == null) {
             RoundScore roundScore = new RoundScore();
             roundScore.setGame(gameId);
@@ -27,13 +27,13 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
 
     @Override
     public void save(RoundScore roundScore) {
-        RoundScoreDto existing = roundScoreJpsRepository.findByGameAndRoundAndPlayer(roundScore.getGame(), roundScore.getRound(), roundScore.getPlayer());
+        RoundScoreDto existing = roundScoreJpaRepository.findByGameAndRoundAndPlayer(roundScore.getGame(), roundScore.getRound(), roundScore.getPlayer());
         if (existing != null) {
             existing.setMovementScore(roundScore.getMovementScore());
-            roundScoreJpsRepository.save(existing);
+            roundScoreJpaRepository.save(existing);
         } else {
             RoundScoreDto roundScoreDto = RoundScoreDto.fromRoundScore(roundScore);
-            this.roundScoreJpsRepository.save(roundScoreDto);
+            this.roundScoreJpaRepository.save(roundScoreDto);
         }
     }
 }

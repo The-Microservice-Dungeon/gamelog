@@ -1,6 +1,5 @@
-package com.github.tmd.gamelog;
+package com.github.tmd.gamelog.adapter.event.gameEvent;
 
-import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.junit.jupiter.api.Test;
 

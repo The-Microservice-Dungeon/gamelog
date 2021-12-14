@@ -1,11 +1,7 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tmd.gamelog.adapter.event.gameEvent.EventInterface;
 import com.github.tmd.gamelog.adapter.event.gameEvent.MovementEvent;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpsRepository;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.adapter.rest.PlayerRepository;
 import com.github.tmd.gamelog.domain.Player;

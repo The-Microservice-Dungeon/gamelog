@@ -1,10 +1,9 @@
-package com.github.tmd.gamelog;
+package com.github.tmd.gamelog.adapter.jpa;
 
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.junit.jupiter.api.Test;
 
-public class RoundScoreConversionUnitTest {
+public class RoundScoreDtoConversionUnitTest {
 
     @Test
     public void RoundScoreToRoundScoreDto() {
