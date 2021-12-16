@@ -48,12 +48,14 @@ jobs:
           DB_NAME: gamelog
         run: mvn test -Psurefire
       - name: Upload Test Report
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-reports
-          path: /surefire-reports
+          path: target/surefire-reports/
       - name: Upload Test Summary
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-reports
-          path: /surefire-reports/TEST-com.github.tmd.gamelog.GameLogApplicationTests.xml
+          path: target/surefire-reports/TEST-com.github.tmd.gamelog.GameLogApplicationTests.xml
