@@ -31,7 +31,7 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
     }
 
     private RoundScoreDto fetchDtoByCommandContext(CommandContext commandContext) {
-        return roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+        return roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId(
                 commandContext.getRound().getGameId(),
                 commandContext.getRound().getRoundId(),
                 commandContext.getPlayer().getId()
@@ -65,7 +65,7 @@ public class RoundScoreRepository implements com.github.tmd.gamelog.domain.Round
 
 
     private RoundScoreDto fetchDtoByRoundScore(RoundScore roundScore) {
-        return this.roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+        return this.roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId(
                 roundScore.getRound().getGameId(),
                 roundScore.getRound().getRoundId(),
                 roundScore.getPlayer().getId()

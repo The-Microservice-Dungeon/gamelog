@@ -18,10 +18,10 @@ public class RoundScoreDto implements Cloneable {
     @GeneratedValue
     private Long id;
 
-    private String game;
-    private String round;
+    private String gameId;
+    private String roundId;
     private int roundNumber;
-    private String player;
+    private String playerId;
 
     @Embedded
     private MovementScoreDto movementScore;
@@ -30,9 +30,9 @@ public class RoundScoreDto implements Cloneable {
     public String toString() {
         return "RoundScoreDto{" +
                 "id=" + id +
-                ", game='" + game + '\'' +
-                ", round='" + round + '\'' +
-                ", player='" + player + '\'' +
+                ", game='" + gameId + '\'' +
+                ", round='" + roundId + '\'' +
+                ", player='" + playerId + '\'' +
                 ", movementScore=" + movementScore +
                 '}';
     }
@@ -46,9 +46,9 @@ public class RoundScoreDto implements Cloneable {
 
         if (movementScore != that.movementScore) return false;
         if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(game, that.game)) return false;
-        if (!Objects.equals(round, that.round)) return false;
-        return Objects.equals(player, that.player);
+        if (!Objects.equals(gameId, that.gameId)) return false;
+        if (!Objects.equals(roundId, that.roundId)) return false;
+        return Objects.equals(playerId, that.playerId);
     }
 
     @Override

@@ -27,18 +27,18 @@ public class RoundScoreDtoConversionUnitTest {
         roundScore.setMovementScore(movementScore);
 
         RoundScoreDto roundScoreDto = this.roundScoreDtoMapper.mapEntityToDto(roundScore);
-        assert roundScoreDto.getGame().equals("0");
-        assert roundScoreDto.getRound().equals("1");
-        assert roundScoreDto.getPlayer().equals("2");
+        assert roundScoreDto.getGameId().equals("0");
+        assert roundScoreDto.getRoundId().equals("1");
+        assert roundScoreDto.getPlayerId().equals("2");
         assert roundScoreDto.getMovementScore().getValue() == 3;
     }
 
     @Test
     public  void RoundScoreDtoToRoundScore() {
         RoundScoreDto roundScoreDto = new RoundScoreDto();
-        roundScoreDto.setGame("0");
-        roundScoreDto.setRound("1");
-        roundScoreDto.setPlayer("2");
+        roundScoreDto.setGameId("0");
+        roundScoreDto.setRoundId("1");
+        roundScoreDto.setPlayerId("2");
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(3);
         roundScoreDto.setMovementScore(movementScoreDto);

@@ -2,7 +2,6 @@ package com.github.tmd.gamelog.domain;
 
 import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
-import com.github.tmd.gamelog.domain.Score.MovementScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +27,7 @@ public class RoundScoreRepositoryTest {
     void testFindByGameAndRoundAndPlayerNotExisting() {
         CommandContext commandContext = this.createGameContext();
 
-        Mockito.when(roundScoreJpaRepository.findByGameAndRoundAndPlayer("1", "2", "3")).thenReturn(null);
+        Mockito.when(roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", "3")).thenReturn(null);
         RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
         assert roundScore == null;
     }
@@ -38,15 +37,15 @@ public class RoundScoreRepositoryTest {
         CommandContext commandContext = this.createGameContext();
 
         RoundScoreDto mockRoundScoreDto = new RoundScoreDto();
-        mockRoundScoreDto.setGame("1");
-        mockRoundScoreDto.setRound("2");
-        mockRoundScoreDto.setPlayer("3");
+        mockRoundScoreDto.setGameId("1");
+        mockRoundScoreDto.setRoundId("2");
+        mockRoundScoreDto.setPlayerId("3");
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(1);
         mockRoundScoreDto.setMovementScore(movementScoreDto);
 
         Mockito
-            .when(this.roundScoreJpaRepository.findByGameAndRoundAndPlayer("1", "2", "3"))
+            .when(this.roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", "3"))
             .thenReturn(mockRoundScoreDto);
 
         RoundScore roundScore = this.roundScoreRepository.findByCommandContext(commandContext);

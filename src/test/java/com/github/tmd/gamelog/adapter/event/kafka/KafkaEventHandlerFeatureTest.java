@@ -40,15 +40,15 @@ public class KafkaEventHandlerFeatureTest{
         commandContext.setPlayer(player);
 
         RoundScoreDto roundScoreDto = new RoundScoreDto();
-        roundScoreDto.setGame("1");
-        roundScoreDto.setRound("2");
-        roundScoreDto.setPlayer("3");
+        roundScoreDto.setGameId("1");
+        roundScoreDto.setRoundId("2");
+        roundScoreDto.setPlayerId("3");
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(1);
         roundScoreDto.setMovementScore(movementScoreDto);
 
         Mockito.when(
-            roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+            roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId(
                 commandContext.getRound().getGameId(),
                 commandContext.getRound().getRoundId(),
                 commandContext.getPlayer().getId()

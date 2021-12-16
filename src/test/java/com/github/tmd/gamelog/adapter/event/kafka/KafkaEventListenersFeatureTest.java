@@ -50,7 +50,7 @@ public class KafkaEventListenersFeatureTest {
 
         kafkaEventListeners.listenMovementTopic(kafkaEvent);
 
-        RoundScoreDto roundScoreDto = this.roundScoreJpaRepository.findByGameAndRoundAndPlayer(
+        RoundScoreDto roundScoreDto = this.roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId(
             gameId,
             roundId,
             playerId

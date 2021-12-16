@@ -13,14 +13,14 @@ public class RoundScoreDtoMapper {
 
         roundScore.setRound(
             new Round(
-                roundScoreDto.getGame(),
+                roundScoreDto.getGameId(),
                 roundScoreDto.getRoundNumber(),
-                roundScoreDto.getRound()
+                roundScoreDto.getRoundId()
             )
         );
 
         roundScore.setPlayer(
-            new Player(roundScoreDto.getPlayer())
+            new Player(roundScoreDto.getPlayerId())
         );
 
         MovementScore movementScore = new MovementScore();
@@ -33,10 +33,10 @@ public class RoundScoreDtoMapper {
     public RoundScoreDto mapEntityToDto(RoundScore roundScore) {
         RoundScoreDto roundScoreDto = new RoundScoreDto();
 
-        roundScoreDto.setGame(roundScore.getRound().getGameId());
+        roundScoreDto.setGameId(roundScore.getRound().getGameId());
         roundScoreDto.setRoundNumber(roundScore.getRound().getRoundNumber());
-        roundScoreDto.setRound(roundScore.getRound().getRoundId());
-        roundScoreDto.setPlayer(roundScore.getPlayer().getId());
+        roundScoreDto.setRoundId(roundScore.getRound().getRoundId());
+        roundScoreDto.setPlayerId(roundScore.getPlayer().getId());
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(roundScore.getMovementScore().getValue());
         roundScoreDto.setMovementScore(movementScoreDto);
