@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.rest;
+package com.github.tmd.gamelog.adapter.rest_client;
 
 import lombok.Getter;
 import lombok.Setter;

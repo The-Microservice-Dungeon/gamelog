@@ -1,9 +1,8 @@
-package com.github.tmd.gamelog.adapter.rest.client;
+package com.github.tmd.gamelog.adapter.rest_client.client;
 
-import com.github.tmd.gamelog.adapter.rest.RestQuery;
+import com.github.tmd.gamelog.adapter.rest_client.RestQuery;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 

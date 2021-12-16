@@ -2,7 +2,7 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
-import com.github.tmd.gamelog.adapter.rest.client.GameServiceRestClient;
+import com.github.tmd.gamelog.adapter.rest_client.client.GameServiceRestClient;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;

@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.kafkaSender;
+package com.github.tmd.gamelog.kafka_sender;
 
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import org.springframework.web.bind.annotation.GetMapping;

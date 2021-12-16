@@ -2,7 +2,7 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tmd.gamelog.adapter.rest.CommandContextRepository;
+import com.github.tmd.gamelog.adapter.rest_client.CommandContextRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;

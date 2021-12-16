@@ -1,7 +1,6 @@
-package com.github.tmd.gamelog.adapter.rest.client;
+package com.github.tmd.gamelog.adapter.rest_client.client;
 
-import com.github.tmd.gamelog.adapter.rest.RestQuery;
-import com.github.tmd.gamelog.adapter.rest.RobotDto;
+import com.github.tmd.gamelog.adapter.rest_client.RobotDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.env.Environment;

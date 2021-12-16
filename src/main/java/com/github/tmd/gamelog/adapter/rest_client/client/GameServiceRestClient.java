@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.rest.client;
+package com.github.tmd.gamelog.adapter.rest_client.client;
 
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;

@@ -1,6 +1,6 @@
-package com.github.tmd.gamelog.adapter.rest;
+package com.github.tmd.gamelog.adapter.rest_client;
 
-import com.github.tmd.gamelog.adapter.rest.client.GameServiceRestClient;
+import com.github.tmd.gamelog.adapter.rest_client.client.GameServiceRestClient;
 import com.github.tmd.gamelog.domain.CommandContext;
 import org.springframework.stereotype.Component;
 

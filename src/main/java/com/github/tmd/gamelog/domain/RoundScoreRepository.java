@@ -1,7 +1,11 @@
 package com.github.tmd.gamelog.domain;
 
-public interface RoundScoreRepository {
-    public RoundScore findByCommandContext(CommandContext commandContext);
+import java.util.ArrayList;
 
-    public void upsert(RoundScore roundScore);
+public interface RoundScoreRepository {
+    RoundScore findByCommandContext(CommandContext commandContext);
+
+    void upsert(RoundScore roundScore);
+
+    ArrayList<RoundScore> findAllByRoundId(String roundId);
 }
