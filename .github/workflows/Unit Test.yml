@@ -47,3 +47,13 @@ jobs:
           DB_USER: root
           DB_NAME: gamelog
         run: mvn test -Psurefire
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: /surefire-reports
+      - name: Upload Test Summary
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: /surefire-reports/TEST-com.github.tmd.gamelog.GameLogApplicationTests.xml
