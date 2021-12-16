@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.adapter.jpa;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
+import com.github.tmd.gamelog.domain.Score.MovementScore;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +23,10 @@ public class RoundScoreDtoMapper {
             new Player(roundScoreDto.getPlayer())
         );
 
+        MovementScore movementScore = new MovementScore();
+        movementScore.setValue(roundScoreDto.getMovementScore().getValue());
+        roundScore.setMovementScore(movementScore);
+
         return roundScore;
     }
 
@@ -32,6 +37,9 @@ public class RoundScoreDtoMapper {
         roundScoreDto.setRoundNumber(roundScore.getRound().getRoundNumber());
         roundScoreDto.setRound(roundScore.getRound().getRoundId());
         roundScoreDto.setPlayer(roundScore.getPlayer().getId());
+        MovementScoreDto movementScoreDto = new MovementScoreDto();
+        movementScoreDto.setValue(roundScore.getMovementScore().getValue());
+        roundScoreDto.setMovementScore(movementScoreDto);
 
         return roundScoreDto;
     }

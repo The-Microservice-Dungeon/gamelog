@@ -1,11 +1,10 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
 
-import com.github.tmd.gamelog.domain.RoundScore;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,7 +23,8 @@ public class RoundScoreDto implements Cloneable {
     private int roundNumber;
     private String player;
 
-    private int movementScore;
+    @Embedded
+    private MovementScoreDto movementScore;
 
     @Override
     public String toString() {
@@ -49,16 +49,6 @@ public class RoundScoreDto implements Cloneable {
         if (!Objects.equals(game, that.game)) return false;
         if (!Objects.equals(round, that.round)) return false;
         return Objects.equals(player, that.player);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (game != null ? game.hashCode() : 0);
-        result = 31 * result + (round != null ? round.hashCode() : 0);
-        result = 31 * result + (player != null ? player.hashCode() : 0);
-        result = 31 * result + movementScore;
-        return result;
     }
 
     @Override

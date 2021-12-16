@@ -1,9 +1,7 @@
 package com.github.tmd.gamelog.domain;
 
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
-import lombok.AllArgsConstructor;
+import com.github.tmd.gamelog.domain.Score.MovementScore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -11,7 +9,7 @@ import lombok.Setter;
 public class RoundScore {
     private Player player;
     private Round round;
-    private int movementScore;
+    private MovementScore movementScore;
 
     public RoundScore(Player player, Round round) {
         this();
@@ -21,15 +19,7 @@ public class RoundScore {
     }
 
     public RoundScore() {
-        this.movementScore = 0;
-    }
-
-    public void increaseMovementScoreBy(int increase) {
-        this.movementScore += increase;
-    }
-
-    public int getMovementScore() {
-        return this.movementScore;
+        this.movementScore = new MovementScore();
     }
 
     @Override

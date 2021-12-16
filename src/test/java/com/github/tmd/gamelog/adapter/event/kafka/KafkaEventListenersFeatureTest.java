@@ -10,10 +10,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -59,6 +57,6 @@ public class KafkaEventListenersFeatureTest {
         );
 
         assert roundScoreDto != null;
-        assert roundScoreDto.getMovementScore() == 1;
+        assert roundScoreDto.getMovementScore().getValue() == 1;
     }
 }

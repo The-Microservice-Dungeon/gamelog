@@ -8,9 +8,9 @@ public class MovementScoreUnitTest {
     @Test
     void testMovementExecute() {
         RoundScore roundScore = new RoundScore();
-        assert roundScore.getMovementScore() == 0;
+        assert roundScore.getMovementScore().getValue() == 0;
         MovementEvent movementEvent = new MovementEvent();
         movementEvent.execute(roundScore);
-        assert roundScore.getMovementScore() == 1;
+        assert roundScore.getMovementScore().getValue() == 1;
     }
 }

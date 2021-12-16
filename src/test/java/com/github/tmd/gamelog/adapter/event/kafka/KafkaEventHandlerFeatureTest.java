@@ -1,22 +1,17 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
+import com.github.tmd.gamelog.adapter.jpa.MovementScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import org.junit.jupiter.api.Test;
-import org.mockito.InOrder;
-import org.mockito.invocation.Invocation;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Collection;
-
-import static org.springframework.test.web.client.ExpectedCount.once;
 
 @SpringBootTest
 public class KafkaEventHandlerFeatureTest{
@@ -48,7 +43,9 @@ public class KafkaEventHandlerFeatureTest{
         roundScoreDto.setGame("1");
         roundScoreDto.setRound("2");
         roundScoreDto.setPlayer("3");
-        roundScoreDto.setMovementScore(1);
+        MovementScoreDto movementScoreDto = new MovementScoreDto();
+        movementScoreDto.setValue(1);
+        roundScoreDto.setMovementScore(movementScoreDto);
 
         Mockito.when(
             roundScoreJpaRepository.findByGameAndRoundAndPlayer(
@@ -61,7 +58,7 @@ public class KafkaEventHandlerFeatureTest{
 
         kafkaEventHandler.handleEvent(kafkaEvent, commandContext);
 
-        assert roundScoreDto.getMovementScore() == 2;
+        assert roundScoreDto.getMovementScore().getValue() == 2;
 
         // roundScoreDto.setMovementScore(2);
         // Collection<Invocation> invocationMockitoCollection = Mockito.mockingDetails(roundScoreJpaRepository).getInvocations();

@@ -5,6 +5,7 @@ import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
+import com.github.tmd.gamelog.domain.Score.MovementScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,13 +40,15 @@ public class KafkaEventHandlerUnitTest {
         roundScore.setPlayer(
             new Player("2")
         );
-        roundScore.setMovementScore(1);
+        MovementScore movementScore = new MovementScore();
+        movementScore.increase(1);
+        roundScore.setMovementScore(movementScore);
 
         Mockito.when(roundScoreRepository.findByCommandContext(commandContext)).thenReturn(roundScore);
 
         kafkaEventHandler.handleEvent(kafkaEvent, commandContext);
 
-        assert roundScore.getMovementScore() == 2;
+        assert roundScore.getMovementScore().getValue() == 2;
     }
 
     // @todo redundant siehe RoundScoreRepositoryTest

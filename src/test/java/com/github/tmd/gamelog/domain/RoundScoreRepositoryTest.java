@@ -1,9 +1,8 @@
 package com.github.tmd.gamelog.domain;
 
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreDtoMapper;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
+import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
+import com.github.tmd.gamelog.domain.Score.MovementScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ public class RoundScoreRepositoryTest {
 
         Mockito.when(roundScoreJpaRepository.findByGameAndRoundAndPlayer("1", "2", "3")).thenReturn(null);
         RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
-        assert roundScore.getMovementScore() == 0;
+        assert roundScore == null;
     }
 
     @Test
@@ -42,7 +41,9 @@ public class RoundScoreRepositoryTest {
         mockRoundScoreDto.setGame("1");
         mockRoundScoreDto.setRound("2");
         mockRoundScoreDto.setPlayer("3");
-        mockRoundScoreDto.setMovementScore(1);
+        MovementScoreDto movementScoreDto = new MovementScoreDto();
+        movementScoreDto.setValue(1);
+        mockRoundScoreDto.setMovementScore(movementScoreDto);
 
         Mockito
             .when(this.roundScoreJpaRepository.findByGameAndRoundAndPlayer("1", "2", "3"))
@@ -51,7 +52,7 @@ public class RoundScoreRepositoryTest {
         RoundScore roundScore = this.roundScoreRepository.findByCommandContext(commandContext);
         System.out.println(roundScore);
         System.out.println("SCORE: " + roundScore.getMovementScore());
-        assert roundScore.getMovementScore() == 1;
+        assert roundScore.getMovementScore().getValue() == 1;
     }
 
     private CommandContext createGameContext() {
