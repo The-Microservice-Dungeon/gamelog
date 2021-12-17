@@ -1,6 +1,7 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +12,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class RoundScoreDto implements Cloneable {
     @Id
     @GeneratedValue
@@ -25,31 +25,6 @@ public class RoundScoreDto implements Cloneable {
 
     @Embedded
     private MovementScoreDto movementScore;
-
-    @Override
-    public String toString() {
-        return "RoundScoreDto{" +
-                "id=" + id +
-                ", game='" + gameId + '\'' +
-                ", round='" + roundId + '\'' +
-                ", player='" + playerId + '\'' +
-                ", movementScore=" + movementScore +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RoundScoreDto)) return false;
-
-        RoundScoreDto that = (RoundScoreDto) o;
-
-        if (movementScore != that.movementScore) return false;
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(gameId, that.gameId)) return false;
-        if (!Objects.equals(roundId, that.roundId)) return false;
-        return Objects.equals(playerId, that.playerId);
-    }
 
     @Override
     public RoundScoreDto clone() {

@@ -1,12 +1,12 @@
 package com.github.tmd.gamelog.domain.Score;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+@Data
 public class MovementScore implements IncreasableInterface<Integer>, DecreasableInterface<Integer> {
 
-    @Setter
     private int value = 0;
     private final String name = "Movement";
 

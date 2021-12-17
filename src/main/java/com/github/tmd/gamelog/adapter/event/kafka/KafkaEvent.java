@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import lombok.Setter;
 /**
  * Represents an Event coming from Kafka
  */
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class KafkaEvent{

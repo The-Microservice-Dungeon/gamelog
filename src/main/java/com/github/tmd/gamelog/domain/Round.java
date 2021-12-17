@@ -1,12 +1,12 @@
 package com.github.tmd.gamelog.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Round {
@@ -16,14 +16,5 @@ public class Round {
 
     public boolean equals(Round round) {
         return round.getRoundId().equals(this.getRoundId());
-    }
-
-    @Override
-    public String toString() {
-        return "Round{" +
-                "gameId='" + gameId + '\'' +
-                ", roundNumber=" + roundNumber +
-                ", roundId='" + roundId + '\'' +
-                '}';
     }
 }

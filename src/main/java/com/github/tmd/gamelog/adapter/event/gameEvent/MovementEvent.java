@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
 import com.github.tmd.gamelog.domain.RoundScore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * Represents a Movement event coming from the Robot service
  */
-@Getter
-@Setter
+@Data
 public class MovementEvent implements EventInterface {
     private String robotId;
     private int start;
@@ -29,15 +29,6 @@ public class MovementEvent implements EventInterface {
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.readValue(kafkaEvent.getPayload(), MovementEvent.class);
-    }
-
-    @Override
-    public String toString() {
-        return "MovementEvent{" +
-                "robotId=" + robotId +
-                ", start=" + start +
-                ", end=" + end +
-                '}';
     }
 
     @Override

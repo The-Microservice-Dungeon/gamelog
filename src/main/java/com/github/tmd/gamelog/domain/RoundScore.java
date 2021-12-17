@@ -1,11 +1,11 @@
 package com.github.tmd.gamelog.domain;
 
 import com.github.tmd.gamelog.domain.Score.MovementScore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class RoundScore {
     private Player player;
     private Round round;
@@ -20,14 +20,5 @@ public class RoundScore {
 
     public RoundScore() {
         this.movementScore = new MovementScore();
-    }
-
-    @Override
-    public String toString() {
-        return "RoundScore{" +
-                "player=" + player +
-                ", round=" + round +
-                ", movementScore=" + movementScore +
-                '}';
     }
 }

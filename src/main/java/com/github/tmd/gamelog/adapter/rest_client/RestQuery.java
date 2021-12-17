@@ -1,12 +1,12 @@
 package com.github.tmd.gamelog.adapter.rest_client;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.client.RestTemplate;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class RestQuery {
     private String baseUrl;
