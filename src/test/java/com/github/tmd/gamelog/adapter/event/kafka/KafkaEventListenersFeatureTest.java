@@ -44,7 +44,7 @@ public class KafkaEventListenersFeatureTest {
         KafkaEvent event = new KafkaEvent();
         event.setType("movement");
 
-        ConsumerRecord<?, ?> kafkaEvent = new ConsumerRecord<>("", 1, 1L, "", "{}");
+        ConsumerRecord<?, KafkaEvent> kafkaEvent = new ConsumerRecord<>("", 1, 1L, "", new KafkaEvent("move", "{}"));
         Header transactionIdHeader = new RecordHeader("transactionId", "123".getBytes(StandardCharsets.UTF_8));
         kafkaEvent.headers().add(transactionIdHeader);
 

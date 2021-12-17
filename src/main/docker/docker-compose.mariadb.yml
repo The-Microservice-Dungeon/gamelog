@@ -5,14 +5,12 @@ services:
     image: mariadb
     restart: always
     environment:
-      MARIADB_DATABASE: 'gamelogdb'
-      MARIADB_USER: 'gamelog'
-      MARIADB_PASSWORD: 'gamelog'
-      MARIADB_ROOT_PASSWORD: 'gamelog'
+      MARIADB_DATABASE: 'gamelog'
+      MARIADB_USER: 'root'
+      MARIADB_PASSWORD: 'root'
+      MARIADB_ROOT_PASSWORD: 'root'
     ports:
       - '3306:3306'
-    expose:
-      - '3306'
     volumes:
       - maria-db:/var/lib/mysql
 volumes:

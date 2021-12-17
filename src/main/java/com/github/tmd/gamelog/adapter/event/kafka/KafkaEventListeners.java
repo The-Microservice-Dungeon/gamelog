@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.rest_client.CommandContextRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 
 @Component
+@Slf4j
 public class KafkaEventListeners {
 
     private final KafkaEventHandler kafkaEventHandler;
@@ -25,20 +27,13 @@ public class KafkaEventListeners {
     }
 
     @KafkaListener(
-        id = "1",
-        topics = "event",
-        groupId = "reflectoring-user",
-        containerFactory = "kafkaJsonListenerContainerFactory"
+        topics = "event"
     )
-    public void listenMovementTopic(ConsumerRecord<?, ?> kafkaEvent) {
+    public void listenMovementTopic(ConsumerRecord<?, KafkaEvent> kafkaEvent) {
         CommandContext commandContext = getCommandContext(kafkaEvent);
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            KafkaEvent event = objectMapper.readValue((String)kafkaEvent.value(), KafkaEvent.class);
-            kafkaEventHandler.handleEvent(event, commandContext);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        KafkaEvent event = kafkaEvent.value();
+        kafkaEventHandler.handleEvent(event, commandContext);
     }
 
     public CommandContext getCommandContext(ConsumerRecord<?, ?> kafkaEvent) {
