@@ -2,19 +2,19 @@ package com.github.tmd.gamelog.adapter.rest_client.client;
 
 import com.github.tmd.gamelog.adapter.rest_client.RobotDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RobotServiceRestClient extends AbstractRestClient {
 
     @Autowired
-    public RobotServiceRestClient(RestTemplateBuilder restTemplateBuilder, Environment environment)
+    public RobotServiceRestClient(RestTemplateBuilder restTemplateBuilder,
+        @Value("${tmd.robot-service-url}") String gameServiceUrl)
     {
         super(restTemplateBuilder);
-
-        this.setBaseUrl(environment.getProperty("ROBOT_SERVICE"));
+        this.setBaseUrl(gameServiceUrl);
     }
 
     public RobotDto fetchRobotById(String id)

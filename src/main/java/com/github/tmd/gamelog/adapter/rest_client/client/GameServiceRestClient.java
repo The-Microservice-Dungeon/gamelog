@@ -1,25 +1,21 @@
 package com.github.tmd.gamelog.adapter.rest_client.client;
 
-import com.github.tmd.gamelog.adapter.rest_client.RestQuery;
-import com.github.tmd.gamelog.adapter.rest_client.client.responseDto.CommandContextDto;
-import com.github.tmd.gamelog.adapter.rest_client.client.responseDto.CommandContextDtoMapper;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.core.env.Environment;
 
 @Component
 public class GameServiceRestClient extends AbstractRestClient {
 
     public GameServiceRestClient(
             RestTemplateBuilder restTemplateBuilder,
-            Environment environment
+            @Value("${tmd.game-service-url}") String gameServiceUrl
     ) {
         super(restTemplateBuilder);
-
-        this.setBaseUrl(environment.getProperty("GAME_SERVICE"));
+        this.setBaseUrl(gameServiceUrl);
     }
 
     public CommandContext fetchCommandContextForTransactionId(String transactionId) {
