@@ -2,12 +2,15 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.rest_client.CommandContextRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -52,5 +55,34 @@ public class KafkaEventListeners {
         }
 
         return this.commandContextRepository.findByTransactionId(transactionId);
+    }
+
+    // An example for a Kafka Consumer that leverages Spring Boot, Don't use the ConsumerRecord
+    // unless you really need to. Due to the fact that Java performs Type Erasure within generics
+    // your actual type might differ within the runtime from compile time.
+    // This means, if I would use ConsumerRecord<String, GameStatusEvent> at runtime there would be
+    // ConsumerRecord<Object, Object>, allowing other types to sneak into the consumer.
+    // Another downside is, that there is no way of Deserializing properly.
+    //
+    // To put it in a nutshell: Leverage Spring Boot as much as you can. Use the Message abstraction
+    // and don't follow tutorials blindly.
+    @KafkaListener(topics = "status")
+    public void consumeGameStatusChangeEvent(@Payload GameStatusEvent event,
+        MessageHeaders headers,
+        @org.springframework.messaging.handler.annotation.Header(name = "type") String type2) {
+        // Imperative way of retrieving the header
+        // Declarative way would be using an annotated Method argument
+        //          @Header(name = "type") String type
+        // (as above)
+        var type = headers.get("type", String.class);
+
+        // Shouldn't happen, since we specified it, but we can't be sure and want to get notified
+        // whether any of our consumed events does NOT fulfill our event type specification
+        if (type == null || type.isBlank()) {
+            log.warn("The GameStatusChangeEvent does not have a type");
+        }
+
+        // Don't handle the event at the moment, just log it to show how it works
+        log.debug("Received GameStatusChangedEvent with payload {} of type {}", event, type);
     }
 }
