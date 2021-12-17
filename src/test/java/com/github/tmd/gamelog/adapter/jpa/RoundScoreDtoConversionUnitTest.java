@@ -1,5 +1,7 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
@@ -27,10 +29,10 @@ public class RoundScoreDtoConversionUnitTest {
         roundScore.setMovementScore(movementScore);
 
         RoundScoreDto roundScoreDto = this.roundScoreDtoMapper.mapEntityToDto(roundScore);
-        assert roundScoreDto.getGameId().equals("0");
-        assert roundScoreDto.getRoundId().equals("1");
-        assert roundScoreDto.getPlayerId().equals("2");
-        assert roundScoreDto.getMovementScore().getValue() == 3;
+        assertThat(roundScoreDto.getGameId()).isEqualTo("0");
+        assertThat(roundScoreDto.getRoundId()).isEqualTo("1");
+        assertThat(roundScoreDto.getPlayerId()).isEqualTo("2");
+        assertThat(roundScoreDto.getMovementScore().getValue()).isEqualTo(3);
     }
 
     @Test
@@ -44,9 +46,9 @@ public class RoundScoreDtoConversionUnitTest {
         roundScoreDto.setMovementScore(movementScoreDto);
 
         RoundScore roundScore = this.roundScoreDtoMapper.mapDtoToEntity(roundScoreDto);
-        assert roundScore.getRound().getGameId().equals("0");
-        assert roundScore.getRound().getRoundId().equals("1");
-        assert roundScore.getPlayer().getId().equals("2");
-        assert roundScore.getMovementScore().getValue() == 3;
+        assertThat(roundScore.getRound().getGameId()).isEqualTo("0");
+        assertThat(roundScore.getRound().getRoundId()).isEqualTo("1");
+        assertThat(roundScore.getPlayer().getId()).isEqualTo("2");
+        assertThat(roundScore.getMovementScore().getValue()).isEqualTo(3);
     }
 }

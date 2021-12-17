@@ -1,5 +1,7 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
@@ -48,7 +50,7 @@ public class KafkaEventHandlerUnitTest {
 
         kafkaEventHandler.handleEvent(kafkaEvent, commandContext);
 
-        assert roundScore.getMovementScore().getValue() == 2;
+        assertThat(roundScore.getMovementScore().getValue()).isEqualTo(2);
     }
 
     // @todo redundant siehe RoundScoreRepositoryTest

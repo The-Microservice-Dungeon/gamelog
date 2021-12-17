@@ -1,5 +1,7 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
 import com.github.tmd.gamelog.adapter.rest_client.client.GameServiceRestClient;
@@ -56,7 +58,7 @@ public class KafkaEventListenersFeatureTest {
             playerId
         );
 
-        assert roundScoreDto != null;
-        assert roundScoreDto.getMovementScore().getValue() == 1;
+        assertThat(roundScoreDto).isNotNull();
+        assertThat(roundScoreDto.getMovementScore().getValue()).isEqualTo(1);
     }
 }

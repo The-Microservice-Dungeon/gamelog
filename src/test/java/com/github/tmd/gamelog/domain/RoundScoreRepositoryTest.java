@@ -1,5 +1,7 @@
 package com.github.tmd.gamelog.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +31,7 @@ public class RoundScoreRepositoryTest {
 
         Mockito.when(roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", "3")).thenReturn(null);
         RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
-        assert roundScore == null;
+        assertThat(roundScore).isNull();
     }
 
     @Test
@@ -51,7 +53,7 @@ public class RoundScoreRepositoryTest {
         RoundScore roundScore = this.roundScoreRepository.findByCommandContext(commandContext);
         System.out.println(roundScore);
         System.out.println("SCORE: " + roundScore.getMovementScore());
-        assert roundScore.getMovementScore().getValue() == 1;
+        assertThat(roundScore.getMovementScore().getValue()).isEqualTo(1);
     }
 
     private CommandContext createGameContext() {
