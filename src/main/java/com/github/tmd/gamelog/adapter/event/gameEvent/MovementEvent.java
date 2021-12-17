@@ -7,6 +7,9 @@ import com.github.tmd.gamelog.domain.RoundScore;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a Movement event coming from the Robot service
+ */
 @Getter
 @Setter
 public class MovementEvent implements EventInterface {

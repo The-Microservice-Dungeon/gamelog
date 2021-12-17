@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 
+/**
+ * Event Listeners are located here
+ */
 @Component
 @Slf4j
 public class KafkaEventListeners {
@@ -36,6 +39,7 @@ public class KafkaEventListeners {
         kafkaEventHandler.handleEvent(event, commandContext);
     }
 
+    // TODO
     public CommandContext getCommandContext(ConsumerRecord<?, ?> kafkaEvent) {
         String transactionId;
 

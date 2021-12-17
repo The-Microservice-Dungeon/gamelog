@@ -39,7 +39,7 @@ public class KafkaEventHandler {
             movementEvent.execute(roundScore);
             roundScoreRepository.upsert(roundScore);
 
-            //TODO: Accnowledge ?
+            //TODO: Acknowledge ?
         }
     }
 
