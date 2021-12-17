@@ -1,5 +1,8 @@
 package com.github.tmd.gamelog.adapter.rest_client.client;
 
+import com.github.tmd.gamelog.adapter.rest_client.RestQuery;
+import com.github.tmd.gamelog.adapter.rest_client.client.responseDto.CommandContextDto;
+import com.github.tmd.gamelog.adapter.rest_client.client.responseDto.CommandContextDtoMapper;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
@@ -26,5 +29,13 @@ public class GameServiceRestClient extends AbstractRestClient {
         result.setRound(new Round("sds", 0, "02-203-203"));
 
         return result;
+
+        /*RestQuery restQuery = this.createRestQuery();
+
+        restQuery.setEndpoint("/todo/" + transactionId);
+        restQuery.setResultingClass(CommandContextDto.class);
+
+        CommandContextDto commandContextDto = (CommandContextDto) restQuery.fetch();
+        return CommandContextDtoMapper.mapDtoToEntity(commandContextDto);*/
     }
 }
