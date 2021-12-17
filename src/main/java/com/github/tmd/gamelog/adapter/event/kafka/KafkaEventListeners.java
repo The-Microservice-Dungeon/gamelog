@@ -10,6 +10,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.NoSuchElementException;
 
 @Component
 public class KafkaEventListeners {
@@ -41,8 +42,15 @@ public class KafkaEventListeners {
     }
 
     public CommandContext getCommandContext(ConsumerRecord<?, ?> kafkaEvent) {
-        Iterable<Header> transactionHeaders = kafkaEvent.headers().headers("transactionId");
-        String transactionId = new String(transactionHeaders.iterator().next().value(), StandardCharsets.UTF_8);
+        String transactionId;
+
+        try {
+            Iterable<Header> transactionHeaders = kafkaEvent.headers().headers("transactionId");
+            transactionId = new String(transactionHeaders.iterator().next().value(), StandardCharsets.UTF_8);
+        } catch (NoSuchElementException exception) {
+            transactionId = "456";
+            // throw new MissingTransactionIdHeader();
+        }
 
         return this.commandContextRepository.findByTransactionId(transactionId);
     }
