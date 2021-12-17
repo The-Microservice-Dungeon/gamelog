@@ -42,6 +42,8 @@ public class KafkaSenderExample {
     }
 
     void sendGameStatusEvent(String topic, String type, GameStatusEvent event) {
+        // Send the event using the Message type, when using the Producer Record, the Spring Boot
+        // config will not or just partially work
         Message<GameStatusEvent> message = MessageBuilder.withPayload(event)
             .setHeader(KafkaHeaders.TOPIC, topic)
             .setHeader("type", type)
