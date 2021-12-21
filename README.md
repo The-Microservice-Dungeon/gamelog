@@ -1,5 +1,29 @@
 # gamelog
 
+## Running this service
+
+### Prerequisites
+
+To run this service and its dependencies, the following things need to be installed:
+- Docker and Docker Compose (for the Kafka and MariaDB containers required for development)
+- Java in version 17 or newer
+- Maven (manages the dependencies, building and execution of the Java project)
+
+### Starting the service
+First, start the Kafka and MariaDB Docker containers via Terminal (run this in the base directory of the project):
+```shell
+docker-compose -f src/main/docker/docker-compose.kafka.yml up -d
+docker-compose -f src/main/docker/docker-compose.mariadb.yml up -d
+```
+This will download the required images (if they aren't found locally) and start the containers in detached mode.
+
+As soon as both containers are running, you can start the Java application via Terminal (run this in the base directory of the project):
+```shell
+mvn spring-boot:run
+```
+This will compile the project and start the application.
+
+## Todo
 This README file should be adapted to include the following information:
 
 (1) How can the service be started, regardless of the platform? A short, precise instruction is sufficient. Existence/familiarity with tools like maven can be assumed.
