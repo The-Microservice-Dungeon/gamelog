@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -11,10 +12,11 @@ import java.util.Date;
  * the date it was awarded to the player.
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class PlayerTrophy {
 
-    private Player awardedToPlayer;
+    private Player playerAwardedTo;
     private Trophy trophy;
     private Date dateAwarded;
 

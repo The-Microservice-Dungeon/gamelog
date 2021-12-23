@@ -10,19 +10,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TrophyTest {
 
-    Trophy trophy;
-
-    private final int defaultId = 1;
     private final String defaultName = "First Blood";
+    private Trophy trophy;
 
     @BeforeEach
     void beforeEach() {
-        trophy = new Trophy(defaultId, defaultName);
+        trophy = new Trophy(defaultName);
     }
 
     @Test
-    void testNewTrophy(){
-        assertThat(trophy.getId()).isEqualTo(defaultId);
+    void testNewTrophy() {
         assertThat(trophy.getName()).isEqualTo(defaultName);
     }
 }
