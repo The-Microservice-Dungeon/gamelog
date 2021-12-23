@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
+import com.github.tmd.gamelog.adapter.jpa.dto.MovementScoreDto;
+import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
