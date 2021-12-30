@@ -34,7 +34,7 @@ public class KafkaSenderExample {
         LOG.info("--------------------------------");
 
         var record = new ProducerRecord<String, KafkaEvent>(topic, event);
-        if(!event.getType().isBlank()) {
+        if(event.getType() != null && !event.getType().isBlank()) {
             record.headers().add("type", event.getType().getBytes());
         }
 
