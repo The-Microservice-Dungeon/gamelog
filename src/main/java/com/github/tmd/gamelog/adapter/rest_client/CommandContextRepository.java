@@ -1,19 +1,22 @@
 package com.github.tmd.gamelog.adapter.rest_client;
 
-import com.github.tmd.gamelog.adapter.rest_client.client.GameServiceRestClient;
+import com.github.tmd.gamelog.adapter.rest_client.client.GameRestClient;
 import com.github.tmd.gamelog.domain.CommandContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CommandContextRepository implements com.github.tmd.gamelog.domain.CommandContextRepository {
 
-    private final GameServiceRestClient gameServiceRestClient;
+    private final GameRestClient gameRestClient;
+    private final CommandContextMapper commandContextMapper;
 
-    public CommandContextRepository(GameServiceRestClient gameServiceRestClient) {
-        this.gameServiceRestClient = gameServiceRestClient;
+    public CommandContextRepository(GameRestClient gameRestClient) {
+        this.gameRestClient = gameRestClient;
+        this.commandContextMapper = new CommandContextMapper();
     }
 
     public CommandContext findByTransactionId(String transactionId) {
-        return this.gameServiceRestClient.fetchCommandContextForTransactionId(transactionId);
+        var response = this.gameRestClient.getCommandContextForTransactionId(transactionId);
+        return commandContextMapper.toDomain(response);
     }
 }

@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
-import com.github.tmd.gamelog.adapter.rest_client.client.GameServiceRestClient;
 import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.CommandContextRepository;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -29,7 +29,7 @@ public class KafkaEventListenersFeatureTest {
     RoundScoreJpaRepository roundScoreJpaRepository;
 
     @MockBean
-    private GameServiceRestClient gameServiceRestClient;
+    private CommandContextRepository commandContextRepository;
 
     @Test
     void testMovementEvent() {
@@ -41,7 +41,7 @@ public class KafkaEventListenersFeatureTest {
         commandContext.setRound(new Round(gameId, 0, roundId));
         commandContext.setPlayer(new Player(playerId));
 
-        Mockito.when(gameServiceRestClient.fetchCommandContextForTransactionId(transactionId)).thenReturn(commandContext);
+        Mockito.when(commandContextRepository.findByTransactionId(transactionId)).thenReturn(commandContext);
 
         KafkaEvent event = new KafkaEvent();
         event.setType("movement");
