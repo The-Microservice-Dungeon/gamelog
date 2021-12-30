@@ -22,14 +22,14 @@ import java.nio.charset.StandardCharsets;
 @SpringBootTest
 public class KafkaEventListenersFeatureTest {
 
+    @MockBean
+    CommandContextRepository commandContextRepository;
+
     @Autowired
     KafkaEventListeners kafkaEventListeners;
 
     @Autowired
     RoundScoreJpaRepository roundScoreJpaRepository;
-
-    @MockBean
-    private CommandContextRepository commandContextRepository;
 
     @Test
     void testMovementEvent() {

@@ -1,13 +1,14 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
-import com.github.tmd.gamelog.adapter.rest_client.CommandContextRepository;
+import com.github.tmd.gamelog.adapter.rest_client.CommandContextRepositoryImpl;
 import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.CommandContextRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,8 +27,8 @@ public class KafkaEventListeners {
     private final KafkaEventHandler kafkaEventHandler;
     private final CommandContextRepository commandContextRepository;
 
-    public KafkaEventListeners(KafkaEventHandler kafkaEventHandler, CommandContextRepository commandContextRepository)
-    {
+    @Autowired
+    public KafkaEventListeners(KafkaEventHandler kafkaEventHandler, CommandContextRepository commandContextRepository) {
         this.kafkaEventHandler = kafkaEventHandler;
         this.commandContextRepository = commandContextRepository;
     }

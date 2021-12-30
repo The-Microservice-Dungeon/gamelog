@@ -3,14 +3,15 @@ package com.github.tmd.gamelog.adapter.rest_client;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
 import com.github.tmd.gamelog.adapter.rest_client.client.response.RobotDto;
 import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.PlayerRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlayerRepository implements com.github.tmd.gamelog.domain.PlayerRepository
+public class PlayerRepositoryImpl implements PlayerRepository
 {
     private final RobotRestClient robotRestClient;
 
-    public PlayerRepository(RobotRestClient robotRestClient) {
+    public PlayerRepositoryImpl(RobotRestClient robotRestClient) {
         this.robotRestClient = robotRestClient;
 
     }

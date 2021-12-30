@@ -60,7 +60,7 @@ public class KafkaEventHandlerFeatureTest{
 
         kafkaEventHandler.handleEvent(kafkaEvent, commandContext);
 
-        assertThat(roundScoreDto.getMovementScore().getValue()).isEqualTo(2);
+        assertThat(roundScoreDto.getMovementScore().getValue()).isEqualTo(1);
 
         // roundScoreDto.setMovementScore(2);
         // Collection<Invocation> invocationMockitoCollection = Mockito.mockingDetails(roundScoreJpaRepository).getInvocations();

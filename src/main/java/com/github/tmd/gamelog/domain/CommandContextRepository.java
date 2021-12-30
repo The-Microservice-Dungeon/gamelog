@@ -1,7 +1,8 @@
 package com.github.tmd.gamelog.domain;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface CommandContextRepository {
-
-    public CommandContext findByTransactionId(String transactionId);
-
+    CommandContext findByTransactionId(String transactionId);
 }
