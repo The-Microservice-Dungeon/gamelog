@@ -58,9 +58,7 @@ class PlayerServiceTest {
     // Given
     var playerId = UUID.randomUUID();
     var userName = "mmustermann";
-    var existingPlayer = new PlayerJpa();
-    existingPlayer.setPlayerId(playerId);
-    existingPlayer.setUserName(userName);
+    var existingPlayer = new PlayerJpa(playerId, userName);
     playerJpaRepository.save(existingPlayer);
 
 

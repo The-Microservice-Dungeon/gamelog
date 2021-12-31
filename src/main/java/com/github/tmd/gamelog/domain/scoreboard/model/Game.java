@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.domain.game;
+package com.github.tmd.gamelog.domain.scoreboard.model;
 
 import java.util.Set;
 import java.util.UUID;
