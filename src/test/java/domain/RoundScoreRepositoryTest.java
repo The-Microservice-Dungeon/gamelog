@@ -1,9 +1,13 @@
-package com.github.tmd.gamelog.domain;
+package domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
+import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.domain.Player;
+import com.github.tmd.gamelog.domain.Round;
+import com.github.tmd.gamelog.domain.RoundScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

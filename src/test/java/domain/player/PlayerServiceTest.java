@@ -1,10 +1,11 @@
-package com.github.tmd.gamelog.domain.player;
+package domain.player;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpa;
 import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpaRepository;
+import com.github.tmd.gamelog.domain.player.PlayerService;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
