@@ -1,6 +1,7 @@
 package com.github.tmd.gamelog.domain.game;
 
 import com.github.tmd.gamelog.domain.game.Game.GameId;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,12 @@ public class GameService {
     this.gameRepository = gameRepository;
   }
 
-  public Game createNewGame(String gameId) {
+  public Game createNewGame(UUID gameId) {
     var game = new Game(new GameId(gameId));
     return this.gameRepository.save(game);
   }
 
-  public void startGame(String gameId) {
+  public void startGame(UUID gameId) {
     var optGame = gameRepository.findGameById(new GameId(gameId));
     if(optGame.isEmpty()) throw new RuntimeException("Game with id %s not found".formatted(gameId));
     var game = optGame.get();
@@ -27,7 +28,7 @@ public class GameService {
     this.gameRepository.save(game);
   }
 
-  public void endGame(String gameId) {
+  public void endGame(UUID gameId) {
     var optGame = gameRepository.findGameById(new GameId(gameId));
     if(optGame.isEmpty()) throw new RuntimeException("Game with id %s not found".formatted(gameId));
     var game = optGame.get();

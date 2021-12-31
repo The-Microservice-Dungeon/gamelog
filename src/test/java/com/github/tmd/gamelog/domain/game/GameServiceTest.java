@@ -25,7 +25,7 @@ class GameServiceTest {
   @Test
   void createNewGame() {
     // Given
-    var gameId = UUID.randomUUID().toString();
+    var gameId = UUID.randomUUID();
 
     // When
     gameEventHandler.onGameCreate(gameId, ZonedDateTime.now());
@@ -41,7 +41,7 @@ class GameServiceTest {
   @Test
   void startGame() {
     // Given
-    var gameId = UUID.randomUUID().toString();
+    var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
     givenGame.setGameId(gameId);
     givenGame.setStatus(GameStatus.CREATED);
@@ -61,7 +61,7 @@ class GameServiceTest {
   @Test
   void endGame() {
     // Given
-    var gameId = UUID.randomUUID().toString();
+    var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
     givenGame.setGameId(gameId);
     givenGame.setStatus(GameStatus.STARTED);

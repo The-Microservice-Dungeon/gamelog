@@ -1,6 +1,7 @@
 package com.github.tmd.gamelog.adapter.jpa.game;
 
 import com.github.tmd.gamelog.domain.game.GameStatus;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,7 +19,7 @@ public class GameJpa {
 
   @Id
   @Column(name = "game_id", unique = true, updatable = false)
-  private String gameId;
+  private UUID gameId;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "game_status")

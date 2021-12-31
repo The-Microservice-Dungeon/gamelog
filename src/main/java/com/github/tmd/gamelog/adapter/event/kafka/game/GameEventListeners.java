@@ -24,9 +24,9 @@ public class GameEventListeners {
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, MessageHeaders headers) {
     // TODO: Get time out of header
     switch (event.status()) {
-      case STARTED -> gameEventHandler.onGameStart(event.gameId().toString(), ZonedDateTime.now());
-      case CREATED -> gameEventHandler.onGameCreate(event.gameId().toString(), ZonedDateTime.now());
-      case ENDED -> gameEventHandler.onGameEnd(event.gameId().toString(), ZonedDateTime.now());
+      case STARTED -> gameEventHandler.onGameStart(event.gameId(), ZonedDateTime.now());
+      case CREATED -> gameEventHandler.onGameCreate(event.gameId(), ZonedDateTime.now());
+      case ENDED -> gameEventHandler.onGameEnd(event.gameId(), ZonedDateTime.now());
     }
   }
 
