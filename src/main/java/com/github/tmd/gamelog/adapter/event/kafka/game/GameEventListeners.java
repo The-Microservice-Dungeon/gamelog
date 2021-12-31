@@ -44,6 +44,7 @@ public class GameEventListeners {
       MessageHeaders headers) {
     switch (event.roundStatus()) {
       case STARTED -> gameEventHandler.onStartRound(event.gameId(), event.roundId(), event.roundNumber());
+      case ENDED -> gameEventHandler.onEndRound(event.gameId(), event.roundId());
     }
   }
 }

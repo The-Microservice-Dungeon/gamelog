@@ -33,4 +33,11 @@ public class GameEventHandlerImpl implements GameEventHandler {
     var scoreboard = addRoundToScoreboardService.addRoundToScoreboard(gameId, roundId, roundNumber);
     log.info("Added round to scoreboard, value: {}", scoreboard.getScoreboardId().id(), scoreboard);
   }
+
+  @Override
+  public void onEndRound(UUID gameId, UUID roundId) {
+    log.info("Receieved end round with id {} event in game {}", roundId, gameId);
+
+    // When the round ended perform synchronous calls, command resolution, ...
+  }
 }
