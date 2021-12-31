@@ -4,6 +4,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.domain.game.GameEventHandler;
+import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
 import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,10 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameEventListeners {
   private final GameEventHandler gameEventHandler;
+  private final PlayerEventHandler playerEventHandler;
 
   @Autowired
-  public GameEventListeners(GameEventHandler gameEventHandler) {
+  public GameEventListeners(GameEventHandler gameEventHandler,
+      PlayerEventHandler playerEventHandler) {
     this.gameEventHandler = gameEventHandler;
+    this.playerEventHandler = playerEventHandler;
   }
 
   @KafkaListener(topics = "status")
@@ -33,7 +37,9 @@ public class GameEventListeners {
   @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
       MessageHeaders headers) {
-    
+    switch (event.lobbyAction()) {
+      case JOINED -> playerEventHandler.onPlayerRegister(event.userId(), event.userName(), ZonedDateTime.now());
+    }
   }
 
   @KafkaListener(topics = "roundStatus")
