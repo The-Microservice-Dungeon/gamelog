@@ -4,7 +4,11 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.github.tmd.gamelog.adapter.jpa.game.GameJpa;
 import com.github.tmd.gamelog.adapter.jpa.game.GameJpaRepository;
+import com.github.tmd.gamelog.adapter.jpa.game.RoundJpa;
+import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpa;
+import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpaRepository;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,9 @@ class GameServiceTest {
 
   @Autowired
   GameJpaRepository gameJpaRepository;
+
+  @Autowired
+  PlayerJpaRepository playerJpaRepository;
 
   @Autowired
   GameService gameService;
@@ -98,5 +105,37 @@ class GameServiceTest {
     assertThat(game.getRounds()).hasSize(1);
     assertThat(game.getRounds()).extracting("roundId", "roundNumber")
         .containsExactlyInAnyOrder(tuple(roundId, roundNumber));
+  }
+
+  @Test
+  void shouldAddRoundScoreInDb_WhenAdScore() {
+    // Given
+    var gameId = UUID.randomUUID();
+    var roundId = UUID.randomUUID();
+    var playerId = UUID.randomUUID();
+
+    var givenPlayer = new PlayerJpa();
+    givenPlayer.setPlayerId(playerId);
+    givenPlayer.setUserName("mmustermann");
+    playerJpaRepository.save(givenPlayer);
+
+    var givenRound = new RoundJpa();
+    givenRound.setRoundId(roundId);
+
+    var givenGame = new GameJpa();
+    givenGame.setGameId(gameId);
+    givenGame.setStatus(GameStatus.STARTED);
+    givenGame.setRounds(Set.of(givenRound));
+    gameJpaRepository.save(givenGame);
+
+    // When
+    gameService.addScore(gameId, roundId, playerId, 12);
+
+    // Then
+    var game = gameJpaRepository.findById(gameId).orElseThrow();
+    var round = game.getRounds().stream().filter(r -> r.getRoundId().equals(roundId)).findFirst().orElseThrow();
+    var score = round.getScores().stream().filter(s -> s.getPlayer().getPlayerId().equals(playerId)).findFirst().orElseThrow();
+
+    assertThat(score.getTestScore()).isEqualTo(12);
   }
 }

@@ -31,4 +31,8 @@ public class PlayerService {
 
     return player;
   }
+
+  public Player getPlayerById(UUID playerId) {
+    return playerRepository.findById(playerId).orElseThrow();
+  }
 }

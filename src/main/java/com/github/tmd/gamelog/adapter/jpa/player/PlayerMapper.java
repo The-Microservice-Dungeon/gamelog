@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlayerMapper {
 
-  Player toDomain(PlayerJpa playerJpa) {
+  public Player toDomain(PlayerJpa playerJpa) {
     return new Player(new PlayerId(playerJpa.getPlayerId()), playerJpa.getUserName());
   }
 
-  PlayerJpa toPersistence(Player player) {
+  public PlayerJpa toPersistence(Player player) {
     var jpa = new PlayerJpa();
     jpa.setPlayerId(player.getId().playerId());
     if(player.getUserName() == null) {
