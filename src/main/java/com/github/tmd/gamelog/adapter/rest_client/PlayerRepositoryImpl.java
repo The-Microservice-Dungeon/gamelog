@@ -6,7 +6,7 @@ import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerRepository;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component(value = "legacy-player-repository")
 public class PlayerRepositoryImpl implements PlayerRepository
 {
     private final RobotRestClient robotRestClient;

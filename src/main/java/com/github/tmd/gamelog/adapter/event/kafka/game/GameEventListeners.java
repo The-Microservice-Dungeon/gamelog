@@ -33,7 +33,7 @@ public class GameEventListeners {
   @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
       MessageHeaders headers) {
-
+    
   }
 
   @KafkaListener(topics = "roundStatus")

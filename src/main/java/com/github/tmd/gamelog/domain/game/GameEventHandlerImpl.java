@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.domain.game;
 
+import com.github.tmd.gamelog.domain.player.PlayerService;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class GameEventHandlerImpl implements GameEventHandler {
   private final GameService gameService;
+  private final PlayerService playerService;
 
   @Autowired
-  public GameEventHandlerImpl(GameService gameService) {
+  public GameEventHandlerImpl(GameService gameService,
+      PlayerService playerService) {
     this.gameService = gameService;
+    this.playerService = playerService;
   }
 
   @Override

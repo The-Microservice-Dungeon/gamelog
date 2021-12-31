@@ -22,7 +22,7 @@ class GameEventHandlerTest {
   GameEventHandler gameEventHandler;
 
   @Test
-  void createNewGame() {
+  void shouldSaveGameInDb_WhenGameCreateEventIsFired() {
     // Given
     var gameId = UUID.randomUUID();
 
@@ -38,7 +38,7 @@ class GameEventHandlerTest {
   }
 
   @Test
-  void startGame() {
+  void shouldUpdateGameStatusInDb_WhenGameStartEventIsFired() {
     // Given
     var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
@@ -58,7 +58,7 @@ class GameEventHandlerTest {
   }
 
   @Test
-  void endGame() {
+  void shouldUpdateGameStatusInDb_WhenGameEndEventIsFired() {
     // Given
     var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
@@ -78,7 +78,7 @@ class GameEventHandlerTest {
   }
 
   @Test
-  void addRound() {
+  void shouldAddRoundInDb_WhenRoundStartEventIsFired() {
     // Given
     var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
