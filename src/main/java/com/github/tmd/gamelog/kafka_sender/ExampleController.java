@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.kafka_sender;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.kafka.KafkaEvent;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,7 @@ public class ExampleController {
   @GetMapping("/event/game/end")
   public void endGame() {
     sender.sendGameStatusEvent("status", "game-status-change",
-        new GameStatusEvent(GameStatus.ENDED));
+        new GameStatusEvent(UUID.randomUUID(), GameStatus.ENDED));
   }
 
 

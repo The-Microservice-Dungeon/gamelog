@@ -1,6 +1,8 @@
 package com.github.tmd.gamelog.adapter.event.gameEvent.game;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 /**
  * Game Status changed event using a Java Record as an immutable
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Kinda like data classes in Kotlin.
  */
 public record GameStatusEvent(
-    @JsonProperty("status") GameStatus status
+    @JsonProperty("gameId") UUID gameId,
+    @JsonProperty("gameStatus") GameStatus status
 ) {
 }
