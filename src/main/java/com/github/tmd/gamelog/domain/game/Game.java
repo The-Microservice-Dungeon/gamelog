@@ -1,6 +1,5 @@
 package com.github.tmd.gamelog.domain.game;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
@@ -11,7 +10,7 @@ public class Game {
 
   private GameStatus gameStatus = GameStatus.CREATED;
 
-  private final Set<Round> rounds = new HashSet<>();
+  private final Set<Round> rounds;
 
   public void addRound(Round round) {
     this.rounds.add(round);
