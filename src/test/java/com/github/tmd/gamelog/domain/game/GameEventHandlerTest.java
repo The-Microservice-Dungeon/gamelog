@@ -1,11 +1,9 @@
 package com.github.tmd.gamelog.domain.game;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 import com.github.tmd.gamelog.adapter.jpa.game.GameJpa;
 import com.github.tmd.gamelog.adapter.jpa.game.GameJpaRepository;
-import com.github.tmd.gamelog.domain.game.Round.RoundId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.transaction.Transactional;
@@ -15,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Transactional
-class GameServiceTest {
+class GameEventHandlerTest {
 
   @Autowired
   GameJpaRepository gameJpaRepository;
