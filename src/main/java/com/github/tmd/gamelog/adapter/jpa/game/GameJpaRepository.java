@@ -5,6 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GameJpaRepository extends CrudRepository<GameJpa, Long> {
-  Optional<GameJpa> findByGameId(String gameId);
+public interface GameJpaRepository extends CrudRepository<GameJpa, String> {
 }

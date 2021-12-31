@@ -31,7 +31,7 @@ class GameServiceTest {
     gameEventHandler.onGameCreate(gameId, ZonedDateTime.now());
 
     // Then
-    var found = gameJpaRepository.findByGameId(gameId);
+    var found = gameJpaRepository.findById(gameId);
     assertThat(found).isNotEmpty();
     var game = found.get();
     assertThat(game.getGameId()).isEqualTo(gameId);
@@ -51,7 +51,7 @@ class GameServiceTest {
     gameEventHandler.onGameStart(gameId, ZonedDateTime.now());
 
     // Then
-    var found = gameJpaRepository.findByGameId(gameId);
+    var found = gameJpaRepository.findById(gameId);
     assertThat(found).isNotEmpty();
     var game = found.get();
     assertThat(game.getGameId()).isEqualTo(gameId);
@@ -71,7 +71,7 @@ class GameServiceTest {
     gameEventHandler.onGameEnd(gameId, ZonedDateTime.now());
 
     // Then
-    var found = gameJpaRepository.findByGameId(gameId);
+    var found = gameJpaRepository.findById(gameId);
     assertThat(found).isNotEmpty();
     var game = found.get();
     assertThat(game.getGameId()).isEqualTo(gameId);

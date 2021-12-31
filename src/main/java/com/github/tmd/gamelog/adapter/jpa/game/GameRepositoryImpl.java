@@ -20,7 +20,7 @@ public class GameRepositoryImpl implements GameRepository {
 
   @Override
   public Game save(Game game) {
-    var savedOrUpdatedGame = this.gameJpaRepository.findByGameId(game.getId().gameId())
+    var savedOrUpdatedGame = this.gameJpaRepository.findById(game.getId().gameId())
         .map(jpa -> this.gameMapper.update(jpa, game))
         .orElse(gameMapper.toPersistence(game));
 
@@ -30,7 +30,7 @@ public class GameRepositoryImpl implements GameRepository {
 
   @Override
   public Optional<Game> findGameById(GameId gameId) {
-    var found = gameJpaRepository.findByGameId(gameId.gameId());
+    var found = gameJpaRepository.findById(gameId.gameId());
     return found.map(this.gameMapper::toDomain);
   }
 }
