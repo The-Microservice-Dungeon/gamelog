@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.github.tmd.gamelog.adapter.jpa.game.GameJpa;
 import com.github.tmd.gamelog.adapter.jpa.game.GameJpaRepository;
+import com.github.tmd.gamelog.domain.game.Round.RoundId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.transaction.Transactional;
@@ -76,5 +77,28 @@ class GameServiceTest {
     var game = found.get();
     assertThat(game.getGameId()).isEqualTo(gameId);
     assertThat(game.getStatus()).isEqualTo(GameStatus.ENDED);
+  }
+
+  @Test
+  void addRound() {
+    // Given
+    var gameId = UUID.randomUUID();
+    var givenGame = new GameJpa();
+    givenGame.setGameId(gameId);
+    givenGame.setStatus(GameStatus.STARTED);
+    gameJpaRepository.save(givenGame);
+    var roundId = UUID.randomUUID();
+    var roundNumber = 0;
+
+    // When
+    gameEventHandler.onRoundStart(gameId, roundId, roundNumber, ZonedDateTime.now());
+
+    // Then
+    var found = gameJpaRepository.findById(gameId);
+    assertThat(found).isNotEmpty();
+    var game = found.get();
+    assertThat(game.getRounds()).hasSize(1);
+    assertThat(game.getRounds()).extracting("roundId", "roundNumber")
+        .containsExactlyInAnyOrder(tuple(roundId, roundNumber));
   }
 }

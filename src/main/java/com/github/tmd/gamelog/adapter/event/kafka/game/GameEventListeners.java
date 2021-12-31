@@ -39,6 +39,8 @@ public class GameEventListeners {
   @KafkaListener(topics = "roundStatus")
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
       MessageHeaders headers) {
-
+    switch (event.roundStatus()) {
+      case STARTED -> gameEventHandler.onRoundStart(event.gameId(), event.roundId(), event.roundNumber(), ZonedDateTime.now());
+    }
   }
 }

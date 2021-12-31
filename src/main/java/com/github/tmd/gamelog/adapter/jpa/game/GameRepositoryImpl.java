@@ -20,11 +20,8 @@ public class GameRepositoryImpl implements GameRepository {
 
   @Override
   public Game save(Game game) {
-    var savedOrUpdatedGame = this.gameJpaRepository.findById(game.getId().gameId())
-        .map(jpa -> this.gameMapper.update(jpa, game))
-        .orElse(gameMapper.toPersistence(game));
-
-    var saved = this.gameJpaRepository.save(savedOrUpdatedGame);
+    var jpa = gameMapper.toPersistence(game);
+    var saved = this.gameJpaRepository.save(jpa);
     return gameMapper.toDomain(saved);
   }
 
