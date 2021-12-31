@@ -13,21 +13,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Transactional
-class GameEventHandlerTest {
+class GameServiceTest {
 
   @Autowired
   GameJpaRepository gameJpaRepository;
 
   @Autowired
-  GameEventHandler gameEventHandler;
+  GameService gameService;
 
   @Test
-  void shouldSaveGameInDb_WhenGameCreateEventIsFired() {
+  void shouldSaveGameInDb_WhenGameCreate() {
     // Given
     var gameId = UUID.randomUUID();
 
     // When
-    gameEventHandler.onGameCreate(gameId, ZonedDateTime.now());
+    gameService.createNewGame(gameId);
 
     // Then
     var found = gameJpaRepository.findById(gameId);
@@ -38,7 +38,7 @@ class GameEventHandlerTest {
   }
 
   @Test
-  void shouldUpdateGameStatusInDb_WhenGameStartEventIsFired() {
+  void shouldUpdateGameStatusInDb_WhenGameStart() {
     // Given
     var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
@@ -47,7 +47,7 @@ class GameEventHandlerTest {
     gameJpaRepository.save(givenGame);
 
     // When
-    gameEventHandler.onGameStart(gameId, ZonedDateTime.now());
+    gameService.startGame(gameId);
 
     // Then
     var found = gameJpaRepository.findById(gameId);
@@ -58,7 +58,7 @@ class GameEventHandlerTest {
   }
 
   @Test
-  void shouldUpdateGameStatusInDb_WhenGameEndEventIsFired() {
+  void shouldUpdateGameStatusInDb_WhenGameEnd() {
     // Given
     var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
@@ -67,7 +67,7 @@ class GameEventHandlerTest {
     gameJpaRepository.save(givenGame);
 
     // When
-    gameEventHandler.onGameEnd(gameId, ZonedDateTime.now());
+    gameService.endGame(gameId);
 
     // Then
     var found = gameJpaRepository.findById(gameId);
@@ -78,7 +78,7 @@ class GameEventHandlerTest {
   }
 
   @Test
-  void shouldAddRoundInDb_WhenRoundStartEventIsFired() {
+  void shouldAddRoundInDb_WhenRoundStart() {
     // Given
     var gameId = UUID.randomUUID();
     var givenGame = new GameJpa();
@@ -89,7 +89,7 @@ class GameEventHandlerTest {
     var roundNumber = 0;
 
     // When
-    gameEventHandler.onRoundStart(gameId, roundId, roundNumber, ZonedDateTime.now());
+    gameService.addRound(gameId, roundId, roundNumber);
 
     // Then
     var found = gameJpaRepository.findById(gameId);
