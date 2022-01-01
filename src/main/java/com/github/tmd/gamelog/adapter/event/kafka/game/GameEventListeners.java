@@ -4,7 +4,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
-import com.github.tmd.gamelog.domain.scoreboard.event.GameEventHandler;
+import com.github.tmd.gamelog.application.GameEventHandler;
 import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -45,7 +45,7 @@ public class GameEventListeners {
       MessageHeaders headers) {
     switch (event.roundStatus()) {
       case STARTED -> gameEventHandler.onStartRound(event.gameId(), event.roundId(), event.roundNumber());
-      case ENDED -> gameEventHandler.onEndRound(event.gameId(), event.roundId());
+      case ENDED -> gameEventHandler.onEndRound(event.gameId(), event.roundId(), event.roundNumber());
     }
   }
 }

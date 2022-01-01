@@ -11,10 +11,3 @@ public record GetRoundCommandsDto(
     @JsonProperty("commands") Set<ExecutedCommand> commands
     ) { }
 
-record ExecutedCommand(
-    @JsonProperty("transactionId") UUID transactionId,
-    @JsonProperty("gameId") UUID gameId,
-    @JsonProperty("playerId") UUID playerId,
-    @JsonProperty("robotId") UUID robotId,
-    @JsonProperty("commandType") String commandType
-) {}
