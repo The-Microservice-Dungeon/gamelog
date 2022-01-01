@@ -76,12 +76,12 @@ public class RobotHistoryService {
     for (var robot : result) {
       this.insertRobotHistory(roundId, robot.id(), robot.player(), robot.planet(), robot.alive(),
           robot.maxHealth(), robot.maxEnergy(), robot.energyRegen(), robot.attackDamage(),
-          robot.miningSpeed(), robot.health(), robot.energy()
+          robot.miningSpeed(), robot.health(), robot.energy(),
           robot.healthLevel(), robot.damageLevel(), robot.miningSpeedLevel(), robot.miningLevel(),
           robot.energyLevel(), robot.energyRegenLevel(), robot.storageLevel());
     }
   }
-  
+
   private void insertRobotHistory(
       UUID roundId,
       UUID robotId,

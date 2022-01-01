@@ -14,7 +14,7 @@ public interface GamePlayerStatusHistoryJpaRepository extends CrudRepository<Gam
         and p.createdDate in (
           select max(p.createdDate) from GamePlayerStatusHistoryJpa where p.gameId = ?1
         )
-        and p.status = "JOINED"
+        and p.status = 'JOINED'
         """)
   Set<UUID> getAllParticipatingPlayersInGame(UUID gameId);
 }
