@@ -1,5 +1,6 @@
-package com.github.tmd.gamelog.application;
+package com.github.tmd.gamelog.application.handler;
 
+import com.github.tmd.gamelog.application.service.CommandHistoryService;
 import com.github.tmd.gamelog.domain.scoreboard.service.AddRoundToScoreboardService;
 import com.github.tmd.gamelog.domain.scoreboard.service.AggregateRoundScoresService;
 import com.github.tmd.gamelog.domain.scoreboard.service.InitializeScoreboardService;

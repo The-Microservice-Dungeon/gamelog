@@ -4,7 +4,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
-import com.github.tmd.gamelog.application.GameEventHandler;
+import com.github.tmd.gamelog.application.handler.GameEventHandler;
 import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

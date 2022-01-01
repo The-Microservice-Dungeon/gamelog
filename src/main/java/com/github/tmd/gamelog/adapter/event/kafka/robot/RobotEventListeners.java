@@ -10,38 +10,55 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RegenerationEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RepairItemUsedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.ResourceDistributionEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RobotDestroyedEvent;
+import com.github.tmd.gamelog.application.service.RobotHistoryService;
+import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RobotEventListeners {
+
+  private final RobotHistoryService robotHistoryService;
+
+  public RobotEventListeners(
+      RobotHistoryService robotHistoryService) {
+    this.robotHistoryService = robotHistoryService;
+  }
+
   @KafkaListener(topics = "movement")
-  public void movementEvent(@Payload MovementEvent event, MessageHeaders headers) {
+  public void movementEvent(@Payload MovementEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
+      robotHistoryService.insertMovementHistory(transactionId, event.robots(), event.planet()
+          .planetId(), event.planet().movementDifficulty());
     }
   }
 
   @KafkaListener(topics = "planet-blocked")
-  public void planetBlockedEvent(@Payload PlanetBlockedEvent event, MessageHeaders headers) {
+  public void planetBlockedEvent(@Payload PlanetBlockedEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
+      robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId());
     }
   }
 
   @KafkaListener(topics = "mining")
-  public void miningEvent(@Payload MiningEvent event, MessageHeaders headers) {
+  public void miningEvent(@Payload MiningEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
+      robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(), event.resourceType());
     }
   }
 
   @KafkaListener(topics = "fighting")
-  public void fightingEvent(@Payload FightingEvent event, MessageHeaders headers) {
+  public void fightingEvent(@Payload FightingEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
+      robotHistoryService.insertFightHistory(transactionId, event.attacker(), event.defender(),
+          event.remainingDefenderHealth());
     }
   }
 

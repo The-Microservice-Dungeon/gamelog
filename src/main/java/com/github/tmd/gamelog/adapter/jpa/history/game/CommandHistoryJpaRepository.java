@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.jpa.history.command;
+package com.github.tmd.gamelog.adapter.jpa.history.game;
 
 import java.util.Set;
 import java.util.UUID;

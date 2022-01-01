@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application;
+package com.github.tmd.gamelog.application.handler;
 
 import java.util.UUID;
 

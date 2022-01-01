@@ -4,19 +4,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 import com.github.tmd.gamelog.WireMockInitializer;
-import com.github.tmd.gamelog.adapter.jpa.history.command.CommandHistoryJpaRepository;
+import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
+import com.github.tmd.gamelog.application.service.CommandHistoryService;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import java.util.UUID;
-import java.util.stream.StreamSupport;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest

@@ -1,7 +1,7 @@
-package com.github.tmd.gamelog.application;
+package com.github.tmd.gamelog.application.service;
 
-import com.github.tmd.gamelog.adapter.jpa.history.command.CommandHistoryJpa;
-import com.github.tmd.gamelog.adapter.jpa.history.command.CommandHistoryJpaRepository;
+import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpa;
+import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest_client.client.GameRestClient;
 import java.util.UUID;
 import java.util.stream.Collectors;
