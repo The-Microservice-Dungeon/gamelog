@@ -4,6 +4,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.application.service.GameHistoryService;
+import com.github.tmd.gamelog.application.service.RobotHistoryService;
 import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
 import com.github.tmd.gamelog.application.handler.GameEventHandler;
 import java.time.ZonedDateTime;
@@ -18,14 +19,17 @@ public class GameEventListeners {
   private final PlayerEventHandler playerEventHandler;
   private final GameEventHandler gameEventHandler;
   private final GameHistoryService gameHistoryService;
+  private final RobotHistoryService robotHistoryService;
 
   @Autowired
   public GameEventListeners(PlayerEventHandler playerEventHandler,
       GameEventHandler scoreboardEventHandler,
-      GameHistoryService gameHistoryService) {
+      GameHistoryService gameHistoryService,
+      RobotHistoryService robotHistoryService) {
     this.playerEventHandler = playerEventHandler;
     this.gameEventHandler = scoreboardEventHandler;
     this.gameHistoryService = gameHistoryService;
+    this.robotHistoryService = robotHistoryService;
   }
   
   @KafkaListener(topics = "status")
@@ -58,7 +62,13 @@ public class GameEventListeners {
 
     switch (event.roundStatus()) {
       case STARTED -> gameEventHandler.onStartRound(event.gameId(), event.roundId(), event.roundNumber());
-      case ENDED -> gameEventHandler.onEndRound(event.gameId(), event.roundId(), event.roundNumber());
+      case ENDED -> {
+        // TODO: Well this could take a loooooong time
+        for(var player : gameHistoryService.getAllParticipatingPlayersInGame(event.gameId())) {
+          this.robotHistoryService.insertRobotRoundHistoryForPlayer(event.roundId(), player);
+        }
+        gameEventHandler.onEndRound(event.gameId(), event.roundId(), event.roundNumber());
+      }
     }
   }
 }

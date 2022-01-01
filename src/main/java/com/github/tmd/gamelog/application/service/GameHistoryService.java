@@ -15,6 +15,7 @@ import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusJpa;
 import com.github.tmd.gamelog.adapter.rest_client.client.GameRestClient;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -40,6 +41,10 @@ public class GameHistoryService {
     this.gameRoundStatusHistoryJpaRepository = gameRoundStatusHistoryJpaRepository;
     this.gameStatusHistoryJpaRepository = gameStatusHistoryJpaRepository;
     this.gameRestClient = gameRestClient;
+  }
+
+  public Set<UUID> getAllParticipatingPlayersInGame(UUID gameId) {
+    return gamePlayerStatusHistoryJpaRepository.getAllParticipatingPlayersInGame(gameId);
   }
 
   @Transactional
