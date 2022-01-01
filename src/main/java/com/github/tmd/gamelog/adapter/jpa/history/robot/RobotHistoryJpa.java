@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,10 +28,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"round_id", "robot_id"})
+})
 public class RobotHistoryJpa {
   @Id
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id = UUID.randomUUID();
+
+  @NonNull
+  @Column(name = "round_id", updatable = false, nullable = false)
+  private UUID roundId;
 
   @NonNull
   @Column(name = "robot_id", updatable = false, nullable = false)

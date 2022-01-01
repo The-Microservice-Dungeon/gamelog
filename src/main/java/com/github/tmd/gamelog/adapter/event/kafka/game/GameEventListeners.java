@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.adapter.event.kafka.game;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
+import com.github.tmd.gamelog.application.service.GameHistoryService;
 import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
 import com.github.tmd.gamelog.application.handler.GameEventHandler;
 import java.time.ZonedDateTime;
@@ -16,16 +17,22 @@ import org.springframework.stereotype.Component;
 public class GameEventListeners {
   private final PlayerEventHandler playerEventHandler;
   private final GameEventHandler gameEventHandler;
+  private final GameHistoryService gameHistoryService;
 
   @Autowired
   public GameEventListeners(PlayerEventHandler playerEventHandler,
-      GameEventHandler scoreboardEventHandler) {
+      GameEventHandler scoreboardEventHandler,
+      GameHistoryService gameHistoryService) {
     this.playerEventHandler = playerEventHandler;
     this.gameEventHandler = scoreboardEventHandler;
+    this.gameHistoryService = gameHistoryService;
   }
-
+  
   @KafkaListener(topics = "status")
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, MessageHeaders headers) {
+
+    gameHistoryService.insertGameStatusHistory(event.gameId(), event.status());
+
     switch (event.status()) {
       case STARTED -> gameEventHandler.onCreateGame(event.gameId());
       case ENDED -> gameEventHandler.onEndGame(event.gameId());
@@ -35,6 +42,9 @@ public class GameEventListeners {
   @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
       MessageHeaders headers) {
+
+    gameHistoryService.insertGamePlayerStatusHistory(event.gameId(), event.userId(), event.userName(), event.lobbyAction());
+
     switch (event.lobbyAction()) {
       case JOINED -> playerEventHandler.onPlayerRegister(event.userId(), event.userName(), ZonedDateTime.now());
     }
@@ -43,6 +53,9 @@ public class GameEventListeners {
   @KafkaListener(topics = "roundStatus")
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
       MessageHeaders headers) {
+
+    gameHistoryService.insertGameRoundStatusHistory(event.gameId(), event.roundId(), event.roundNumber(), event.roundStatus());
+
     switch (event.roundStatus()) {
       case STARTED -> gameEventHandler.onStartRound(event.gameId(), event.roundId(), event.roundNumber());
       case ENDED -> gameEventHandler.onEndRound(event.gameId(), event.roundId(), event.roundNumber());

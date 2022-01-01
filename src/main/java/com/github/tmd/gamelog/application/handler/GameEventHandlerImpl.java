@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.application.handler;
 
-import com.github.tmd.gamelog.application.service.CommandHistoryService;
+import com.github.tmd.gamelog.application.service.GameHistoryService;
 import com.github.tmd.gamelog.domain.scoreboard.service.AddRoundToScoreboardService;
 import com.github.tmd.gamelog.domain.scoreboard.service.AggregateRoundScoresService;
 import com.github.tmd.gamelog.domain.scoreboard.service.InitializeScoreboardService;
@@ -16,14 +16,14 @@ public class GameEventHandlerImpl implements GameEventHandler {
   private final AddRoundToScoreboardService addRoundToScoreboardService;
   private final LockScoreboardService lockScoreboardService;
   private final AggregateRoundScoresService roundScoreAggregator;
-  private final CommandHistoryService commandHistoryService;
+  private final GameHistoryService commandHistoryService;
 
   public GameEventHandlerImpl(
       InitializeScoreboardService initializeScoreboardService,
       AddRoundToScoreboardService addRoundToScoreboardService,
       LockScoreboardService lockScoreboardService,
       AggregateRoundScoresService roundScoreAggregator,
-      CommandHistoryService commandHistoryService) {
+      GameHistoryService commandHistoryService) {
     this.initializeScoreboardService = initializeScoreboardService;
     this.addRoundToScoreboardService = addRoundToScoreboardService;
     this.lockScoreboardService = lockScoreboardService;

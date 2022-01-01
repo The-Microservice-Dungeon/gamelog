@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.github.tmd.gamelog.WireMockInitializer;
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
-import com.github.tmd.gamelog.application.service.CommandHistoryService;
+import com.github.tmd.gamelog.application.service.GameHistoryService;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import java.util.UUID;
 import javax.transaction.Transactional;
@@ -26,7 +26,7 @@ class CommandHistoryServiceTest {
   WireMockServer wireMockServer;
 
   @Autowired
-  CommandHistoryService commandHistoryService;
+  GameHistoryService commandHistoryService;
 
   @Autowired
   CommandHistoryJpaRepository commandHistoryJpaRepository;
