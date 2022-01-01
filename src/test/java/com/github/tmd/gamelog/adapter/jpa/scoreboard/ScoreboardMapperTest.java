@@ -9,6 +9,7 @@ import com.github.tmd.gamelog.domain.player.Player.PlayerId;
 import com.github.tmd.gamelog.domain.scoreboard.model.Game;
 import com.github.tmd.gamelog.domain.scoreboard.model.Game.GameId;
 import com.github.tmd.gamelog.domain.scoreboard.model.GameStatus;
+import com.github.tmd.gamelog.domain.scoreboard.model.PlayerGameScore;
 import com.github.tmd.gamelog.domain.scoreboard.model.Round;
 import com.github.tmd.gamelog.domain.scoreboard.model.Round.RoundId;
 import com.github.tmd.gamelog.domain.scoreboard.model.RoundScore;
@@ -38,8 +39,11 @@ class ScoreboardMapperTest {
     var player1 = new Player(new PlayerId(UUID.fromString("dfd4527c-8b5c-4adb-b7ec-6971218feb29")), "player1");
 
     var scores = Map.of(
-        player0, Set.of(new RoundScore(round0), new RoundScore(round1)),
-        player1, Set.of(new RoundScore(round0), new RoundScore(round1))
+        player0, new PlayerGameScore(
+            Map.of(round0, new RoundScore(), round1, new RoundScore())
+        ),
+        player1, new PlayerGameScore(
+            Map.of(round0, new RoundScore(), round1, new RoundScore()))
     );
 
     var scoreboard = new Scoreboard(
@@ -114,15 +118,8 @@ class ScoreboardMapperTest {
     var expectedPlayer1 = new Player(new PlayerId(UUID.fromString("dfd4527c-8b5c-4adb-b7ec-6971218feb29")), "player1");
     var scorePlayer0 = scoreboard.getRoundScores().get(expectedPlayer0);
     var scorePlayer1 = scoreboard.getRoundScores().get(expectedPlayer1);
-    assertThat(scorePlayer0).hasSize(2);
-    assertThat(scorePlayer0).extracting("round.roundId.roundId", "round.roundNumber")
-        .containsExactlyInAnyOrder(
-            tuple(UUID.fromString("63e9b601-1cc9-4759-878a-ff32335bc7bd"), 0),
-            tuple(UUID.fromString("8f5edc35-8791-4c38-950c-07dab2763c83"), 1));
-    assertThat(scorePlayer1).hasSize(2).extracting("round.roundId.roundId", "round.roundNumber")
-        .containsExactlyInAnyOrder(
-            tuple(UUID.fromString("63e9b601-1cc9-4759-878a-ff32335bc7bd"), 0),
-            tuple(UUID.fromString("8f5edc35-8791-4c38-950c-07dab2763c83"), 1));
+    assertThat(scorePlayer0.getRoundScores()).hasSize(2);;
+    assertThat(scorePlayer1.getRoundScores()).hasSize(2);
     assertThat(scoreboard.getStatus()).isEqualTo(ScoreboardStatus.LOCKED);
   }
 }

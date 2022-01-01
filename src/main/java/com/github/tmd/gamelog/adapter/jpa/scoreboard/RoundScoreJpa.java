@@ -31,4 +31,6 @@ class RoundScoreJpa {
   @JoinColumn(name = "round_id")
   private RoundJpa round;
 
+  // e.g. Integer balance, Integer numOfKills, ...
+
 }

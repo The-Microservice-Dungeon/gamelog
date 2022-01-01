@@ -6,6 +6,7 @@ import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpa;
 import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpaRepository;
 import com.github.tmd.gamelog.domain.player.Player;
 import com.github.tmd.gamelog.domain.player.Player.PlayerId;
+import com.github.tmd.gamelog.domain.scoreboard.model.PlayerGameScore;
 import com.github.tmd.gamelog.domain.scoreboard.model.Scoreboard;
 import com.github.tmd.gamelog.domain.scoreboard.model.Scoreboard.ScoreboardId;
 import com.github.tmd.gamelog.domain.scoreboard.model.Game;
@@ -53,8 +54,11 @@ class ScoreboardRepositoryImplTest {
     var givenGame = new Game(new GameId(UUID.fromString("f42af39f-840b-40c8-86d7-d54cab6f15dd")), givenRounds);
 
     var scores = Map.of(
-        player1, Set.of(new RoundScore(round1), new RoundScore(round2)),
-        player2, Set.of(new RoundScore(round1), new RoundScore(round2))
+        player1, new PlayerGameScore(
+            Map.of(round1, new RoundScore(), round2, new RoundScore())
+        ),
+        player2, new PlayerGameScore(
+            Map.of(round1, new RoundScore(), round2, new RoundScore()))
     );
 
     var givenScoreboard = new Scoreboard(

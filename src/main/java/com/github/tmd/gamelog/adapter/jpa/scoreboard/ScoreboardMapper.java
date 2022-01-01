@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.adapter.jpa.scoreboard;
 
 import com.github.tmd.gamelog.adapter.jpa.player.PlayerMapper;
 import com.github.tmd.gamelog.domain.player.Player;
+import com.github.tmd.gamelog.domain.scoreboard.model.PlayerGameScore;
 import com.github.tmd.gamelog.domain.scoreboard.model.Scoreboard;
 import com.github.tmd.gamelog.domain.scoreboard.model.Scoreboard.ScoreboardId;
 import com.github.tmd.gamelog.domain.scoreboard.model.Game;
@@ -101,24 +102,30 @@ public class ScoreboardMapper {
     };
   }
 
-  private Map<Player, Set<RoundScore>> toDomain(Set<RoundScoreJpa> roundScoreJpas) {
-    Map<Player, Set<RoundScore>> scores = new HashMap<>();
+  private Map<Player, PlayerGameScore> toDomain(Set<RoundScoreJpa> roundScoreJpas) {
+    Map<Player, PlayerGameScore> scores = new HashMap<>();
 
     for(RoundScoreJpa jpa : roundScoreJpas) {
       var player = playerMapper.toDomain(jpa.getPlayer());
-      var scoreSet = scores.getOrDefault(player, new HashSet<>());
-      scoreSet.add(new RoundScore(this.toDomain(jpa.getRound())));
-      scores.put(player, scoreSet);
+      var round = this.toDomain(jpa.getRound());
+      var roundScore = new RoundScore();
+
+      var playerGameScore = scores.getOrDefault(player, new PlayerGameScore(Map.of()));
+      var roundScores = new HashMap<>(playerGameScore.getRoundScores());
+      roundScores.put(round, roundScore);
+
+      var newPlayerGameScore = new PlayerGameScore(Map.copyOf(roundScores));
+      scores.put(player, newPlayerGameScore);
     }
 
     return scores;
   }
 
-  private Set<RoundScoreJpa> toPersistence(Map<Player, Set<RoundScore>> playerSetMap) {
+  private Set<RoundScoreJpa> toPersistence(Map<Player, PlayerGameScore> playerSetMap) {
     return playerSetMap.entrySet().stream()
-        .flatMap(entry -> entry.getValue()
+        .flatMap(entry -> entry.getValue().getRoundScores().entrySet()
             .stream()
-            .map(r -> new RoundScoreJpa(playerMapper.toPersistence(entry.getKey()), toPersistence(r.round())))
+            .map(r -> new RoundScoreJpa(playerMapper.toPersistence(entry.getKey()), toPersistence(r.getKey())))
         )
         .collect(Collectors.toSet());
   }
