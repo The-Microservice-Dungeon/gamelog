@@ -12,6 +12,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class TradingEventListeners {
 
+  @KafkaListener(topics = "trades")
+  public void tradingEvent(@Payload TradingEvent event, MessageHeaders headers) {
+    if(event.success()) {
+      // TODO: Point-relevant
+    }
+  }
+
+  // region Irrelevant Kafka Listeners for scores
   @KafkaListener(topics = "bank-created")
   public void bankCreatedEvent(@Payload BankCreatedEvent event, MessageHeaders headers) {
 
@@ -29,8 +37,5 @@ public class TradingEventListeners {
 
   }
 
-  @KafkaListener(topics = "trades")
-  public void tradingEvent(@Payload TradingEvent event, MessageHeaders headers) {
-
-  }
+  // endregion
 }
