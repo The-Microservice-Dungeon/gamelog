@@ -1,7 +1,8 @@
-package domain.player;
+package com.github.tmd.gamelog.domain.player;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
+
 
 import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpa;
 import com.github.tmd.gamelog.adapter.jpa.player.PlayerJpaRepository;
@@ -11,10 +12,12 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("h2")
 @Transactional
-class PlayerServiceTest {
+public class PlayerServiceTest {
 
   @Autowired
   PlayerJpaRepository playerJpaRepository;
@@ -61,7 +64,6 @@ class PlayerServiceTest {
     var userName = "mmustermann";
     var existingPlayer = new PlayerJpa(playerId, userName);
     playerJpaRepository.save(existingPlayer);
-
 
     // When
     playerService.registerPlayer(playerId, userName);

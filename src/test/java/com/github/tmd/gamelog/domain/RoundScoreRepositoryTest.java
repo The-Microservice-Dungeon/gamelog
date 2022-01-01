@@ -1,4 +1,4 @@
-package domain;
+package com.github.tmd.gamelog.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
