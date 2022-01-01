@@ -72,40 +72,13 @@ public class RobotHistoryService {
 
   // TODO: Well this could take a loooooong time
   public void insertRobotRoundHistoryForPlayer(UUID roundId, UUID playerId) {
-    var result = this.robotRestClient.getRobotsOfPlayer(playerId);
-    for (var robot : result) {
-      this.insertRobotHistory(roundId, robot.id(), robot.player(), robot.planet(), robot.alive(),
-          robot.maxHealth(), robot.maxEnergy(), robot.energyRegen(), robot.attackDamage(),
-          robot.miningSpeed(), robot.health(), robot.energy(),
-          robot.healthLevel(), robot.damageLevel(), robot.miningSpeedLevel(), robot.miningLevel(),
-          robot.energyLevel(), robot.energyRegenLevel(), robot.storageLevel());
-    }
-  }
-
-  private void insertRobotHistory(
-      UUID roundId,
-      UUID robotId,
-      UUID playerId,
-      UUID planetId,
-      Boolean alive,
-      Integer maxHealth,
-      Integer maxEnergy,
-      Integer energyRegen,
-      Integer attackDamage,
-      Integer miningSpeed,
-      Integer health,
-      Integer energy,
-      Integer healthLevel,
-      Integer damageLevel,
-      Integer miningSpeedLevel,
-      Integer miningLevel,
-      Integer energyLevel,
-      Integer energyRegenLevel,
-      Integer storageLevel
-  ) {
-    this.robotHistoryJpaRepository.save(
-        new RobotHistoryJpa(roundId, robotId, playerId, planetId, alive, maxHealth, maxEnergy,
-            energyRegen, attackDamage, miningSpeed, health, energy, healthLevel, damageLevel,
-            miningSpeedLevel, miningLevel, energyLevel, energyRegenLevel, storageLevel));
+    var result = this.robotRestClient.getRobotsOfPlayer(playerId)
+        .stream().map(robot -> new RobotHistoryJpa(roundId, robot.id(), robot.player(), robot.planet(), robot.alive(),
+            robot.maxHealth(), robot.maxEnergy(), robot.energyRegen(), robot.attackDamage(),
+            robot.miningSpeed(), robot.health(), robot.energy(),
+            robot.healthLevel(), robot.damageLevel(), robot.miningSpeedLevel(), robot.miningLevel(),
+            robot.energyLevel(), robot.energyRegenLevel(), robot.storageLevel()))
+        .collect(Collectors.toSet());
+    this.robotHistoryJpaRepository.saveAll(result);
   }
 }
