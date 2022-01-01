@@ -10,6 +10,7 @@ import com.github.tmd.gamelog.domain.scoreboard.model.GameStatus;
 import com.github.tmd.gamelog.domain.scoreboard.model.Round;
 import com.github.tmd.gamelog.domain.scoreboard.model.Round.RoundId;
 import com.github.tmd.gamelog.domain.scoreboard.model.RoundScore;
+import com.github.tmd.gamelog.domain.scoreboard.model.ScoreboardStatus;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,14 +33,16 @@ public class ScoreboardMapper {
     return new ScoreboardJpa(
         scoreboard.getScoreboardId().id(),
         this.toPersistence(scoreboard.getGame()),
-        this.toPersistence(scoreboard.getRoundScores())
+        this.toPersistence(scoreboard.getRoundScores()),
+        this.toPersistence(scoreboard.getStatus())
     );
   }
 
   public Scoreboard toDomain(ScoreboardJpa scoreboardJpa) {
     var scoreboard = new Scoreboard(new ScoreboardId(scoreboardJpa.getScoreboardId()),
         this.toDomain(scoreboardJpa.getGameJpa()),
-        this.toDomain(scoreboardJpa.getScores())
+        this.toDomain(scoreboardJpa.getScores()),
+        this.toDomain(scoreboardJpa.getStatus())
     );
 
     return scoreboard;
@@ -81,6 +84,20 @@ public class ScoreboardMapper {
       case ENDED -> GameStatusJpa.ENDED;
       case STARTED -> GameStatusJpa.STARTED;
       case CREATED -> GameStatusJpa.CREATED;
+    };
+  }
+
+  private ScoreboardStatus toDomain(ScoreboardStatusJpa jpa) {
+    return switch (jpa) {
+      case LOCKED -> ScoreboardStatus.LOCKED;
+      case OPEN -> ScoreboardStatus.OPEN;
+    };
+  }
+
+  private ScoreboardStatusJpa toPersistence(ScoreboardStatus status) {
+    return switch (status) {
+      case LOCKED -> ScoreboardStatusJpa.LOCKED;
+      case OPEN -> ScoreboardStatusJpa.OPEN;
     };
   }
 

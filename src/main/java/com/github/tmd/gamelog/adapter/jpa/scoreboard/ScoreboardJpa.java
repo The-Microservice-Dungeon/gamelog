@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -39,4 +41,8 @@ public class ScoreboardJpa {
 
   @ElementCollection
   private Set<RoundScoreJpa> scores = new HashSet<>();
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "scoreboard_status")
+  private ScoreboardStatusJpa status;
 }

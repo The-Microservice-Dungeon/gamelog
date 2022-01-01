@@ -14,6 +14,7 @@ import com.github.tmd.gamelog.domain.scoreboard.model.Round.RoundId;
 import com.github.tmd.gamelog.domain.scoreboard.model.RoundScore;
 import com.github.tmd.gamelog.domain.scoreboard.model.Scoreboard;
 import com.github.tmd.gamelog.domain.scoreboard.model.Scoreboard.ScoreboardId;
+import com.github.tmd.gamelog.domain.scoreboard.model.ScoreboardStatus;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -45,7 +46,8 @@ class ScoreboardMapperTest {
         new ScoreboardId(UUID.fromString("de275ef4-85bc-4b24-a3d1-ee75dcffd96d")),
         new Game(new GameId(UUID.fromString("230611f2-31c7-46a3-91dc-3b43f2959c0f")),
             Set.of(round0, round1)),
-        scores
+        scores,
+        ScoreboardStatus.LOCKED
     );
 
     // When
@@ -68,6 +70,7 @@ class ScoreboardMapperTest {
             tuple(UUID.fromString("20d7264c-954d-4964-afbb-59bdbfe60b2d"), UUID.fromString("8f5edc35-8791-4c38-950c-07dab2763c83"), 1),
             tuple(UUID.fromString("dfd4527c-8b5c-4adb-b7ec-6971218feb29"), UUID.fromString("8f5edc35-8791-4c38-950c-07dab2763c83"), 1)
         );
+    assertThat(jpa.getStatus()).isEqualTo(ScoreboardStatusJpa.LOCKED);
   }
 
   @Test
@@ -88,7 +91,7 @@ class ScoreboardMapperTest {
         new RoundScoreJpa(player1, round1)
     );
 
-    var scoreboardJpa = new ScoreboardJpa(UUID.fromString("de275ef4-85bc-4b24-a3d1-ee75dcffd96d"), gameJpa, scores);
+    var scoreboardJpa = new ScoreboardJpa(UUID.fromString("de275ef4-85bc-4b24-a3d1-ee75dcffd96d"), gameJpa, scores, ScoreboardStatusJpa.LOCKED);
 
     // When
     var scoreboard = this.scoreboardMapper.toDomain(scoreboardJpa);
@@ -120,5 +123,6 @@ class ScoreboardMapperTest {
         .containsExactlyInAnyOrder(
             tuple(UUID.fromString("63e9b601-1cc9-4759-878a-ff32335bc7bd"), 0),
             tuple(UUID.fromString("8f5edc35-8791-4c38-950c-07dab2763c83"), 1));
+    assertThat(scoreboard.getStatus()).isEqualTo(ScoreboardStatus.LOCKED);
   }
 }
