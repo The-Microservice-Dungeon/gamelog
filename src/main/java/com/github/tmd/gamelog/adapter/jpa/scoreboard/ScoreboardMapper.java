@@ -101,7 +101,7 @@ public class ScoreboardMapper {
     return playerSetMap.entrySet().stream()
         .flatMap(entry -> entry.getValue()
             .stream()
-            .map(r -> new RoundScoreJpa(playerMapper.toPersistence(entry.getKey()), toPersistence(r.getRound())))
+            .map(r -> new RoundScoreJpa(playerMapper.toPersistence(entry.getKey()), toPersistence(r.round())))
         )
         .collect(Collectors.toSet());
   }
