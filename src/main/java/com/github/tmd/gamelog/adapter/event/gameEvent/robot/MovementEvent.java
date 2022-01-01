@@ -15,9 +15,3 @@ public record MovementEvent(
 
 }
 
-record MovementEventPlanet(
-    @JsonProperty("planetId") UUID planetId,
-    @JsonProperty("movementDifficulty") Integer movementDifficulty,
-    @JsonProperty("planetType") String planetType,
-    @JsonProperty("resourceType") String resourceType
-) {}
