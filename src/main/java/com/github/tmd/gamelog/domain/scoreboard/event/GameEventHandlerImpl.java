@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.domain.scoreboard.event;
 
 import com.github.tmd.gamelog.domain.scoreboard.service.AddRoundToScoreboardService;
 import com.github.tmd.gamelog.domain.scoreboard.service.InitializeScoreboardService;
+import com.github.tmd.gamelog.domain.scoreboard.service.LockScoreboardService;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,15 @@ import org.springframework.stereotype.Service;
 public class GameEventHandlerImpl implements GameEventHandler {
   private final InitializeScoreboardService initializeScoreboardService;
   private final AddRoundToScoreboardService addRoundToScoreboardService;
+  private final LockScoreboardService lockScoreboardService;
 
   public GameEventHandlerImpl(
       InitializeScoreboardService initializeScoreboardService,
-      AddRoundToScoreboardService addRoundToScoreboardService) {
+      AddRoundToScoreboardService addRoundToScoreboardService,
+      LockScoreboardService lockScoreboardService) {
     this.initializeScoreboardService = initializeScoreboardService;
     this.addRoundToScoreboardService = addRoundToScoreboardService;
+    this.lockScoreboardService = lockScoreboardService;
   }
 
 
@@ -25,6 +29,13 @@ public class GameEventHandlerImpl implements GameEventHandler {
     log.info("Receieved event to initialize scoreboard for event {}", gameId);
     var scoreboard = initializeScoreboardService.initializeScoreboard(gameId);
     log.info("Initialized scoreboard with id {}, value: {}", scoreboard.getScoreboardId().id(), scoreboard);
+  }
+
+  @Override
+  public void onEndGame(UUID gameId) {
+    log.info("Receieved end game with id {} event", gameId);
+    var scoreboard = lockScoreboardService.lockScoreboard(gameId);
+    log.info("Locked scoreboard with id {}, value: {}", scoreboard.getScoreboardId().id(), scoreboard);
   }
 
   @Override

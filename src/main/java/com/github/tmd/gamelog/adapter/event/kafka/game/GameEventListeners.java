@@ -28,6 +28,7 @@ public class GameEventListeners {
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, MessageHeaders headers) {
     switch (event.status()) {
       case STARTED -> gameEventHandler.onCreateGame(event.gameId());
+      case ENDED -> gameEventHandler.onEndGame(event.gameId());
     }
   }
 
