@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * History of trading events
@@ -21,6 +23,7 @@ import org.springframework.data.annotation.CreatedDate;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class TradingHistoryJpa {
   @Id
   @Column(name = "id", updatable = false, nullable = false)
