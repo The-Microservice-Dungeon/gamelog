@@ -5,6 +5,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEv
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.application.service.GameHistoryService;
 import com.github.tmd.gamelog.application.service.RobotHistoryService;
+import com.github.tmd.gamelog.application.service.TradingHistoryService;
 import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
 import com.github.tmd.gamelog.application.handler.GameEventHandler;
 import java.time.ZonedDateTime;
@@ -20,16 +21,19 @@ public class GameEventListeners {
   private final GameEventHandler gameEventHandler;
   private final GameHistoryService gameHistoryService;
   private final RobotHistoryService robotHistoryService;
+  private final TradingHistoryService tradingHistoryService;
 
   @Autowired
   public GameEventListeners(PlayerEventHandler playerEventHandler,
       GameEventHandler scoreboardEventHandler,
       GameHistoryService gameHistoryService,
-      RobotHistoryService robotHistoryService) {
+      RobotHistoryService robotHistoryService,
+      TradingHistoryService tradingHistoryService) {
     this.playerEventHandler = playerEventHandler;
     this.gameEventHandler = scoreboardEventHandler;
     this.gameHistoryService = gameHistoryService;
     this.robotHistoryService = robotHistoryService;
+    this.tradingHistoryService = tradingHistoryService;
   }
   
   @KafkaListener(topics = "status")
@@ -64,9 +68,13 @@ public class GameEventListeners {
       case STARTED -> gameEventHandler.onStartRound(event.gameId(), event.roundId(), event.roundNumber());
       case ENDED -> {
         // TODO: Well this could take a loooooong time
+        // TODO: Multiple synchronous calls
         for(var player : gameHistoryService.getAllParticipatingPlayersInGame(event.gameId())) {
           this.robotHistoryService.insertRobotRoundHistoryForPlayer(event.roundId(), player);
         }
+
+        this.tradingHistoryService.insertBalanceHistory(event.roundId());
+
         gameEventHandler.onEndRound(event.gameId(), event.roundId(), event.roundNumber());
       }
     }

@@ -1,22 +1,42 @@
 package com.github.tmd.gamelog.application.service;
 
+import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
+import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpaRepository;
+import com.github.tmd.gamelog.adapter.rest_client.client.TradingRestClient;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TradingHistoryService {
   private final TradingHistoryJpaRepository tradingHistoryJpaRepository;
+  private final PlayerBalanceHistoryJpaRepository playerBalanceHistoryJpaRepository;
+  private final TradingRestClient tradingRestClient;
 
   @Autowired
   public TradingHistoryService(
-      TradingHistoryJpaRepository tradingHistoryJpaRepository) {
+      TradingHistoryJpaRepository tradingHistoryJpaRepository,
+      PlayerBalanceHistoryJpaRepository playerBalanceHistoryJpaRepository,
+      TradingRestClient tradingRestClient) {
     this.tradingHistoryJpaRepository = tradingHistoryJpaRepository;
+    this.playerBalanceHistoryJpaRepository = playerBalanceHistoryJpaRepository;
+    this.tradingRestClient = tradingRestClient;
   }
 
   public void insertTradingHistory(UUID transactionId, Integer moneyChangeAmount) {
     this.tradingHistoryJpaRepository.save(new TradingHistoryJpa(transactionId, moneyChangeAmount));
+  }
+
+  @Transactional
+  public void insertBalanceHistory(UUID roundId) {
+    // Round ID unused however
+    var result = this.tradingRestClient.getAllPlayersAccountBalances()
+        .stream().map(r -> new PlayerBalanceHistoryJpa(r.playerId(), r.balance()))
+        .collect(Collectors.toSet());
+    this.playerBalanceHistoryJpaRepository.saveAll(result);
   }
 }
