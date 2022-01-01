@@ -56,7 +56,7 @@ public class GameEventHandlerImpl implements GameEventHandler {
   @Override
   public void onEndRound(UUID gameId, UUID roundId, Integer roundNumber) {
     log.info("Receieved end round with id {} event in game {}", roundId, gameId);
-    this.commandHistoryService.getAndSaveAllExecutedCommandsInRound(gameId, roundNumber);
+    this.commandHistoryService.insertExecutedCommandsHistory(gameId, roundNumber);
     var scoreboard = this.roundScoreAggregator.aggregate(gameId, roundId);
     log.info("Aggregated round scores to scoreboard, value: {}", scoreboard);
   }

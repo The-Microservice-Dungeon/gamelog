@@ -81,7 +81,7 @@ class CommandHistoryServiceTest {
     );
 
     // When
-    this.commandHistoryService.getAndSaveAllExecutedCommandsInRound(gameId, roundNumber);
+    this.commandHistoryService.insertExecutedCommandsHistory(gameId, roundNumber);
 
     // Then
     var commands = this.commandHistoryJpaRepository.findAll();

@@ -3,7 +3,6 @@ package com.github.tmd.gamelog.application.service;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.LobbyAction;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatus;
-import com.github.tmd.gamelog.adapter.event.gameEvent.map.ResourceType;
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GamePlayerStatusHistoryJpa;
@@ -15,14 +14,9 @@ import com.github.tmd.gamelog.adapter.jpa.history.game.GameRoundStatusJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusJpa;
-import com.github.tmd.gamelog.adapter.jpa.history.robot.FightHistoryJpa;
-import com.github.tmd.gamelog.adapter.jpa.history.robot.MiningHistoryJpa;
-import com.github.tmd.gamelog.adapter.jpa.history.robot.MiningHistoryResourceJpa;
-import com.github.tmd.gamelog.adapter.jpa.history.robot.MovementHistoryJpa;
 import com.github.tmd.gamelog.adapter.rest_client.client.GameRestClient;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +43,7 @@ public class GameHistoryService {
   }
 
   @Transactional
-  public void getAndSaveAllExecutedCommandsInRound(UUID gameId, Integer roundNumber) {
+  public void insertExecutedCommandsHistory(UUID gameId, Integer roundNumber) {
     var res = gameRestClient.getRoundCommands(gameId, roundNumber);
     var executedCommands = res
         .commands()
