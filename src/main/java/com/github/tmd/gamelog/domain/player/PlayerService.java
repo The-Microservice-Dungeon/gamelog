@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.domain.player;
 
 import com.github.tmd.gamelog.domain.player.Player.PlayerId;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class PlayerService {
     this.playerRepository = playerRepository;
   }
 
+  @Transactional
   public Player registerPlayer(UUID playerId, String username) {
     var foundPlayer = playerRepository.findById(playerId);
 
