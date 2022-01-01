@@ -21,17 +21,22 @@ public class Scoreboard {
   @Setter(AccessLevel.NONE)
   private ScoreboardStatus status = ScoreboardStatus.OPEN;
 
-  public void addRoundScore(Player player, RoundScore score) {
+  public void addRoundScore(Player player, UUID roundId) {
     if(status == ScoreboardStatus.LOCKED) throw new RuntimeException("Cannot update locked scoreboard");
+
+    var round = this.game.getRounds().stream()
+        .filter(r -> r.getRoundId().roundId().equals(roundId))
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("Round is not registered in game"));
 
     var existingRoundScores = roundScores.getOrDefault(player, Set.of());
     var isRoundScoreAlreadySet = existingRoundScores
-        .stream().anyMatch(rs -> rs.round().equals(score.round()));
+        .stream().anyMatch(rs -> rs.round().equals(roundId));
 
     if(isRoundScoreAlreadySet) throw new RuntimeException("Cannot update score, it is fixed once its set");
 
     var newRoundScores = new HashSet<>(existingRoundScores);
-    newRoundScores.add(score);
+    newRoundScores.add(new RoundScore(round));
 
     this.roundScores.put(player, Set.copyOf(newRoundScores));
   }
