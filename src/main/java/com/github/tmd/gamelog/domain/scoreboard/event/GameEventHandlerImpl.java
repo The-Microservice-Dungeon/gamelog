@@ -1,6 +1,7 @@
 package com.github.tmd.gamelog.domain.scoreboard.event;
 
 import com.github.tmd.gamelog.domain.scoreboard.service.AddRoundToScoreboardService;
+import com.github.tmd.gamelog.domain.scoreboard.service.AggregateRoundScoresService;
 import com.github.tmd.gamelog.domain.scoreboard.service.InitializeScoreboardService;
 import com.github.tmd.gamelog.domain.scoreboard.service.LockScoreboardService;
 import java.util.UUID;
@@ -13,14 +14,17 @@ public class GameEventHandlerImpl implements GameEventHandler {
   private final InitializeScoreboardService initializeScoreboardService;
   private final AddRoundToScoreboardService addRoundToScoreboardService;
   private final LockScoreboardService lockScoreboardService;
+  private final AggregateRoundScoresService roundScoreAggregator;
 
   public GameEventHandlerImpl(
       InitializeScoreboardService initializeScoreboardService,
       AddRoundToScoreboardService addRoundToScoreboardService,
-      LockScoreboardService lockScoreboardService) {
+      LockScoreboardService lockScoreboardService,
+      AggregateRoundScoresService roundScoreAggregator) {
     this.initializeScoreboardService = initializeScoreboardService;
     this.addRoundToScoreboardService = addRoundToScoreboardService;
     this.lockScoreboardService = lockScoreboardService;
+    this.roundScoreAggregator = roundScoreAggregator;
   }
 
 
@@ -48,7 +52,7 @@ public class GameEventHandlerImpl implements GameEventHandler {
   @Override
   public void onEndRound(UUID gameId, UUID roundId) {
     log.info("Receieved end round with id {} event in game {}", roundId, gameId);
-
-    // When the round ended perform synchronous calls, command resolution, ...
+    var scoreboard = this.roundScoreAggregator.aggregate(gameId, roundId);
+    log.info("Aggregated round scores to scoreboard, value: {}", scoreboard);
   }
 }
