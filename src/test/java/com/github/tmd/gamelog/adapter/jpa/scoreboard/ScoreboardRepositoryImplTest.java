@@ -16,6 +16,7 @@ import com.github.tmd.gamelog.domain.scoreboard.model.RoundScore;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 //@ActiveProfiles("h2")
+@Transactional
 class ScoreboardRepositoryImplTest {
 
   @Autowired
