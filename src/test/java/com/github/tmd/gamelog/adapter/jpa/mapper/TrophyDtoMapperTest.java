@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TrophyDtoMapperTest {
 
+    private final long defaultId = 1;
     private final String defaultName = "First Blood";
 
     private TrophyDtoMapper trophyDtoMapper;
@@ -23,16 +24,17 @@ public class TrophyDtoMapperTest {
 
     @Test
     void testMapEntityToDto() {
-        Trophy trophyEntity = new Trophy(defaultName);
+        Trophy trophyEntity = new Trophy(defaultId, defaultName);
         TrophyDto trophyDto = trophyDtoMapper.mapEntityToDto(trophyEntity);
+        assertThat(trophyDto.getId()).isEqualTo(defaultId);
         assertThat(trophyDto.getName()).isEqualTo(defaultName);
     }
 
     @Test
     void testMapDtoToEntity() {
-        TrophyDto trophyDto = new TrophyDto();
-        trophyDto.setName(defaultName);
+        TrophyDto trophyDto = new TrophyDto(defaultId, defaultName);
         Trophy trophy = trophyDtoMapper.mapDtoToEntity(trophyDto);
+        assertThat(trophy.getId()).isEqualTo(defaultId);
         assertThat(trophy.getName()).isEqualTo(defaultName);
     }
 

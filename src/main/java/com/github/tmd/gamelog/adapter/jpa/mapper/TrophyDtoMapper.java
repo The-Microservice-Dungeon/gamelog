@@ -11,13 +11,12 @@ import org.springframework.stereotype.Component;
 public class TrophyDtoMapper {
 
     public TrophyDto mapEntityToDto(Trophy trophyEntity) {
-        TrophyDto trophyDto = new TrophyDto();
-        trophyDto.setName(trophyEntity.getName());
+        TrophyDto trophyDto = new TrophyDto(trophyEntity.getId(), trophyEntity.getName());
         return trophyDto;
     }
 
     public Trophy mapDtoToEntity(TrophyDto trophyDto) {
-        Trophy trophy = new Trophy(trophyDto.getName());
+        Trophy trophy = new Trophy(trophyDto.getId(), trophyDto.getName());
         return trophy;
     }
 }
