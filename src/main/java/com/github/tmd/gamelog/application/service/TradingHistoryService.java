@@ -8,10 +8,12 @@ import com.github.tmd.gamelog.adapter.rest_client.client.TradingRestClient;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class TradingHistoryService {
   private final TradingHistoryJpaRepository tradingHistoryJpaRepository;
   private final PlayerBalanceHistoryJpaRepository playerBalanceHistoryJpaRepository;
@@ -31,12 +33,21 @@ public class TradingHistoryService {
     this.tradingHistoryJpaRepository.save(new TradingHistoryJpa(transactionId, moneyChangeAmount));
   }
 
+  /**
+   *
+   * @throws RuntimeException if a error occurs in the synchronous call
+   */
   @Transactional
   public void insertBalanceHistory(UUID roundId) {
     // Round ID unused however
-    var result = this.tradingRestClient.getAllPlayersAccountBalances()
-        .stream().map(r -> new PlayerBalanceHistoryJpa(r.playerId(), r.balance()))
-        .collect(Collectors.toSet());
-    this.playerBalanceHistoryJpaRepository.saveAll(result);
+    try {
+      var result = this.tradingRestClient.getAllPlayersAccountBalances()
+          .stream().map(r -> new PlayerBalanceHistoryJpa(r.playerId(), r.balance()))
+          .collect(Collectors.toSet());
+      this.playerBalanceHistoryJpaRepository.saveAll(result);
+    } catch (RuntimeException e) {
+      log.error("Could not load balances", e);
+      throw e;
+    }
   }
 }

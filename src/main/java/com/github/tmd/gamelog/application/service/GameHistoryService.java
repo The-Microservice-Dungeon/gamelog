@@ -19,9 +19,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class GameHistoryService {
 
   private final CommandHistoryJpaRepository commandHistoryJpaRepository;
@@ -47,15 +49,24 @@ public class GameHistoryService {
     return gamePlayerStatusHistoryJpaRepository.findAllParticipatingPlayersInGame(gameId);
   }
 
+  /**
+   *
+   * @throws RuntimeException if a error occurs in the synchronous call
+   */
   @Transactional
   public void insertExecutedCommandsHistory(UUID gameId, Integer roundNumber) {
-    var res = gameRestClient.getRoundCommands(gameId, roundNumber);
-    var executedCommands = res
-        .commands()
-        .stream().map(ec -> new CommandHistoryJpa(ec.transactionId(), ec.gameId(), res.roundId(),
-            ec.playerId()))
-        .collect(Collectors.toSet());
-    this.commandHistoryJpaRepository.saveAll(executedCommands);
+    try {
+      var res = gameRestClient.getRoundCommands(gameId, roundNumber);
+      var executedCommands = res
+          .commands()
+          .stream().map(ec -> new CommandHistoryJpa(ec.transactionId(), ec.gameId(), res.roundId(),
+              ec.playerId()))
+          .collect(Collectors.toSet());
+      this.commandHistoryJpaRepository.saveAll(executedCommands);
+    } catch (RuntimeException e) {
+      log.error("Could not load round commands", e);
+      throw e;
+    }
   }
 
   @Transactional
