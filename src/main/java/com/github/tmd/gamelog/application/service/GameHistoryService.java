@@ -15,6 +15,9 @@ import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameStatusJpa;
 import com.github.tmd.gamelog.adapter.rest_client.client.GameRestClient;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.Temporal;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -70,23 +73,23 @@ public class GameHistoryService {
   }
 
   @Transactional
-  public void insertGamePlayerStatusHistory(UUID gameId, UUID playerId, String userName, LobbyAction status) {
+  public void insertGamePlayerStatusHistory(UUID gameId, UUID playerId, String userName, LobbyAction status, Temporal timestamp) {
     this.gamePlayerStatusHistoryJpaRepository.save(
         new GamePlayerStatusHistoryJpa(gameId, playerId, userName,
-            GamePlayerStatusJpa.fromLobbyAction(status)));
+            GamePlayerStatusJpa.fromLobbyAction(status), Instant.from(timestamp)));
   }
 
   @Transactional
   public void insertGameRoundStatusHistory(UUID gameId, UUID roundId, Integer roundNumber,
-      RoundStatus roundStatus) {
+      RoundStatus roundStatus, Temporal timestamp) {
     this.gameRoundStatusHistoryJpaRepository.save(
         new GameRoundStatusHistoryJpa(gameId, roundId, roundNumber,
-            GameRoundStatusJpa.fromRoundStatus(roundStatus)));
+            GameRoundStatusJpa.fromRoundStatus(roundStatus), Instant.from(timestamp)));
   }
 
   @Transactional
-  public void insertGameStatusHistory(UUID gameId, GameStatus gameStatus) {
+  public void insertGameStatusHistory(UUID gameId, GameStatus gameStatus, Temporal timestamp) {
     this.gameStatusHistoryJpaRepository.save(
-        new GameStatusHistoryJpa(gameId, GameStatusJpa.fromGameStatus(gameStatus)));
+        new GameStatusHistoryJpa(gameId, GameStatusJpa.fromGameStatus(gameStatus), Instant.from(timestamp)));
   }
 }

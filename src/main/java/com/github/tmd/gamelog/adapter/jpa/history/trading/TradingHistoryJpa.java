@@ -39,6 +39,10 @@ public class TradingHistoryJpa {
   @Column(name = "money_change_amount", updatable = false, nullable = false)
   private Integer moneyChange;
 
+  @NonNull
+  @Column(name = "timestamp", nullable = false, updatable = false)
+  private Instant timestamp;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;

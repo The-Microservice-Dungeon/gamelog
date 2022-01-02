@@ -44,6 +44,10 @@ public class GameRoundStatusHistoryJpa {
   @Column(name = "status", updatable = false, nullable = false)
   private GameRoundStatusJpa status;
 
+  @NonNull
+  @Column(name = "timestamp", nullable = false, updatable = false)
+  private Instant timestamp;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;

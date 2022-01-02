@@ -44,6 +44,10 @@ public class MiningHistoryJpa {
   @Column(name = "mined_resource", updatable = false, nullable = false)
   private MiningHistoryResourceJpa resourceJpa;
 
+  @NonNull
+  @Column(name = "timestamp", nullable = false, updatable = false)
+  private Instant timestamp;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;

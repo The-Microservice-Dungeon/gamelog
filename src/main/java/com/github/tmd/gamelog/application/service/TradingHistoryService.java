@@ -5,6 +5,8 @@ import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJp
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest_client.client.TradingRestClient;
+import java.time.Instant;
+import java.time.temporal.Temporal;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -29,8 +31,8 @@ public class TradingHistoryService {
     this.tradingRestClient = tradingRestClient;
   }
 
-  public void insertTradingHistory(UUID transactionId, Integer moneyChangeAmount) {
-    this.tradingHistoryJpaRepository.save(new TradingHistoryJpa(transactionId, moneyChangeAmount));
+  public void insertTradingHistory(UUID transactionId, Integer moneyChangeAmount, Temporal timestamp) {
+    this.tradingHistoryJpaRepository.save(new TradingHistoryJpa(transactionId, moneyChangeAmount, Instant.from(timestamp)));
   }
 
   /**

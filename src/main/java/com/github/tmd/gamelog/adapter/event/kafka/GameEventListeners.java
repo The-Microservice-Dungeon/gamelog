@@ -8,6 +8,7 @@ import com.github.tmd.gamelog.application.service.RobotHistoryService;
 import com.github.tmd.gamelog.application.service.TradingHistoryService;
 import com.github.tmd.gamelog.domain.player.PlayerEventHandler;
 import com.github.tmd.gamelog.application.handler.GameEventHandler;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -39,7 +40,8 @@ public class GameEventListeners {
   @KafkaListener(topics = "status")
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, MessageHeaders headers) {
 
-    gameHistoryService.insertGameStatusHistory(event.gameId(), event.status());
+    var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+    gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
 
     switch (event.status()) {
       case STARTED -> gameEventHandler.onCreateGame(event.gameId());
@@ -51,7 +53,8 @@ public class GameEventListeners {
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
       MessageHeaders headers) {
 
-    gameHistoryService.insertGamePlayerStatusHistory(event.gameId(), event.userId(), event.userName(), event.lobbyAction());
+    var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+    gameHistoryService.insertGamePlayerStatusHistory(event.gameId(), event.userId(), event.userName(), event.lobbyAction(), timestamp);
 
     switch (event.lobbyAction()) {
       case JOINED -> playerEventHandler.onPlayerRegister(event.userId(), event.userName(), ZonedDateTime.now());
@@ -62,7 +65,8 @@ public class GameEventListeners {
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
       MessageHeaders headers) {
 
-    gameHistoryService.insertGameRoundStatusHistory(event.gameId(), event.roundId(), event.roundNumber(), event.roundStatus());
+    var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+    gameHistoryService.insertGameRoundStatusHistory(event.gameId(), event.roundId(), event.roundNumber(), event.roundStatus(), timestamp);
 
     switch (event.roundStatus()) {
       case STARTED -> gameEventHandler.onStartRound(event.gameId(), event.roundId(), event.roundNumber());

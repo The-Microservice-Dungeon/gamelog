@@ -11,6 +11,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RepairItemUsedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.ResourceDistributionEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RobotDestroyedEvent;
 import com.github.tmd.gamelog.application.service.RobotHistoryService;
+import java.time.Instant;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
@@ -32,8 +33,9 @@ public class RobotEventListeners {
   public void movementEvent(@Payload MovementEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
+      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
       robotHistoryService.insertMovementHistory(transactionId, event.robots(), event.planet()
-          .planetId(), event.planet().movementDifficulty());
+          .planetId(), event.planet().movementDifficulty(), timestamp);
     }
   }
 
@@ -41,7 +43,8 @@ public class RobotEventListeners {
   public void planetBlockedEvent(@Payload PlanetBlockedEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId());
+      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId(), timestamp);
     }
   }
 
@@ -49,7 +52,8 @@ public class RobotEventListeners {
   public void miningEvent(@Payload MiningEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(), event.resourceType());
+      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(), event.resourceType(), timestamp);
     }
   }
 
@@ -57,8 +61,9 @@ public class RobotEventListeners {
   public void fightingEvent(@Payload FightingEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
+      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
       robotHistoryService.insertFightHistory(transactionId, event.attacker(), event.defender(),
-          event.remainingDefenderHealth());
+          event.remainingDefenderHealth(), timestamp);
     }
   }
 

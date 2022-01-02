@@ -50,6 +50,10 @@ public class MovementHistoryJpa {
   @Column(name = "movement_difficulty", updatable = false, nullable = false)
   private Integer movementDifficulty;
 
+  @NonNull
+  @Column(name = "timestamp", nullable = false, updatable = false)
+  private Instant timestamp;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;

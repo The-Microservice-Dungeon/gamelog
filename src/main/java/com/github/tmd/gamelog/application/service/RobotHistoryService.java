@@ -13,6 +13,8 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRep
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
+import java.time.Instant;
+import java.time.temporal.Temporal;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -48,28 +50,28 @@ public class RobotHistoryService {
 
   @Transactional
   public void insertFightHistory(UUID transactionId, UUID attacker, UUID defender,
-      Integer defenderHealth) {
+      Integer defenderHealth, Temporal timestamp) {
     this.fightHistoryJpaRepository.save(
-        new FightHistoryJpa(transactionId, attacker, defender, defenderHealth));
+        new FightHistoryJpa(transactionId, attacker, defender, defenderHealth, Instant.from(timestamp)));
   }
 
   @Transactional
-  public void insertMiningHistory(UUID transactionId, Integer minedAmount, ResourceType type) {
+  public void insertMiningHistory(UUID transactionId, Integer minedAmount, ResourceType type, Temporal timestamp) {
     this.miningHistoryJpaRepository.save(new MiningHistoryJpa(transactionId, minedAmount,
-        MiningHistoryResourceJpa.fromResourceType(type)));
+        MiningHistoryResourceJpa.fromResourceType(type), Instant.from(timestamp)));
   }
 
   @Transactional
   public void insertMovementHistory(UUID transactionId, Iterable<UUID> robots, UUID planetId,
-      Integer movementDifficulty) {
+      Integer movementDifficulty, Temporal timestamp) {
     this.movementHistoryJpaRepository.save(new MovementHistoryJpa(transactionId,
         StreamSupport.stream(robots.spliterator(), false).collect(
-            Collectors.toSet()), planetId, movementDifficulty));
+            Collectors.toSet()), planetId, movementDifficulty, Instant.from(timestamp)));
   }
 
   @Transactional
-  public void insertPlanetBlockHistory(UUID transactionId, UUID planetId) {
-    this.planetBlockHistoryJpaRepository.save(new PlanetBlockHistoryJpa(transactionId, planetId));
+  public void insertPlanetBlockHistory(UUID transactionId, UUID planetId, Temporal timestamp) {
+    this.planetBlockHistoryJpaRepository.save(new PlanetBlockHistoryJpa(transactionId, planetId, Instant.from(timestamp)));
   }
 
   // TODO: Well this could take a loooooong time

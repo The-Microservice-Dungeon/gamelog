@@ -5,6 +5,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEv
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
 import com.github.tmd.gamelog.application.service.TradingHistoryService;
+import java.time.Instant;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
@@ -25,7 +26,8 @@ public class TradingEventListeners {
   public void tradingEvent(@Payload TradingEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      this.tradingHistoryService.insertTradingHistory(transactionId, event.amount());
+      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      this.tradingHistoryService.insertTradingHistory(transactionId, event.amount(), timestamp);
     }
   }
 

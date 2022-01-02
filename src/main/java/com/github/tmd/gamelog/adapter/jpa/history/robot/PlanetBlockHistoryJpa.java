@@ -38,6 +38,10 @@ public class PlanetBlockHistoryJpa {
   @Column(name = "planetId", updatable = false, nullable = false)
   private UUID planetId;
 
+  @NonNull
+  @Column(name = "timestamp", nullable = false, updatable = false)
+  private Instant timestamp;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;

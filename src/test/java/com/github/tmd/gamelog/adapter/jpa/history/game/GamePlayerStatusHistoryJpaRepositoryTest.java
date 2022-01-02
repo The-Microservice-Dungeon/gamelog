@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.adapter.jpa.history.game;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.Instant;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,18 +31,18 @@ class GamePlayerStatusHistoryJpaRepositoryTest {
     var player3Name = "player3";
 
     // Player 1 joins game and stays
-    var p0  = new GamePlayerStatusHistoryJpa(game1Id, player1Id, player1Name, GamePlayerStatusJpa.LEFT);
+    var p0  = new GamePlayerStatusHistoryJpa(game1Id, player1Id, player1Name, GamePlayerStatusJpa.LEFT, Instant.now());
 
     // Player 2 joins, then leaves - also he registers for game 2
-    var p1  = new GamePlayerStatusHistoryJpa(game1Id, player2Id, player2Name, GamePlayerStatusJpa.JOINED);
-    var p2  = new GamePlayerStatusHistoryJpa(game1Id, player2Id, player2Name, GamePlayerStatusJpa.LEFT);
-    var p3  = new GamePlayerStatusHistoryJpa(game2Id, player2Id, player2Name, GamePlayerStatusJpa.JOINED);
+    var p1  = new GamePlayerStatusHistoryJpa(game1Id, player2Id, player2Name, GamePlayerStatusJpa.JOINED, Instant.now());
+    var p2  = new GamePlayerStatusHistoryJpa(game1Id, player2Id, player2Name, GamePlayerStatusJpa.LEFT, Instant.now());
+    var p3  = new GamePlayerStatusHistoryJpa(game2Id, player2Id, player2Name, GamePlayerStatusJpa.JOINED, Instant.now());
 
     // Player 3 joins, then leaves and joins back - also he registers for game 2
-    var p4  = new GamePlayerStatusHistoryJpa(game1Id, player3Id, player3Name, GamePlayerStatusJpa.JOINED);
-    var p5  = new GamePlayerStatusHistoryJpa(game1Id, player3Id, player3Name, GamePlayerStatusJpa.LEFT);
-    var p6  = new GamePlayerStatusHistoryJpa(game1Id, player3Id, player3Name, GamePlayerStatusJpa.JOINED);
-    var p7  = new GamePlayerStatusHistoryJpa(game2Id, player3Id, player3Name, GamePlayerStatusJpa.JOINED);
+    var p4  = new GamePlayerStatusHistoryJpa(game1Id, player3Id, player3Name, GamePlayerStatusJpa.JOINED, Instant.now());
+    var p5  = new GamePlayerStatusHistoryJpa(game1Id, player3Id, player3Name, GamePlayerStatusJpa.LEFT, Instant.now());
+    var p6  = new GamePlayerStatusHistoryJpa(game1Id, player3Id, player3Name, GamePlayerStatusJpa.JOINED, Instant.now());
+    var p7  = new GamePlayerStatusHistoryJpa(game2Id, player3Id, player3Name, GamePlayerStatusJpa.JOINED, Instant.now());
 
     // Saving individual instead of saveAll() to maintain the creation timestamp
     gamePlayerStatusHistoryJpaRepository.save(p0);

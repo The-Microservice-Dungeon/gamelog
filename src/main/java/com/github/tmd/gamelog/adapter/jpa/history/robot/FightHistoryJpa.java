@@ -47,6 +47,10 @@ public class FightHistoryJpa {
   @Column(name = "defender_health", updatable = false, nullable = false)
   private Integer defenderHealth;
 
+  @NonNull
+  @Column(name = "timestamp", nullable = false, updatable = false)
+  private Instant timestamp;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;
