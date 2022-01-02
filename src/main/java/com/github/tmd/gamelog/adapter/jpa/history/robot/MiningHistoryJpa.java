@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,9 +31,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class MiningHistoryJpa {
   @Id
+  @Column(name = "id", updatable = false, nullable = false, unique = true)
+  private UUID id = UUID.randomUUID();
+
+  @NaturalId
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "transactionId", unique = true, updatable = false, nullable = false)
+  @Column(name = "transaction_id", unique = true, updatable = false, nullable = false)
   private UUID transactionId;
 
   @NonNull

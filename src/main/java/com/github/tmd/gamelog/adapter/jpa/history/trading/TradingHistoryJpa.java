@@ -32,7 +32,7 @@ public class TradingHistoryJpa {
 
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "transaction_id", updatable = false, nullable = false)
+  @Column(name = "transaction_id", unique = true, updatable = false, nullable = false)
   private UUID transactionId;
 
   @NonNull
