@@ -30,7 +30,7 @@ public class CommandHistoryJpa {
 
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "gameId_id", updatable = false, nullable = false)
+  @Column(name = "game_id", updatable = false, nullable = false)
   private UUID gameId;
 
   @NonNull

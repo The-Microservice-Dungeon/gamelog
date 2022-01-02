@@ -40,12 +40,12 @@ public class FightHistoryJpa {
 
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "attacker", updatable = false, nullable = false)
+  @Column(name = "attacker_id", updatable = false, nullable = false)
   private UUID attacker;
 
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "defender", updatable = false, nullable = false)
+  @Column(name = "defender_id", updatable = false, nullable = false)
   private UUID defender;
 
   @NonNull

@@ -55,7 +55,7 @@ public class RobotHistoryJpa {
   @NonNull
   @Type(type="uuid-char")
   @Column(name = "planet_id", updatable = false, nullable = false)
-  private UUID planet_id;
+  private UUID planetId;
 
   @NonNull
   @Column(name = "alive", updatable = false, nullable = false)

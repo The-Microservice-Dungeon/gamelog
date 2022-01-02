@@ -48,7 +48,7 @@ public class MovementHistoryJpa {
 
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "planetId", updatable = false, nullable = false)
+  @Column(name = "planet_id", updatable = false, nullable = false)
   private UUID planetId;
 
   @NonNull
