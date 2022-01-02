@@ -53,4 +53,15 @@ public class TradingHistoryService {
       throw e;
     }
   }
+
+  public Integer getPlayerBalanceInRound(UUID playerId, UUID roundId) {
+    return this.playerBalanceHistoryJpaRepository.findBalanceForPlayerInRound(playerId, roundId)
+        .map(PlayerBalanceHistoryJpa::getBalance)
+        .orElseThrow(() -> new RuntimeException("No Balance History for player with ID %s in round with ID %s found".formatted(playerId, roundId)));
+  }
+
+  public Integer getNumberOfTradesForPlayerInRound(UUID playerId, UUID roundId) {
+    return this.tradingHistoryJpaRepository.findTradingHistoryForPlayerInRound(playerId, roundId)
+        .size();
+  }
 }

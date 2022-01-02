@@ -11,7 +11,7 @@ public interface TradingHistoryJpaRepository extends CrudRepository<TradingHisto
     from TradingHistoryJpa pbh 
       join CommandHistoryJpa ch 
         on ch.transactionId = pbh.transactionId 
-    where ch.playerId = ?1 and ch.roundId = ?2
+     where ch.playerId = ?1 and ch.roundId = ?2
     """)
   Set<TradingHistoryJpa> findTradingHistoryForPlayerInRound(UUID playerId, UUID roundId);
 

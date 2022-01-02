@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class CommandHistoryJpa {
   @Id
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "transcation_id", updatable = false, nullable = false, unique = true)
   private UUID transactionId;
 

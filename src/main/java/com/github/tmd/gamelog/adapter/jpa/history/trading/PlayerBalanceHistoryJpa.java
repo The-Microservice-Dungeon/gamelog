@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"player_id", "assumed_round_id"})
+})
 public class PlayerBalanceHistoryJpa {
   @Id
   @Column(name = "id", updatable = false, nullable = false)
@@ -37,7 +42,7 @@ public class PlayerBalanceHistoryJpa {
 
   @NonNull
   @Column(name = "balance", updatable = false, nullable = false)
-  private Integer moneyChange;
+  private Integer balance;
 
   // Since we're performing a synchronous call at the end of a round to achieve this we cannot
   // be sure whether the retrieved state belongs to the correct round. We can only assume this.
