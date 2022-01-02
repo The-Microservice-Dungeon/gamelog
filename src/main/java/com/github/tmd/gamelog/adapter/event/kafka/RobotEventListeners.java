@@ -10,7 +10,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RegenerationEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RepairItemUsedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.ResourceDistributionEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RobotDestroyedEvent;
-import com.github.tmd.gamelog.application.service.RobotHistoryService;
+import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import java.time.Instant;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;

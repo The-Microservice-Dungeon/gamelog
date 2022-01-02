@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.service;
+package com.github.tmd.gamelog.application.history;
 
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpaRepository;

@@ -4,7 +4,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.trading.BankCreatedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
-import com.github.tmd.gamelog.application.service.TradingHistoryService;
+import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import java.time.Instant;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;

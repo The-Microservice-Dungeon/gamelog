@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.service;
+package com.github.tmd.gamelog.application.history;
 
 import com.github.tmd.gamelog.adapter.event.gameEvent.map.ResourceType;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.FightHistoryJpa;
