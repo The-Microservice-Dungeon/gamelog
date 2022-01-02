@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,14 +29,17 @@ public class CommandHistoryJpa {
   private UUID transactionId;
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "gameId_id", updatable = false, nullable = false)
   private UUID gameId;
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "round_id", updatable = false, nullable = false)
   private UUID roundId;
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "player_id", updatable = false, nullable = false)
   private UUID playerId;
 

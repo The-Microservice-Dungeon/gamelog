@@ -44,7 +44,7 @@ public class GameHistoryService {
   }
 
   public Set<UUID> getAllParticipatingPlayersInGame(UUID gameId) {
-    return gamePlayerStatusHistoryJpaRepository.getAllParticipatingPlayersInGame(gameId);
+    return gamePlayerStatusHistoryJpaRepository.findAllParticipatingPlayersInGame(gameId);
   }
 
   @Transactional

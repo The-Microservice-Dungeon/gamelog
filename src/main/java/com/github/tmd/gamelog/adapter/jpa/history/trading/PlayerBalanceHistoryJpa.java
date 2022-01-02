@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,8 +31,9 @@ public class PlayerBalanceHistoryJpa {
   private UUID id = UUID.randomUUID();
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "player_id", updatable = false, nullable = false)
-  private UUID transactionId;
+  private UUID playerId;
 
   @NonNull
   @Column(name = "balance", updatable = false, nullable = false)

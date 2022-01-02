@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,18 +38,22 @@ public class RobotHistoryJpa {
   private UUID id = UUID.randomUUID();
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "round_id", updatable = false, nullable = false)
   private UUID roundId;
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "robot_id", updatable = false, nullable = false)
   private UUID robotId;
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "player_id", updatable = false, nullable = false)
   private UUID playerId;
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "planet_id", updatable = false, nullable = false)
   private UUID planet_id;
 

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,6 +31,7 @@ public class TradingHistoryJpa {
   private UUID id = UUID.randomUUID();
 
   @NonNull
+  @Type(type="uuid-char")
   @Column(name = "transaction_id", updatable = false, nullable = false)
   private UUID transactionId;
 

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,20 +29,22 @@ public class GamePlayerStatusHistoryJpa {
   private UUID id = UUID.randomUUID();
 
   @NonNull
-  @Column(name = "game_id", updatable = false, nullable = false, unique = true)
+  @Type(type="uuid-char")
+  @Column(name = "game_id", updatable = false, nullable = false)
   private UUID gameId;
 
   @NonNull
-  @Column(name = "user_id", updatable = false, nullable = false, unique = true)
+  @Type(type="uuid-char")
+  @Column(name = "user_id", updatable = false, nullable = false)
   private UUID userId;
 
   @NonNull
-  @Column(name = "user_name", updatable = false, nullable = false, unique = true)
+  @Column(name = "user_name", updatable = false, nullable = false)
   private String userName;
 
   @NonNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "status", updatable = false, nullable = false, unique = true)
+  @Column(name = "status", updatable = false, nullable = false)
   private GamePlayerStatusJpa status;
 
   @CreatedDate
