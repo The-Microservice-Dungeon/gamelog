@@ -39,6 +39,14 @@ public class PlayerBalanceHistoryJpa {
   @Column(name = "balance", updatable = false, nullable = false)
   private Integer moneyChange;
 
+  // Since we're performing a synchronous call at the end of a round to achieve this we cannot
+  // be sure whether the retrieved state belongs to the correct round. We can only assume this.
+  // See TradingHistoryService for more details
+  @NonNull
+  @Type(type="uuid-char")
+  @Column(name = "assumed_round_id", updatable = false, nullable = false)
+  private UUID assumedRoundId;
+
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;

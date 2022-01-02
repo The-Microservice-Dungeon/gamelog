@@ -41,10 +41,11 @@ public class TradingHistoryService {
    */
   @Transactional
   public void insertBalanceHistory(UUID roundId) {
-    // Round ID unused however
     try {
+      // We cannot use the roundId to retrieve the player balances for a given round. However,
+      // we do can ASSUME that the results belong to the given round.
       var result = this.tradingRestClient.getAllPlayersAccountBalances()
-          .stream().map(r -> new PlayerBalanceHistoryJpa(r.playerId(), r.balance()))
+          .stream().map(r -> new PlayerBalanceHistoryJpa(r.playerId(), r.balance(), roundId))
           .collect(Collectors.toSet());
       this.playerBalanceHistoryJpaRepository.saveAll(result);
     } catch (RuntimeException e) {
