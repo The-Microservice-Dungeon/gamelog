@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.event.kafka.game;
+package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;

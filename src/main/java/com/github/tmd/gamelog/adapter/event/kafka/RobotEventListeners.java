@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.event.kafka.robot;
+package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingItemUseEvent;

@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.event.kafka.trading;
+package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.BankCreatedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;

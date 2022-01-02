@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.event.kafka.map;
+package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.event.gameEvent.map.GameworldCreatedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.map.PlanetExploredEvent;
