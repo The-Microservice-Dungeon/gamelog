@@ -8,6 +8,8 @@ import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
+import com.github.tmd.gamelog.adapter.jpa.dto.MovementScoreDto;
+import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

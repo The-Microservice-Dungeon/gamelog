@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa;
 
+import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.RoundScore;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreDto;
+import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.CommandContextRepository;

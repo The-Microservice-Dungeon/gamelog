@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.jpa;
+package com.github.tmd.gamelog.adapter.jpa.dto;
 
 import lombok.Data;
 import lombok.Getter;

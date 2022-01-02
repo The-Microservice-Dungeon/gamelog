@@ -2,6 +2,8 @@ package com.github.tmd.gamelog.adapter.jpa;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.github.tmd.gamelog.adapter.jpa.dto.MovementScoreDto;
+import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
 import com.github.tmd.gamelog.domain.RoundScore;
