@@ -5,6 +5,8 @@ import com.github.tmd.gamelog.adapter.jpa.TrophyRepository;
 import com.github.tmd.gamelog.adapter.jpa.mapper.TrophyDtoMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
@@ -13,8 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Unit Tests for class TrophyRepository.
  */
+@SpringBootTest
 public class TrophyRepositoryTest {
 
+    @Autowired
     private TrophyJpaRepository trophyJpaRepository;
 
     private TrophyDtoMapper trophyDtoMapper;
@@ -26,13 +30,9 @@ public class TrophyRepositoryTest {
         trophyRepository = new TrophyRepository(trophyJpaRepository, trophyDtoMapper);
     }
 
-    /**
-     * This Test doesn't work because the database connection isn't working atm.
-     * TODO: make sure that this test works as soon as database connection works.
-     */
     @Test
     void testUpsertAndFindAll() {
-        Trophy testTrophy = new Trophy("First Blood");
+        Trophy testTrophy = new Trophy(1, "First Blood");
         trophyRepository.upsert(testTrophy);
         ArrayList<Trophy> trophies = trophyRepository.findAll();
         assertThat(trophies).contains(testTrophy);
