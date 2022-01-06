@@ -11,11 +11,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TrophyTest {
 
     private final String defaultName = "First Blood";
+    private final String defaultBadgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
     private Trophy trophy;
 
     @BeforeEach
     void beforeEach() {
-        trophy = new Trophy(defaultName);
+        trophy = new Trophy(defaultName, defaultBadgeUrl);
     }
 
     @Test

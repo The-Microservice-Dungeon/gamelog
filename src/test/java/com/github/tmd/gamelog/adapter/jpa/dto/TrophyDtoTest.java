@@ -11,6 +11,7 @@ public class TrophyDtoTest {
 
     private final long defaultId = 1;
     private final String defaultName = "First Blood";
+    private final String defaultBadgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
     private TrophyDto trophyDto;
 
     @Test
@@ -22,7 +23,7 @@ public class TrophyDtoTest {
 
     @Test
     void testNewTrophyDto() {
-        trophyDto = new TrophyDto(defaultId, defaultName);
+        trophyDto = new TrophyDto(defaultId, defaultName, defaultBadgeUrl);
         assertThat(trophyDto.getId()).isEqualTo(defaultId);
         assertThat(trophyDto.getName()).isEqualTo(defaultName);
     }

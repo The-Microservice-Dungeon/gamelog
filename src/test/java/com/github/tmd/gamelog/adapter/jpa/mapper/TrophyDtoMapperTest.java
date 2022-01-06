@@ -14,6 +14,7 @@ public class TrophyDtoMapperTest {
 
     private final long defaultId = 1;
     private final String defaultName = "First Blood";
+    private final String defaultBadgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
 
     private TrophyDtoMapper trophyDtoMapper;
 
@@ -24,7 +25,7 @@ public class TrophyDtoMapperTest {
 
     @Test
     void testMapEntityToDto() {
-        Trophy trophyEntity = new Trophy(defaultId, defaultName);
+        Trophy trophyEntity = new Trophy(defaultId, defaultName, defaultBadgeUrl);
         TrophyDto trophyDto = trophyDtoMapper.mapEntityToDto(trophyEntity);
         assertThat(trophyDto.getId()).isEqualTo(defaultId);
         assertThat(trophyDto.getName()).isEqualTo(defaultName);
@@ -32,7 +33,7 @@ public class TrophyDtoMapperTest {
 
     @Test
     void testMapDtoToEntity() {
-        TrophyDto trophyDto = new TrophyDto(defaultId, defaultName);
+        TrophyDto trophyDto = new TrophyDto(defaultId, defaultName, defaultBadgeUrl);
         Trophy trophy = trophyDtoMapper.mapDtoToEntity(trophyDto);
         assertThat(trophy.getId()).isEqualTo(defaultId);
         assertThat(trophy.getName()).isEqualTo(defaultName);

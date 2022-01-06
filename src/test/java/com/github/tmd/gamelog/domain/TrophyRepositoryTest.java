@@ -24,6 +24,9 @@ public class TrophyRepositoryTest {
     private TrophyDtoMapper trophyDtoMapper;
     private TrophyRepository trophyRepository;
 
+    private final String name = "First Blood";
+    private final String badgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
+
     @BeforeEach
     void beforeEach() {
         trophyDtoMapper = new TrophyDtoMapper();
@@ -32,7 +35,7 @@ public class TrophyRepositoryTest {
 
     @Test
     void testUpsertAndFindAll() {
-        Trophy testTrophy = new Trophy(1, "First Blood");
+        Trophy testTrophy = new Trophy(1, name, badgeUrl);
         trophyRepository.upsert(testTrophy);
         ArrayList<Trophy> trophies = trophyRepository.findAll();
         assertThat(trophies).contains(testTrophy);

@@ -14,6 +14,7 @@ class PlayerTrophyDtoTest {
 
     private final long defaultTrophyId = 1;
     private final String defaultTrophyName = "First Blood";
+    private final String defaultTrophyBadgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
     private final String defaultPlayerId = "c6dcbdac-be0b-4de0-b50d-7870caa5f744";
     private final long defaultPlayerTrophyDtoId = 1;
     private PlayerTrophyDto playerTrophyDto;
@@ -32,13 +33,13 @@ class PlayerTrophyDtoTest {
 
     @Test
     void newPlayerTrophyDto() {
-        trophyDto = new TrophyDto(defaultTrophyId, defaultTrophyName);
+        trophyDto = new TrophyDto(defaultTrophyId, defaultTrophyName, defaultTrophyBadgeUrl);
         playerDto = new PlayerDto(defaultPlayerId);
         Date dateAwarded = new Date();
         isoTimestampStringAwarded = IsoTimestampConverter.dateToIsoTimestampString(dateAwarded);
         playerTrophyDto = new PlayerTrophyDto(defaultPlayerTrophyDtoId, trophyDto, playerDto, dateAwarded);
         assertThat(playerTrophyDto.getId()).isEqualTo(defaultPlayerTrophyDtoId);
-        assertThat(playerTrophyDto.getTrophyDto()).isEqualTo(new TrophyDto(defaultTrophyId, defaultTrophyName));
+        assertThat(playerTrophyDto.getTrophyDto()).isEqualTo(new TrophyDto(defaultTrophyId, defaultTrophyName, defaultTrophyBadgeUrl));
         assertThat(playerTrophyDto.getPlayerDtoAwardedTo()).isEqualTo(new PlayerDto(defaultPlayerId));
         assertThat(playerTrophyDto.getDateAwarded()).isEqualTo(IsoTimestampConverter.dateFromIsoTimestampString(isoTimestampStringAwarded));
     }
