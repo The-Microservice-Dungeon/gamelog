@@ -27,11 +27,15 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
     var wiremockUrl = "http://localhost:" + wireMockServer.port();
 
     TestPropertyValues
-        .of(Map.of("tmd.game-service-url", wiremockUrl,
-            "tmd.gamelog-service-url", wiremockUrl,
-            "tmd.map-service-url", wiremockUrl,
-            "tmd.robot-service-url", wiremockUrl,
-            "tmd.trading-service-url", wiremockUrl))
+        .of(getOptionsMap(wiremockUrl))
         .applyTo(applicationContext);
+  }
+
+  private Map<String, String> getOptionsMap(String wiremockUrl) {
+    return Map.of("tmd.game-service-url", wiremockUrl,
+  "tmd.gamelog-service-url", wiremockUrl,
+  "tmd.map-service-url", wiremockUrl,
+  "tmd.robot-service-url", wiremockUrl,
+  "tmd.trading-service-url", wiremockUrl);
   }
 }
