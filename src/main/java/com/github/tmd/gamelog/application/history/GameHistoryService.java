@@ -74,6 +74,9 @@ public class GameHistoryService {
 
   @Transactional
   public void insertGamePlayerStatusHistory(UUID gameId, UUID playerId, String userName, LobbyAction status, Temporal timestamp) {
+    if (userName == null || userName.isBlank()) {
+      userName = playerId.toString();
+    }
     this.gamePlayerStatusHistoryJpaRepository.save(
         new GamePlayerStatusHistoryJpa(gameId, playerId, userName,
             GamePlayerStatusJpa.fromLobbyAction(status), Instant.from(timestamp)));
