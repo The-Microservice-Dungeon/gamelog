@@ -44,7 +44,7 @@ jobs:
           KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT
           KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-          KAFKA_CREATE_TOPICS: "status:1:1,playerStatus:1:1,roundStatus:1:1,gameworld-created:1:1,spacestation-created:1:1,planet-explored:1:1,resource-mined:1:1,resource-replenished:1:1,movement:1:1,planet-blocked:1:1,mining:1:1,fighting:1:1,resource-distribution:1:1,regeneration:1:1,item-fighting:1:1,item-repair:1:1,item-movement:1:1,robot-destroyed:1:1,trades:1:1,bank-created:1:1,current-item-prices:1:1,current-resource-prices:1:1"
+          KAFKA_CREATE_TOPICS: "status:1:1,playerStatus:1:1,roundStatus:1:1,gameworld-created:1:1,spacestation-created:1:1,planet-explored:1:1,resource-mined:1:1,resource-replenished:1:1,movement:1:1,planet-blocked:1:1,mining:1:1,fighting:1:1,resource-distribution:1:1,regeneration:1:1,item-fighting:1:1,item-repair:1:1,item-movement:1:1,robot-destroyed:1:1,trades:1:1,bank-created:1:1,current-item-prices:1:1,current-resource-prices:1:1,event:1:1"
 
     steps:
       - uses: actions/checkout@v2
