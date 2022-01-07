@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("integration")
 @SpringBootTest(properties = { "spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer" })
 @EnabledIfEnvironmentVariable(disabledReason = "Should run in CI", named = "CI", matches = "true")
 class GameEventListenersIntegrationTest {
