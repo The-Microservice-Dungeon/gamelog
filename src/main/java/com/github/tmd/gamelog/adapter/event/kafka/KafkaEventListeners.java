@@ -67,7 +67,7 @@ public class KafkaEventListeners {
     //
     // To put it in a nutshell: Leverage Spring Boot as much as you can. Use the Message abstraction
     // and don't follow tutorials blindly.
-    @KafkaListener(topics = "status")
+    /*@KafkaListener(topics = "status")
     public void consumeGameStatusChangeEvent(@Payload GameStatusEvent event,
         MessageHeaders headers,
         @org.springframework.messaging.handler.annotation.Header(name = "type") String type2) {
@@ -85,5 +85,5 @@ public class KafkaEventListeners {
 
         // Don't handle the event at the moment, just log it to show how it works
         log.debug("Received GameStatusChangedEvent with payload {} of type {}", event, type);
-    }
+    }*/
 }
