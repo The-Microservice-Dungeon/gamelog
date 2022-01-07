@@ -3,12 +3,14 @@ package com.github.tmd.gamelog.adapter.jpa.history.game;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GamePlayerStatusHistoryJpaRepository extends CrudRepository<GamePlayerStatusHistoryJpa, UUID> {
+public interface GamePlayerStatusHistoryJpaRepository extends
+    JpaRepository<GamePlayerStatusHistoryJpa, UUID> {
   /*@Query(value = """
       WITH ranked_history
            AS (SELECT m.*,

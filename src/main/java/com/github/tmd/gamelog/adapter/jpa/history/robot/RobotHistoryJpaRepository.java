@@ -1,8 +1,9 @@
 package com.github.tmd.gamelog.adapter.jpa.history.robot;
 
 import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RobotHistoryJpaRepository extends CrudRepository<RobotHistoryJpa, UUID> {
+public interface RobotHistoryJpaRepository extends JpaRepository<RobotHistoryJpa, UUID> {
 
 }
