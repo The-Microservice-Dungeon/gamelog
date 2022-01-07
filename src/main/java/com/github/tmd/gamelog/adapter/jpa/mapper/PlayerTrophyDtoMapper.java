@@ -5,7 +5,7 @@ import com.github.tmd.gamelog.adapter.jpa.dto.PlayerTrophyDto;
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerTrophy;
-import com.github.tmd.gamelog.domain.Trophy;
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 import org.springframework.stereotype.Component;
 
 /**

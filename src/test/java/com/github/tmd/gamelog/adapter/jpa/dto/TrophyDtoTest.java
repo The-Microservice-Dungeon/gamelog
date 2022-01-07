@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa.dto;
 
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +24,7 @@ public class TrophyDtoTest {
 
     @Test
     void testNewTrophyDto() {
-        trophyDto = new TrophyDto(defaultId, defaultName, defaultBadgeUrl);
+        trophyDto = new TrophyDto(defaultId, defaultName, defaultBadgeUrl, TrophyType.Trophy);
         assertThat(trophyDto.getId()).isEqualTo(defaultId);
         assertThat(trophyDto.getName()).isEqualTo(defaultName);
     }

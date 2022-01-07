@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.domain;
 
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

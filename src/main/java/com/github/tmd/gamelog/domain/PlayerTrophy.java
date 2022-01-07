@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.domain;
 
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

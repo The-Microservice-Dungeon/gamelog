@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.domain;
 import com.github.tmd.gamelog.adapter.jpa.TrophyJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.TrophyRepository;
 import com.github.tmd.gamelog.adapter.jpa.mapper.TrophyDtoMapper;
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

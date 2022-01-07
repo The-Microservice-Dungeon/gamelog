@@ -1,9 +1,13 @@
 package com.github.tmd.gamelog.adapter.jpa.mapper;
 
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
-import com.github.tmd.gamelog.domain.Trophy;
-import org.junit.jupiter.api.BeforeEach;
+import com.github.tmd.gamelog.domain.trophies.Trophy;
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,31 +16,70 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TrophyDtoMapperTest {
 
-    private final long defaultId = 1;
-    private final String defaultName = "First Blood";
-    private final String defaultBadgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
+    private static TrophyDtoMapper trophyDtoMapper;
 
-    private TrophyDtoMapper trophyDtoMapper;
-
-    @BeforeEach
-    void beforeEach() {
+    @BeforeAll
+    static void beforeAll() {
         trophyDtoMapper = new TrophyDtoMapper();
     }
 
     @Test
-    void testMapEntityToDto() {
-        Trophy trophyEntity = new Trophy(defaultId, defaultName, defaultBadgeUrl);
-        TrophyDto trophyDto = trophyDtoMapper.mapEntityToDto(trophyEntity);
-        assertThat(trophyDto.getId()).isEqualTo(defaultId);
-        assertThat(trophyDto.getName()).isEqualTo(defaultName);
+    void testMapEntityToDto() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        testFromEntityTypeToDtoType(Trophy.class, TrophyType.Trophy);
     }
 
     @Test
-    void testMapDtoToEntity() {
-        TrophyDto trophyDto = new TrophyDto(defaultId, defaultName, defaultBadgeUrl);
-        Trophy trophy = trophyDtoMapper.mapDtoToEntity(trophyDto);
-        assertThat(trophy.getId()).isEqualTo(defaultId);
-        assertThat(trophy.getName()).isEqualTo(defaultName);
+    void testMapDtoToEntity() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        testFromDtoTypeToEntityType(Trophy.class, TrophyType.Trophy);
+    }
+
+    /**
+     * Generalized test for testing mapping from Trophy domain/entity types to TrophyDto.
+     * @param trophyClass Trophy (sub)class.
+     * @param trophyType TrophyType matching the Trophy (sub)class.
+     * @param <T> Has to be Trophy or a class that extends Trophy.
+     * @throws NoSuchMethodException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     * @throws InvocationTargetException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     * @throws InstantiationException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     * @throws IllegalAccessException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     */
+    private <T extends Trophy> void testFromEntityTypeToDtoType(Class<T> trophyClass, TrophyType trophyType) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        // Instantiate an instance of the trophy entity class.
+        Constructor<T> constructor = trophyClass.getConstructor();
+        Trophy trophyEntity = constructor.newInstance();
+
+        // Map the trophy entity to its DTO counterpart.
+        TrophyDto trophyDto = trophyDtoMapper.mapEntityToDto(trophyEntity);
+
+        // Run tests on the mapped DTO.
+        assertThat(trophyDto.getId()).isEqualTo(trophyEntity.getId());
+        assertThat(trophyDto.getName()).isEqualTo(trophyEntity.getName());
+        assertThat(trophyDto.getTrophyType()).isEqualTo(trophyType);
+    }
+
+    /**
+     * Generalized test for testing mapping from TrophyDto to Trophy domain/entity types.
+     * @param trophyClass Trophy (sub)class.
+     * @param trophyType TrophyType matching the Trophy (sub)class.
+     * @param <T> Has to be Trophy or a class that extends Trophy.
+     * @throws NoSuchMethodException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     * @throws InvocationTargetException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     * @throws InstantiationException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     * @throws IllegalAccessException Test fails if his is thrown. Shouldn't happen, as all Trophy classes have a no-args constructor.
+     */
+    private <T extends Trophy> void testFromDtoTypeToEntityType(Class<T> trophyClass, TrophyType trophyType) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        // Instantiate an instance of the trophy class to get the values for the DTO constructor.
+        Constructor<T> constructor = trophyClass.getConstructor();
+        Trophy trophyEntityTemplate = constructor.newInstance();
+
+        // Instantiate the DTO and map it to its entity counterpart.
+        TrophyDto trophyDto = new TrophyDto(trophyEntityTemplate.getId(), trophyEntityTemplate.getName(), trophyEntityTemplate.getBadgeUrl(), trophyType);
+        Trophy trophyEntity = trophyDtoMapper.mapDtoToEntity(trophyDto);
+
+        // Run tests on the mapped entity.
+        assertThat(trophyEntity.getId()).isEqualTo(trophyEntityTemplate.getId());
+        assertThat(trophyEntity.getName()).isEqualTo(trophyEntityTemplate.getName());
+        assertThat(trophyEntity.getClass()).isEqualTo(trophyEntityTemplate.getClass());
     }
 
 }

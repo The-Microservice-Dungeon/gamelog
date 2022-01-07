@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.domain;
 
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

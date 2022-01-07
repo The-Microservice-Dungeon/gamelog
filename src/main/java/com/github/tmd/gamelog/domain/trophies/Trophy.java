@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.domain;
+package com.github.tmd.gamelog.domain.trophies;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class Trophy {
 
     private long id;
-    private String name;
-    private String badgeUrl;
+    private String name = "";
+    private String badgeUrl = "";
 
     public Trophy(String name, String badgeUrl) {
         this.name = name;

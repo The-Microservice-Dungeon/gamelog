@@ -5,7 +5,8 @@ import com.github.tmd.gamelog.adapter.jpa.dto.PlayerTrophyDto;
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerTrophy;
-import com.github.tmd.gamelog.domain.Trophy;
+import com.github.tmd.gamelog.domain.trophies.Trophy;
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
 import com.github.tmd.gamelog.utility.IsoTimestampConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ public class PlayerTrophyDtoMapperTest {
         PlayerTrophy playerTrophy = setupPlayerTrophy();
         PlayerTrophyDto playerTrophyDto = playerTrophyDtoMapper.mapEntityToDto(playerTrophy);
         assertThat(playerTrophyDto.getPlayerDtoAwardedTo()).isEqualTo(new PlayerDto(playerId));
-        assertThat(playerTrophyDto.getTrophyDto()).isEqualTo(new TrophyDto(trophyId, trophyName, badgeUrl));
+        assertThat(playerTrophyDto.getTrophyDto()).isEqualTo(new TrophyDto(trophyId, trophyName, badgeUrl, TrophyType.Trophy));
         assertThat(playerTrophyDto.getDateAwarded()).isEqualTo(IsoTimestampConverter.dateFromIsoTimestampString(isoTimestampStringAwarded));
     }
 
@@ -60,7 +61,7 @@ public class PlayerTrophyDtoMapperTest {
 
     private PlayerTrophyDto setupPlayerTrophyDto() {
         PlayerDto playerDto = new PlayerDto(playerId);
-        TrophyDto trophyDto = new TrophyDto(trophyId, trophyName, badgeUrl);
+        TrophyDto trophyDto = new TrophyDto(trophyId, trophyName, badgeUrl, TrophyType.Trophy);
         Date dateAwarded = new Date();
         isoTimestampStringAwarded = IsoTimestampConverter.dateToIsoTimestampString(dateAwarded);
         PlayerTrophyDto playerTrophyDto = new PlayerTrophyDto(trophyId, trophyDto, playerDto, dateAwarded);

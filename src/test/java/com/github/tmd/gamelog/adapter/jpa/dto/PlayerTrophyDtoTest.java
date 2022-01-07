@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa.dto;
 
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
 import com.github.tmd.gamelog.utility.IsoTimestampConverter;
 import org.junit.jupiter.api.Test;
 
@@ -33,13 +34,13 @@ class PlayerTrophyDtoTest {
 
     @Test
     void newPlayerTrophyDto() {
-        trophyDto = new TrophyDto(defaultTrophyId, defaultTrophyName, defaultTrophyBadgeUrl);
+        trophyDto = new TrophyDto(defaultTrophyId, defaultTrophyName, defaultTrophyBadgeUrl, TrophyType.Trophy);
         playerDto = new PlayerDto(defaultPlayerId);
         Date dateAwarded = new Date();
         isoTimestampStringAwarded = IsoTimestampConverter.dateToIsoTimestampString(dateAwarded);
         playerTrophyDto = new PlayerTrophyDto(defaultPlayerTrophyDtoId, trophyDto, playerDto, dateAwarded);
         assertThat(playerTrophyDto.getId()).isEqualTo(defaultPlayerTrophyDtoId);
-        assertThat(playerTrophyDto.getTrophyDto()).isEqualTo(new TrophyDto(defaultTrophyId, defaultTrophyName, defaultTrophyBadgeUrl));
+        assertThat(playerTrophyDto.getTrophyDto()).isEqualTo(new TrophyDto(defaultTrophyId, defaultTrophyName, defaultTrophyBadgeUrl, TrophyType.Trophy));
         assertThat(playerTrophyDto.getPlayerDtoAwardedTo()).isEqualTo(new PlayerDto(defaultPlayerId));
         assertThat(playerTrophyDto.getDateAwarded()).isEqualTo(IsoTimestampConverter.dateFromIsoTimestampString(isoTimestampStringAwarded));
     }

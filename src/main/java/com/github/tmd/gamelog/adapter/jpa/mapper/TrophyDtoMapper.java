@@ -1,7 +1,8 @@
 package com.github.tmd.gamelog.adapter.jpa.mapper;
 
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
-import com.github.tmd.gamelog.domain.Trophy;
+import com.github.tmd.gamelog.domain.trophies.Trophy;
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class TrophyDtoMapper {
 
     public TrophyDto mapEntityToDto(Trophy trophyEntity) {
-        TrophyDto trophyDto = new TrophyDto(trophyEntity.getId(), trophyEntity.getName(), trophyEntity.getBadgeUrl());
+        TrophyDto trophyDto = new TrophyDto(trophyEntity.getId(), trophyEntity.getName(), trophyEntity.getBadgeUrl(), TrophyType.Trophy);
         return trophyDto;
     }
 

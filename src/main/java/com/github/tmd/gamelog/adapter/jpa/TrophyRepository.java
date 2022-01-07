@@ -2,7 +2,7 @@ package com.github.tmd.gamelog.adapter.jpa;
 
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
 import com.github.tmd.gamelog.adapter.jpa.mapper.TrophyDtoMapper;
-import com.github.tmd.gamelog.domain.Trophy;
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa.dto;
 
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class TrophyDto {
     private Long id;
     private String name;
     private String badgeUrl;
+    private TrophyType trophyType;
 
 }

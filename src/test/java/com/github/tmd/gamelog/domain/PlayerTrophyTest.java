@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.domain;
 
+import com.github.tmd.gamelog.domain.trophies.Trophy;
 import com.github.tmd.gamelog.utility.IsoTimestampConverter;
 import org.junit.jupiter.api.Test;
 
