@@ -7,6 +7,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -18,7 +19,7 @@ public class RoundScoreDto implements Cloneable {
     private String gameId;
     private String roundId;
     private int roundNumber;
-    private String playerId;
+    private UUID playerId;
 
     @Embedded
     private MovementScoreDto movementScore;

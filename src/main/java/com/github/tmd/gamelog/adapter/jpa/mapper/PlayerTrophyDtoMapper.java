@@ -18,6 +18,7 @@ public class PlayerTrophyDtoMapper {
         PlayerTrophyDto playerTrophyDto = new PlayerTrophyDto();
         playerTrophyDto.setPlayerDtoAwardedTo(playerToPlayerDto(playerTrophy.getPlayerAwardedTo()));
         playerTrophyDto.setTrophyDto(trophyToTrophyDto(playerTrophy.getTrophy()));
+        playerTrophyDto.setGameId(playerTrophy.getGameId());
         playerTrophyDto.setDateAwarded(playerTrophy.getDateAwarded());
         return playerTrophyDto;
     }
@@ -26,6 +27,7 @@ public class PlayerTrophyDtoMapper {
         PlayerTrophy playerTrophy = new PlayerTrophy();
         playerTrophy.setPlayerAwardedTo(playerDtoToPlayer(playerTrophyDto.getPlayerDtoAwardedTo()));
         playerTrophy.setTrophy(trophyDtoToTrophy(playerTrophyDto.getTrophyDto()));
+        playerTrophy.setGameId(playerTrophyDto.getGameId());
         playerTrophy.setDateAwarded(playerTrophyDto.getDateAwarded());
         return playerTrophy;
     }

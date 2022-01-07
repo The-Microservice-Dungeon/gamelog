@@ -2,6 +2,8 @@ package com.github.tmd.gamelog.adapter.jpa.dto;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -9,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PlayerDtoTest {
 
-    private final String id = "c6dcbdac-be0b-4de0-b50d-7870caa5f744";
+    private final UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     @Test
     void testEmptyNewPlayerDto() {
@@ -19,8 +21,8 @@ public class PlayerDtoTest {
 
     @Test
     void testNewPlayerDto() {
-        PlayerDto playerDto = new PlayerDto(id);
-        assertThat(playerDto.getId()).isEqualTo(id);
+        PlayerDto playerDto = new PlayerDto(playerId);
+        assertThat(playerDto.getId()).isEqualTo(playerId);
     }
 
 }

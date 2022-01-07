@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.UUID;
 
 /**
  * DTO class for persistent storage of the Player.
@@ -17,6 +18,6 @@ import javax.persistence.Id;
 public class PlayerDto {
 
     @Id
-    private String id;
+    private UUID id;
 
 }

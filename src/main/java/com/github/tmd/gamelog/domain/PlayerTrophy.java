@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Data class for the players trophies.
@@ -19,6 +20,7 @@ public class PlayerTrophy {
 
     private Player playerAwardedTo;
     private Trophy trophy;
+    private UUID gameId;
     private Date dateAwarded;
 
 }

@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.UUID;
+
 
 @SpringBootTest
 public class KafkaEventHandlerFeatureTest{
@@ -23,6 +25,8 @@ public class KafkaEventHandlerFeatureTest{
 
     @MockBean
     RoundScoreJpaRepository roundScoreJpaRepository;
+
+    private UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     @Test
     void testHandleEvent() {
@@ -36,7 +40,7 @@ public class KafkaEventHandlerFeatureTest{
         round.setRoundId("2");
 
         Player player = new Player();
-        player.setId("3");
+        player.setId(playerId);
 
         commandContext.setRound(round);
         commandContext.setPlayer(player);
@@ -44,7 +48,7 @@ public class KafkaEventHandlerFeatureTest{
         RoundScoreDto roundScoreDto = new RoundScoreDto();
         roundScoreDto.setGameId("1");
         roundScoreDto.setRoundId("2");
-        roundScoreDto.setPlayerId("3");
+        roundScoreDto.setPlayerId(playerId);
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(1);
         roundScoreDto.setMovementScore(movementScoreDto);
