@@ -3,11 +3,10 @@ package com.github.tmd.gamelog.adapter.jpa.history.trading;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface TradingHistoryJpaRepository extends JpaRepository<TradingHistoryJpa, UUID> {
+public interface TradingHistoryJpaRepository extends CrudRepository<TradingHistoryJpa, UUID> {
   @Query("""
     from TradingHistoryJpa pbh 
       join CommandHistoryJpa ch 
