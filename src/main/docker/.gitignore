@@ -1,0 +1,3 @@
+docker-compose.all.yml
+services.env
+.env
