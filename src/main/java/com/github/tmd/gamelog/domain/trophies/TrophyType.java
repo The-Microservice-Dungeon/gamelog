@@ -19,6 +19,21 @@ public enum TrophyType {
     TradingGoldTrophy,
     TravelingBronzeTrophy,
     TravelingSilverTrophy,
-    TravelingGoldTrophy
+    TravelingGoldTrophy,
+    GameThirdPlaceTrophy,
+    GameSecondPlaceTrophy,
+    GameFirstPlaceTrophy,
+    FightingThirdPlaceTrophy,
+    FightingSecondPlaceTrophy,
+    FightingFirstPlaceTrophy,
+    MiningThirdPlaceTrophy,
+    MiningSecondPlaceTrophy,
+    MiningFirstPlaceTrophy,
+    TradingThirdPlaceTrophy,
+    TradingSecondPlaceTrophy,
+    TradingFirstPlaceTrophy,
+    TravelingThirdPlaceTrophy,
+    TravelingSecondPlaceTrophy,
+    TravelingFirstPlaceTrophy
 
 }
