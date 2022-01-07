@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.adapter.jpa.mapper;
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
 import com.github.tmd.gamelog.domain.trophies.Trophy;
 import com.github.tmd.gamelog.domain.trophies.TrophyType;
+import com.github.tmd.gamelog.domain.trophies.achievements.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -23,14 +24,78 @@ public class TrophyDtoMapperTest {
         trophyDtoMapper = new TrophyDtoMapper();
     }
 
+    /**
+     * Test mapping from Trophy entity classes to TrophyDto.
+     * Will fail with an exception if one of the Trophy subclasses has no no-args constructor.
+     */
     @Test
     void testMapEntityToDto() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        testFromTrophyEntityToDto();
+        testFromAchievementEntityToDto();
+    }
+
+    /**
+     * Test mapping from TrophyDto to Trophy entity classes.
+     * Will fail with an exception if one of the Trophy subclasses has no no-args constructor.
+     */
+    @Test
+    void testMapDtoToEntity() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        testFromDtoToTrophyEntity();
+        testFromDtoToAchievementEntity();
+    }
+
+    /**
+     * Test mapping Trophy to TrophyDto.
+     * Will fail with an exception if the Trophy class has no no-args constructor.
+     */
+    private void testFromTrophyEntityToDto() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         testFromEntityTypeToDtoType(Trophy.class, TrophyType.Trophy);
     }
 
-    @Test
-    void testMapDtoToEntity() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    /**
+     * Test mapping achievement Trophy entities to TrophyDto.
+     * Will fail with an exception if the Trophy subclasses has no no-args constructor.
+     */
+    private void testFromAchievementEntityToDto() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        testFromEntityTypeToDtoType(FightingBronzeTrophy.class, TrophyType.FightingBronzeTrophy);
+        testFromEntityTypeToDtoType(FightingSilverTrophy.class, TrophyType.FightingSilverTrophy);
+        testFromEntityTypeToDtoType(FightingGoldTrophy.class, TrophyType.FightingGoldTrophy);
+        testFromEntityTypeToDtoType(MiningBronzeTrophy.class, TrophyType.MiningBronzeTrophy);
+        testFromEntityTypeToDtoType(MiningSilverTrophy.class, TrophyType.MiningSilverTrophy);
+        testFromEntityTypeToDtoType(MiningGoldTrophy.class, TrophyType.MiningGoldTrophy);
+        testFromEntityTypeToDtoType(TradingBronzeTrophy.class, TrophyType.TradingBronzeTrophy);
+        testFromEntityTypeToDtoType(TradingSilverTrophy.class, TrophyType.TradingSilverTrophy);
+        testFromEntityTypeToDtoType(TradingGoldTrophy.class, TrophyType.TradingGoldTrophy);
+        testFromEntityTypeToDtoType(TravelingBronzeTrophy.class, TrophyType.TravelingBronzeTrophy);
+        testFromEntityTypeToDtoType(TravelingSilverTrophy.class, TrophyType.TravelingSilverTrophy);
+        testFromEntityTypeToDtoType(TravelingGoldTrophy.class, TrophyType.TravelingGoldTrophy);
+    }
+
+    /**
+     * Test mapping TrophyDto to Trophy.
+     * Will fail with an exception if the Trophy class has no no-args constructor.
+     */
+    private void testFromDtoToTrophyEntity() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         testFromDtoTypeToEntityType(Trophy.class, TrophyType.Trophy);
+    }
+
+    /**
+     * Test mapping from TrophyDto to achievement Trophy entities.
+     * Will fail with an exception if one of the Trophy subclasses a no no-args constructor.
+     */
+    private void testFromDtoToAchievementEntity() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        testFromDtoTypeToEntityType(FightingBronzeTrophy.class, TrophyType.FightingBronzeTrophy);
+        testFromDtoTypeToEntityType(FightingSilverTrophy.class, TrophyType.FightingSilverTrophy);
+        testFromDtoTypeToEntityType(FightingGoldTrophy.class, TrophyType.FightingGoldTrophy);
+        testFromDtoTypeToEntityType(MiningBronzeTrophy.class, TrophyType.MiningBronzeTrophy);
+        testFromDtoTypeToEntityType(MiningSilverTrophy.class, TrophyType.MiningSilverTrophy);
+        testFromDtoTypeToEntityType(MiningGoldTrophy.class, TrophyType.MiningGoldTrophy);
+        testFromDtoTypeToEntityType(TradingBronzeTrophy.class, TrophyType.TradingBronzeTrophy);
+        testFromDtoTypeToEntityType(TradingSilverTrophy.class, TrophyType.TradingSilverTrophy);
+        testFromDtoTypeToEntityType(TradingGoldTrophy.class, TrophyType.TradingGoldTrophy);
+        testFromDtoTypeToEntityType(TravelingBronzeTrophy.class, TrophyType.TravelingBronzeTrophy);
+        testFromDtoTypeToEntityType(TravelingSilverTrophy.class, TrophyType.TravelingSilverTrophy);
+        testFromDtoTypeToEntityType(TravelingGoldTrophy.class, TrophyType.TravelingGoldTrophy);
     }
 
     /**

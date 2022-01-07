@@ -7,6 +7,18 @@ package com.github.tmd.gamelog.domain.trophies;
  */
 public enum TrophyType {
 
-    Trophy
+    Trophy,
+    FightingBronzeTrophy,
+    FightingSilverTrophy,
+    FightingGoldTrophy,
+    MiningBronzeTrophy,
+    MiningSilverTrophy,
+    MiningGoldTrophy,
+    TradingBronzeTrophy,
+    TradingSilverTrophy,
+    TradingGoldTrophy,
+    TravelingBronzeTrophy,
+    TravelingSilverTrophy,
+    TravelingGoldTrophy
 
 }
