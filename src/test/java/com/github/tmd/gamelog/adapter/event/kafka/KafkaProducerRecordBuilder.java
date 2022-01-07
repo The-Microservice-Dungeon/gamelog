@@ -31,7 +31,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
       var producerRecord = new ProducerRecord<K, V>(topic, key, payload);
       producerRecord.headers().add("eventId", eventId.getBytes());
       producerRecord.headers().add("transactionId", transactionId.getBytes());
-      producerRecord.headers().add("version", BigInteger.valueOf(version).toByteArray());
+      producerRecord.headers().add("version",  new byte[] { version.byteValue() });
       producerRecord.headers().add("timestamp", timestamp.getBytes());
       producerRecord.headers().add("type", type.getBytes());
       return producerRecord;

@@ -16,6 +16,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.ProducerListener;
+import org.springframework.kafka.support.converter.ByteArrayJsonMessageConverter;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.serializer.DelegatingByTypeSerializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -28,6 +29,11 @@ public class KafkaConfiguration {
   public KafkaConfiguration(
       KafkaProperties kafkaProperties) {
     this.kafkaProperties = kafkaProperties;
+  }
+
+  @Bean
+  public ByteArrayJsonMessageConverter byteArrayJsonMessageConverter() {
+    return new ByteArrayJsonMessageConverter();
   }
 
   @Bean
@@ -52,8 +58,13 @@ public class KafkaConfiguration {
   }
 
   @Bean
-  public KafkaTemplate<?, ?> retryTopicDefaultKafkaTemplate() {
-    return new KafkaTemplate<>(dltHandlerProducerFactory());
+  public KafkaTemplate<?, ?> retryTopicDefaultKafkaTemplate(ProducerListener<Object, Object> kafkaProducerListener) {
+    KafkaTemplate<Object, Object> kafkaTemplate = new KafkaTemplate(dltHandlerProducerFactory());
+    kafkaTemplate.setMessageConverter(byteArrayJsonMessageConverter());
+    kafkaTemplate.setProducerListener(kafkaProducerListener);
+    kafkaTemplate.setDefaultTopic(this.kafkaProperties.getTemplate().getDefaultTopic());
+    return kafkaTemplate;
+    // return new KafkaTemplate<>(dltHandlerProducerFactory());
   }
 
   @Bean

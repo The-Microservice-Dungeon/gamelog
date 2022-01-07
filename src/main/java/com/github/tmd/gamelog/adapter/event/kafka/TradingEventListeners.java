@@ -26,9 +26,7 @@ public class TradingEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "trades", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent"
-  })
+  @KafkaListener(topics = "trades")
   public void tradingEvent(@Payload TradingEvent event, @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant

@@ -24,7 +24,16 @@ public class KafkaLoggingInterceptor implements ConsumerInterceptor<Object, Obje
       var partition = record.partition();
       var offset = record.offset();
       var key = Objects.toString(record.key());
-      var value = Objects.toString(record.value());
+
+      String value;
+      if(record.value() instanceof String) {
+        value = (String) record.value();
+      } else if (record.value() instanceof byte[]) {
+        value = new String((byte[]) record.value());
+      } else {
+        value = Objects.toString(record.value());
+      }
+
       var headers = headersToString(record.headers());
 
       log.trace("""

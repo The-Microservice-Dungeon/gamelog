@@ -12,6 +12,7 @@ import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;

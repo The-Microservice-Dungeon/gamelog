@@ -26,9 +26,7 @@ public class RobotEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "movement", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent"
-  })
+  @KafkaListener(topics = "movement")
   public void movementEvent(@Payload MovementEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
@@ -39,9 +37,7 @@ public class RobotEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "planet-blocked", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent"
-  })
+  @KafkaListener(topics = "planet-blocked")
   public void planetBlockedEvent(@Payload PlanetBlockedEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
@@ -51,9 +47,7 @@ public class RobotEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "mining", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent"
-  })
+  @KafkaListener(topics = "mining")
   public void miningEvent(@Payload MiningEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
@@ -63,9 +57,7 @@ public class RobotEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "fighting", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent"
-  })
+  @KafkaListener(topics = "fighting")
   public void fightingEvent(@Payload FightingEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant

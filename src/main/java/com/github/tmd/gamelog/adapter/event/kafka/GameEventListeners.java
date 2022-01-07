@@ -6,22 +6,12 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Map;
 import java.util.UUID;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.messaging.MessageHeaders;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
@@ -44,18 +34,14 @@ public class GameEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "status", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent"
-  })
+  @KafkaListener(topics = "status")
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, @Header(name = "timestamp") String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "playerStatus", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent"
-  })
+  @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
       @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
@@ -63,9 +49,7 @@ public class GameEventListeners {
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
-  @KafkaListener(topics = "roundStatus", properties = {
-      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent"
-  })
+  @KafkaListener(topics = "roundStatus")
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
       @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
 
