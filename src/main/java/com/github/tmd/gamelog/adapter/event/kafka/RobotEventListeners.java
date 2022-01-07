@@ -34,17 +34,19 @@ public class RobotEventListeners {
   @DltHandler
   void dltHandler(Message<?> msg,
       @Header(KafkaHeaders.ORIGINAL_OFFSET) byte[] offset,
+      @Header(KafkaHeaders.ORIGINAL_TOPIC) String originalTopic,
       @Header(KafkaHeaders.EXCEPTION_FQCN) String descException,
       @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
       @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
     log.error("""
         =============== ROBOT DLT ===============
         Message: {}
+        Original Topic: {}
         Original Offset: {}
         Desc Exception: {}
         Error Message: {}
         Stacktrace: {}
-        """, msg, ByteBuffer.wrap(offset).getLong(), descException, errorMessage, stacktrace);
+        """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage, stacktrace);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
