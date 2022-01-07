@@ -38,7 +38,7 @@ public class RobotEventListeners {
       @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
       @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
     log.error("""
-        =============== GAME DLT ===============
+        =============== ROBOT DLT ===============
         Message: {}
         Original Offset: {}
         Desc Exception: {}

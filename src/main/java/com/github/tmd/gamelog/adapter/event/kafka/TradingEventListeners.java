@@ -38,7 +38,7 @@ public class TradingEventListeners {
       @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
       @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
     log.error("""
-        =============== GAME DLT ===============
+        =============== TRADING DLT ===============
         Message: {}
         Original Offset: {}
         Desc Exception: {}
