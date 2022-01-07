@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
 @ExtendWith(MockitoExtension.class)
 public class KafkaEventHandlerUnitTest {
 
@@ -22,6 +24,8 @@ public class KafkaEventHandlerUnitTest {
 
     @Mock
     RoundScoreRepository roundScoreRepository;
+
+    private UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     @BeforeEach
     void init() {
@@ -40,7 +44,7 @@ public class KafkaEventHandlerUnitTest {
             new Round("0",0,"1")
         );
         roundScore.setPlayer(
-            new Player("2")
+            new Player(playerId)
         );
         MovementScore movementScore = new MovementScore();
         movementScore.increase(1);
@@ -56,7 +60,7 @@ public class KafkaEventHandlerUnitTest {
     // @todo redundant siehe RoundScoreRepositoryTest
     private CommandContext createGameContext() {
         CommandContext commandContext = new CommandContext();
-        commandContext.setPlayer(new Player("3"));
+        commandContext.setPlayer(new Player(playerId));
         commandContext.setRound(new Round("1", 0, "2"));
 
         return commandContext;

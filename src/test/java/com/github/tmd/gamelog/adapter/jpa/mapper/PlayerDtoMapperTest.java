@@ -5,6 +5,8 @@ import com.github.tmd.gamelog.domain.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -12,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PlayerDtoMapperTest {
 
-    private final String playerId = "c6dcbdac-be0b-4de0-b50d-7870caa5f744";
+    private final UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     private PlayerDtoMapper playerDtoMapper;
 

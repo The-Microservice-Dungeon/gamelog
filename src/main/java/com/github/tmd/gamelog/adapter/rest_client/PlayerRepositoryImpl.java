@@ -22,7 +22,7 @@ public class PlayerRepositoryImpl implements PlayerRepository
         RobotDto robotDto = this.robotRestClient.getRobotById(robotId);
 
         Player player = new Player();
-        player.setId(robotDto.player().toString());
+        player.setId(robotDto.player());
 
         return player;
     }

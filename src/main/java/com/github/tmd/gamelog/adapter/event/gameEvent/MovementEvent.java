@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 /**
  * Represents a Movement event coming from the Robot service
  */
@@ -17,7 +19,7 @@ public class MovementEvent implements EventInterface {
     private int start;
     private int end;
     private int round;
-    private String playerId;
+    private UUID playerId;
 
     public static String getEventName()
     {

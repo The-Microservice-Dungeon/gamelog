@@ -11,9 +11,13 @@ import com.github.tmd.gamelog.domain.Score.MovementScore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 public class RoundScoreDtoConversionUnitTest {
 
     private RoundScoreDtoMapper roundScoreDtoMapper;
+
+    private UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     @BeforeEach
     void init() {
@@ -25,7 +29,7 @@ public class RoundScoreDtoConversionUnitTest {
         RoundScore roundScore = new RoundScore();
 
         roundScore.setRound(new Round("0", 0, "1"));
-        roundScore.setPlayer(new Player("2"));
+        roundScore.setPlayer(new Player(playerId));
         MovementScore movementScore = new MovementScore();
         movementScore.increase(3);
         roundScore.setMovementScore(movementScore);
@@ -33,7 +37,7 @@ public class RoundScoreDtoConversionUnitTest {
         RoundScoreDto roundScoreDto = this.roundScoreDtoMapper.mapEntityToDto(roundScore);
         assertThat(roundScoreDto.getGameId()).isEqualTo("0");
         assertThat(roundScoreDto.getRoundId()).isEqualTo("1");
-        assertThat(roundScoreDto.getPlayerId()).isEqualTo("2");
+        assertThat(roundScoreDto.getPlayerId()).isEqualTo(playerId);
         assertThat(roundScoreDto.getMovementScore().getValue()).isEqualTo(3);
     }
 
@@ -42,7 +46,7 @@ public class RoundScoreDtoConversionUnitTest {
         RoundScoreDto roundScoreDto = new RoundScoreDto();
         roundScoreDto.setGameId("0");
         roundScoreDto.setRoundId("1");
-        roundScoreDto.setPlayerId("2");
+        roundScoreDto.setPlayerId(playerId);
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(3);
         roundScoreDto.setMovementScore(movementScoreDto);
@@ -50,7 +54,7 @@ public class RoundScoreDtoConversionUnitTest {
         RoundScore roundScore = this.roundScoreDtoMapper.mapDtoToEntity(roundScoreDto);
         assertThat(roundScore.getRound().getGameId()).isEqualTo("0");
         assertThat(roundScore.getRound().getRoundId()).isEqualTo("1");
-        assertThat(roundScore.getPlayer().getId()).isEqualTo("2");
+        assertThat(roundScore.getPlayer().getId()).isEqualTo(playerId);
         assertThat(roundScore.getMovementScore().getValue()).isEqualTo(3);
     }
 }

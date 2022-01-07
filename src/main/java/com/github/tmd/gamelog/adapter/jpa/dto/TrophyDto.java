@@ -4,6 +4,7 @@ import com.github.tmd.gamelog.domain.trophies.TrophyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
@@ -24,6 +25,7 @@ public class TrophyDto {
     private String name;
     @Column(name = "badge_url", updatable = true, nullable = false)
     private String badgeUrl;
+    @NaturalId
     @Column(name = "trophy_type", updatable = false, nullable = false, unique = true)
     private TrophyType trophyType;
 

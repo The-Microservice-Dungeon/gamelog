@@ -17,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
 @ExtendWith(MockitoExtension.class)
 public class RoundScoreRepositoryTest {
 
@@ -24,6 +26,8 @@ public class RoundScoreRepositoryTest {
 
     @Mock
     private RoundScoreJpaRepository roundScoreJpaRepository;
+
+    private UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     @BeforeEach
     public void init() {
@@ -35,7 +39,7 @@ public class RoundScoreRepositoryTest {
     void testFindByGameAndRoundAndPlayerNotExisting() {
         CommandContext commandContext = this.createGameContext();
 
-        Mockito.when(roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", "3")).thenReturn(null);
+        Mockito.when(roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", playerId)).thenReturn(null);
         RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
         assertThat(roundScore).isNull();
     }
@@ -47,13 +51,13 @@ public class RoundScoreRepositoryTest {
         RoundScoreDto mockRoundScoreDto = new RoundScoreDto();
         mockRoundScoreDto.setGameId("1");
         mockRoundScoreDto.setRoundId("2");
-        mockRoundScoreDto.setPlayerId("3");
+        mockRoundScoreDto.setPlayerId(playerId);
         MovementScoreDto movementScoreDto = new MovementScoreDto();
         movementScoreDto.setValue(1);
         mockRoundScoreDto.setMovementScore(movementScoreDto);
 
         Mockito
-            .when(this.roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", "3"))
+            .when(this.roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", playerId))
             .thenReturn(mockRoundScoreDto);
 
         RoundScore roundScore = this.roundScoreRepository.findByCommandContext(commandContext);
@@ -65,7 +69,7 @@ public class RoundScoreRepositoryTest {
     private CommandContext createGameContext() {
         CommandContext commandContext = new CommandContext();
         commandContext.setRound(new Round("1", 0, "2"));
-        commandContext.setPlayer(new Player("3"));
+        commandContext.setPlayer(new Player(playerId));
 
         return commandContext;
     }
