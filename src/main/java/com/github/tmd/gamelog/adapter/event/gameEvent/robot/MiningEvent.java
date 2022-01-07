@@ -7,7 +7,7 @@ public record MiningEvent(
     @JsonProperty("success") Boolean success,
     @JsonProperty("message") String message,
     @JsonProperty("remainingEnergy") Integer remainingEnergy,
-    @JsonProperty("updateInventory") Integer updateInventory,
+    @JsonProperty("updatedInventory") Integer updateInventory,
     @JsonProperty("resourceType") ResourceType resourceType
 ) {
 

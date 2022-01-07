@@ -1,17 +1,11 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingItemUseEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementItemUsedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RegenerationEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RepairItemUsedEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.ResourceDistributionEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.RobotDestroyedEvent;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
@@ -29,39 +23,47 @@ public class RobotEventListeners {
     this.robotHistoryService = robotHistoryService;
   }
 
-  @KafkaListener(topics = "movement")
-  public void movementEvent(@Payload MovementEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
+  @KafkaListener(topics = "movement", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent"
+  })
+  public void movementEvent(@Payload MovementEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertMovementHistory(transactionId, event.robots(), event.planet()
           .planetId(), event.planet().movementDifficulty(), timestamp);
     }
   }
 
-  @KafkaListener(topics = "planet-blocked")
-  public void planetBlockedEvent(@Payload PlanetBlockedEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
+  @KafkaListener(topics = "planet-blocked", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent"
+  })
+  public void planetBlockedEvent(@Payload PlanetBlockedEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId(), timestamp);
     }
   }
 
-  @KafkaListener(topics = "mining")
-  public void miningEvent(@Payload MiningEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
+  @KafkaListener(topics = "mining", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent"
+  })
+  public void miningEvent(@Payload MiningEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(), event.resourceType(), timestamp);
     }
   }
 
-  @KafkaListener(topics = "fighting")
-  public void fightingEvent(@Payload FightingEvent event, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
+  @KafkaListener(topics = "fighting", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent"
+  })
+  public void fightingEvent(@Payload FightingEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
     if(event.success()) {
       // TODO: Point-relevant
-      var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertFightHistory(transactionId, event.attacker(), event.defender(),
           event.remainingDefenderHealth(), timestamp);
     }
