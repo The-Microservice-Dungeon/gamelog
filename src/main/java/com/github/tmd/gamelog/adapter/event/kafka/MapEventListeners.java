@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class MapEventListeners {
 
   // region Irrelevant Kafka Listeners for scores
-  @KafkaListener(topics = "gameworld-created")
+  /*@KafkaListener(topics = "gameworld-created")
   public void gameworldCreatedEvent(@Payload GameworldCreatedEvent event, MessageHeaders headers) {
 
   }
@@ -39,7 +39,7 @@ public class MapEventListeners {
   public void resourceReplenishedCreatedEvent(@Payload ResourceReplenishedEvent event,
       MessageHeaders headers) {
 
-  }
+  }*/
 
   //endregion
 

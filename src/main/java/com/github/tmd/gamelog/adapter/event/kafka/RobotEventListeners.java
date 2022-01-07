@@ -68,7 +68,7 @@ public class RobotEventListeners {
   }
 
   // region Irrelevant Kafka Listeners for scores
-  @KafkaListener(topics = "resource-distribution")
+  /*@KafkaListener(topics = "resource-distribution")
   public void resourceDistributionEvent(@Payload ResourceDistributionEvent event, MessageHeaders headers) {}
 
   @KafkaListener(topics = "regeneration")
@@ -84,6 +84,6 @@ public class RobotEventListeners {
   public void movementItemEvent(@Payload MovementItemUsedEvent event, MessageHeaders headers) {}
 
   @KafkaListener(topics = "robot-destroyed")
-  public void bankDestroyedEvent(@Payload RobotDestroyedEvent event, MessageHeaders headers) {}
+  public void bankDestroyedEvent(@Payload RobotDestroyedEvent event, MessageHeaders headers) {}*/
   // endregion
 }

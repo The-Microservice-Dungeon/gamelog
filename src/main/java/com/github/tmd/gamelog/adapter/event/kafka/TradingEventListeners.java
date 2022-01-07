@@ -32,7 +32,7 @@ public class TradingEventListeners {
   }
 
   // region Irrelevant Kafka Listeners for scores
-  @KafkaListener(topics = "bank-created")
+  /*@KafkaListener(topics = "bank-created")
   public void bankCreatedEvent(@Payload BankCreatedEvent event, MessageHeaders headers) {
 
   }
@@ -47,7 +47,7 @@ public class TradingEventListeners {
   public void currentResourcePricesChangedEvent(@Payload CurrentResourcePriceEvent event,
       MessageHeaders headers) {
 
-  }
+  }*/
 
   // endregion
 }
