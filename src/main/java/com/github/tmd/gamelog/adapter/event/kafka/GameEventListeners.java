@@ -6,18 +6,24 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
+import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.kafka.annotation.TopicPartition;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class GameEventListeners {
   private final GameHistoryService gameHistoryService;
   private final RobotHistoryService robotHistoryService;
@@ -33,11 +39,28 @@ public class GameEventListeners {
     this.tradingHistoryService = tradingHistoryService;
   }
 
+  @DltHandler
+  void dltHandler(Message<?> msg,
+      @Header(KafkaHeaders.ORIGINAL_OFFSET) byte[] offset,
+      @Header(KafkaHeaders.EXCEPTION_FQCN) String descException,
+      @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
+      @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
+    log.error("""
+        =============== GAME DLT ===============
+        Message: {}
+        Original Offset: {}
+        Desc Exception: {}
+        Error Message: {}
+        Stacktrace: {}
+        """, msg, ByteBuffer.wrap(offset).getLong(), descException, errorMessage, stacktrace);
+  }
+
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "status")
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, @Header(name = "timestamp") String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
+    throw new RuntimeException();
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
