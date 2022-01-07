@@ -26,7 +26,7 @@ import org.apache.kafka.common.header.Header;
  * following
  */
 @Slf4j
-public class KafkaRequiredPropertiesInterceptor implements ConsumerInterceptor<String, String> {
+public class KafkaRequiredPropertiesInterceptor implements ConsumerInterceptor<Object, Object> {
 
   private final Set<String> requiredHeaders = Set.of(
       KafkaDungeonHeader.KEY_EVENT_ID,
@@ -43,7 +43,7 @@ public class KafkaRequiredPropertiesInterceptor implements ConsumerInterceptor<S
   );
 
   @Override
-  public ConsumerRecords<String, String> onConsume(ConsumerRecords<String, String> records) {
+  public ConsumerRecords<Object, Object> onConsume(ConsumerRecords<Object, Object> records) {
     var iter = records.iterator();
     iter.forEachRemaining(record -> {
       for (var headerName : requiredHeaders) {
