@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -54,4 +55,12 @@ public class GamePlayerStatusHistoryJpa {
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;
+
+  @PrePersist
+  void preInsert() {
+    // If no username is available, just use the userId as a username
+    if(this.userName == null || this.userName.isBlank()) {
+      this.userName = this.userId.toString();
+    }
+  }
 }
