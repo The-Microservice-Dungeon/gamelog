@@ -24,6 +24,28 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+      zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        env:
+          ZOOKEEPER_CLIENT_PORT: 2181
+          ZOOKEEPER_TICK_TIME: 2000
+        ports:
+          - "2181:2181"
+
+      kafka:
+        image: wurstmeister/kafka:latest
+        ports:
+          - "29092:29092"
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_LISTENERS: EXTERNAL_SAME_HOST://:29092,INTERNAL://:9092
+          KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL_SAME_HOST://localhost:29092
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT
+          KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+          KAFKA_CREATE_TOPICS: "status:1:1,playerStatus:1:1,roundStatus:1:1,gameworld-created:1:1,spacestation-created:1:1,planet-explored:1:1,resource-mined:1:1,resource-replenished:1:1,movement:1:1,planet-blocked:1:1,mining:1:1,fighting:1:1,resource-distribution:1:1,regeneration:1:1,item-fighting:1:1,item-repair:1:1,item-movement:1:1,robot-destroyed:1:1,trades:1:1,bank-created:1:1,current-item-prices:1:1,current-resource-prices:1:1"
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup JDK 17 + cache
@@ -39,6 +61,7 @@ jobs:
           DB_PASSWORD: ''
           DB_USER: root
           DB_NAME: gamelog
+          KAFKA_BOOTSTRAP_ADDRESS: localhost:29092
         run: mvn test -Psurefire
       - name: Upload Test Report
         if: ${{ failure() }}
