@@ -24,6 +24,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -42,7 +43,7 @@ public class GameEventListeners {
     this.tradingHistoryService = tradingHistoryService;
   }
 
-  @RetryableTopic
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "status", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent"
   })
@@ -51,6 +52,7 @@ public class GameEventListeners {
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "playerStatus", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent"
   })
@@ -60,6 +62,7 @@ public class GameEventListeners {
     gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), event.lobbyAction(), timestamp);
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "roundStatus", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent"
   })

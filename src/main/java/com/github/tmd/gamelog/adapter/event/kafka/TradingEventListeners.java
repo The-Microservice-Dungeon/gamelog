@@ -9,9 +9,11 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,6 +25,7 @@ public class TradingEventListeners {
     this.tradingHistoryService = tradingHistoryService;
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "trades", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent"
   })

@@ -8,9 +8,11 @@ import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,6 +25,7 @@ public class RobotEventListeners {
     this.robotHistoryService = robotHistoryService;
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "movement", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent"
   })
@@ -35,6 +38,7 @@ public class RobotEventListeners {
     }
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "planet-blocked", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent"
   })
@@ -46,6 +50,7 @@ public class RobotEventListeners {
     }
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "mining", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent"
   })
@@ -57,6 +62,7 @@ public class RobotEventListeners {
     }
   }
 
+  @RetryableTopic(attempts = "5", backoff = @Backoff(delay = 100, maxDelay = 1000))
   @KafkaListener(topics = "fighting", properties = {
       "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent"
   })
