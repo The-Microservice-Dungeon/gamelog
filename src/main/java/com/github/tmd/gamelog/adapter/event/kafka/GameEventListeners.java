@@ -7,9 +7,22 @@ import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Map;
+import java.util.UUID;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
@@ -28,38 +41,46 @@ public class GameEventListeners {
     this.robotHistoryService = robotHistoryService;
     this.tradingHistoryService = tradingHistoryService;
   }
-  
-  @KafkaListener(topics = "status")
-  public void gameStatusChangedEvent(@Payload GameStatusEvent event, MessageHeaders headers) {
 
-    var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
+  @RetryableTopic
+  @KafkaListener(topics = "status", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent"
+  })
+  public void gameStatusChangedEvent(@Payload GameStatusEvent event, @Header(name = "timestamp") String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
   }
 
-  @KafkaListener(topics = "playerStatus")
+  @KafkaListener(topics = "playerStatus", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent"
+  })
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
-      MessageHeaders headers) {
-
-    var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
-    gameHistoryService.insertGamePlayerStatusHistory(event.gameId(), event.userId(), event.userName(), event.lobbyAction(), timestamp);
+      @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+    gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), event.lobbyAction(), timestamp);
   }
 
-  @KafkaListener(topics = "roundStatus")
+  @KafkaListener(topics = "roundStatus", properties = {
+      "spring.json.value.default.type=com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent"
+  })
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
-      MessageHeaders headers) {
+      @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
 
-    var timestamp = Instant.ofEpochMilli(headers.getTimestamp());
-    gameHistoryService.insertGameRoundStatusHistory(event.gameId(), event.roundId(), event.roundNumber(), event.roundStatus(), timestamp);
+    // TODO: Round ID not present
+    UUID roundId = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+    gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(), event.roundStatus(), timestamp);
 
     switch (event.roundStatus()) {
       case ENDED -> {
         // TODO: Well this could take a loooooong time
         // TODO: Multiple synchronous calls
-        for(var player : gameHistoryService.getAllParticipatingPlayersInGame(event.gameId())) {
-          this.robotHistoryService.insertRobotRoundHistoryForPlayer(event.roundId(), player);
+        for(var player : gameHistoryService.getAllParticipatingPlayersInGame(gameId)) {
+          this.robotHistoryService.insertRobotRoundHistoryForPlayer(roundId, player);
         }
 
-        this.tradingHistoryService.insertBalanceHistory(event.roundId());
+        this.tradingHistoryService.insertBalanceHistory(roundId);
       }
     }
   }
