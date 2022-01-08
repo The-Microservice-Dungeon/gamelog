@@ -36,4 +36,28 @@ public class TrophyRepository implements com.github.tmd.gamelog.domain.TrophyRep
         trophyJpaRepository.save(trophyDtoFromTrophy);
     }
 
+    /**
+     * Initialize the repository with the list of default trophies.
+     */
+    public void initRepository() {
+        for (Trophy trophy : getMissingDefaultTrophies()) {
+            trophyJpaRepository.save(trophyDtoMapper.mapEntityToDto(trophy));
+        }
+    }
+
+    /**
+     * Get the list of default trophies that are still missing on the repo.
+     *
+     * @return List of default trophies that are missing on the repo.
+     */
+    private ArrayList<Trophy> getMissingDefaultTrophies() {
+        ArrayList<Trophy> trophiesOnTheRepo = findAll();
+        ArrayList<Trophy> requiredTrophies = Trophy.getDefaultTrophies();
+        for (Trophy trophy : trophiesOnTheRepo) {
+            trophy.setId(0);
+            requiredTrophies.remove(trophy);
+        }
+        return requiredTrophies;
+    }
+
 }
