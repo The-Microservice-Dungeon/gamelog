@@ -1,7 +1,5 @@
-package com.github.tmd.gamelog.domain;
+package com.github.tmd.gamelog.adapter.jpa;
 
-import com.github.tmd.gamelog.adapter.jpa.TrophyJpaRepository;
-import com.github.tmd.gamelog.adapter.jpa.TrophyRepository;
 import com.github.tmd.gamelog.adapter.jpa.mapper.TrophyDtoMapper;
 import com.github.tmd.gamelog.domain.trophies.Trophy;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,14 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class TrophyRepositoryTest {
 
-    @Autowired
-    private TrophyJpaRepository trophyJpaRepository;
-
-    private TrophyDtoMapper trophyDtoMapper;
-    private TrophyRepository trophyRepository;
-
     private final String name = "First Blood";
     private final String badgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Fighting%20Bronze%20-%20First%20Blood.png";
+    @Autowired
+    private TrophyJpaRepository trophyJpaRepository;
+    private TrophyDtoMapper trophyDtoMapper;
+    private TrophyRepository trophyRepository;
 
     @BeforeEach
     void beforeEach() {
