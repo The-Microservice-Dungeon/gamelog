@@ -35,10 +35,13 @@ public class TrophyRepositoryTest {
 
     @Test
     void testUpsertAndFindAll() {
-        Trophy testTrophy = new Trophy(1, name, badgeUrl);
+        Trophy testTrophy = new Trophy();
+        testTrophy.setName(name);
+        testTrophy.setBadgeUrl(badgeUrl);
+        assertThat(trophyRepository.findAll()).isEmpty();
         trophyRepository.upsert(testTrophy);
         ArrayList<Trophy> trophies = trophyRepository.findAll();
-        assertThat(trophies).contains(testTrophy);
+        assertThat(trophies.get(0)).usingRecursiveComparison().ignoringFields("id").isEqualTo(testTrophy);
     }
 
     @Test
