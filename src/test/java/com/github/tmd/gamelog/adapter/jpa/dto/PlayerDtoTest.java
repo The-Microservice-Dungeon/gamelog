@@ -17,6 +17,7 @@ public class PlayerDtoTest {
     void testEmptyNewPlayerDto() {
         PlayerDto playerDto = new PlayerDto();
         assertThat(playerDto.getId()).isNull();
+        assertThat(playerDto.getEarnedTrophies()).isEmpty();
     }
 
     @Test

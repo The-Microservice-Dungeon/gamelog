@@ -3,7 +3,6 @@ package com.github.tmd.gamelog.adapter.jpa.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,9 +24,6 @@ public class PlayerTrophyDto {
 
     @ManyToOne
     private TrophyDto trophyDto;
-
-    @ManyToOne
-    private PlayerDto playerDtoAwardedTo;
 
     @Column(name = "game_id", nullable = false, updatable = false)
     private UUID gameId;

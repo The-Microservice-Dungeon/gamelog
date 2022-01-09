@@ -18,7 +18,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PlayerTrophy {
 
-    private Player playerAwardedTo;
     private Trophy trophy;
     private UUID gameId;
     private Date dateAwarded;

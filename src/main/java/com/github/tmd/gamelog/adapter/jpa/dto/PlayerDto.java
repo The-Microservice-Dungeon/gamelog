@@ -2,10 +2,10 @@ package com.github.tmd.gamelog.adapter.jpa.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -13,11 +13,24 @@ import java.util.UUID;
  */
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class PlayerDto {
 
     @Id
+    @Column(name = "player_id")
     private UUID id;
 
+    @OneToMany
+    @JoinColumn(name = "player_id")
+    private Set<PlayerTrophyDto> earnedTrophies;
+
+    public PlayerDto() {
+        this.id = null;
+        this.earnedTrophies = new HashSet<PlayerTrophyDto>();
+    }
+
+    public PlayerDto(UUID id) {
+        this.id = id;
+        this.earnedTrophies = new HashSet<PlayerTrophyDto>();
+    }
 }
