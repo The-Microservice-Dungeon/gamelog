@@ -21,14 +21,14 @@ public class PlayerDtoMapper {
         playerTrophyDtoMapper = new PlayerTrophyDtoMapper();
     }
 
-    PlayerDto mapEntityToDto(Player player) {
+    public PlayerDto mapEntityToDto(Player player) {
         PlayerDto playerDto = new PlayerDto();
         playerDto.setId(player.getId());
         playerDto.setEarnedTrophies(mapTrophiesToTrophyDtos(player.getEarnedTrophies()));
         return playerDto;
     }
 
-    Player mapDtoToEntity(PlayerDto playerDto) {
+    public Player mapDtoToEntity(PlayerDto playerDto) {
         Player player = new Player();
         player.setId(playerDto.getId());
         player.setEarnedTrophies(mapTrophyDtosToTrophies(playerDto.getEarnedTrophies()));

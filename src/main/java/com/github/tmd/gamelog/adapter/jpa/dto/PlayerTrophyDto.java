@@ -19,15 +19,16 @@ public class PlayerTrophyDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "player_id", unique = true, nullable = false, updatable = false)
+    @Column(name = "player_trophy_id", unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "trophy_id", referencedColumnName = "trophy_id")
     private TrophyDto trophyDto;
 
     @Column(name = "game_id", nullable = false, updatable = false)
     private UUID gameId;
 
-    @Column(name = "date_awarded", updatable = false, nullable = false)
+    @Column(name = "date_awarded", nullable = false, updatable = false)
     private Date dateAwarded;
 }

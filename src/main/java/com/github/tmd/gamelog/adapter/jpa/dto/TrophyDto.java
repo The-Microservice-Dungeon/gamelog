@@ -21,10 +21,13 @@ public class TrophyDto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trophy_id", updatable = false, nullable = false)
     private Long id;
+
     @Column(name = "name", updatable = true, nullable = false, unique = true)
     private String name;
+
     @Column(name = "badge_url", updatable = true, nullable = false)
     private String badgeUrl;
+
     @NaturalId
     @Column(name = "trophy_type", updatable = false, nullable = false, unique = true)
     private TrophyType trophyType;
