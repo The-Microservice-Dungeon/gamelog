@@ -1,8 +1,5 @@
 package com.github.tmd.gamelog.application.score.trading;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
-
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
@@ -32,7 +29,7 @@ class TradingRoundScoreServiceTest {
   CommandHistoryJpaRepository commandHistoryJpaRepository;
 
   @Autowired
-  TradingRoundScoreService tradingRoundScoreService;
+  TradingRoundScoreAccumulator tradingRoundScoreService;
 
   private UUID player1 = UUID.fromString("4d4711ea-0a29-454d-9897-62280408b0f2");
   private UUID player2 = UUID.fromString("847b1721-e603-46a3-8663-c895b0694a2e");

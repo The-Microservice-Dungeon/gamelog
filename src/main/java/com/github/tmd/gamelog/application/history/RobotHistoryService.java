@@ -12,9 +12,11 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
+import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -97,5 +99,26 @@ public class RobotHistoryService {
       log.error("Could not load robot history for round", e);
       throw e;
     }
+  }
+
+  public Map<UUID, Integer> getNumberOfVictimsInRound(UUID roundId) {
+    return this.fightHistoryJpaRepository.findNumberOfVictimsInRound(roundId)
+        .stream().collect(Collectors.toMap(
+            r -> r.getPlayerId(), r -> r.getNumberOfVictims()
+        ));
+  }
+
+  public Map<UUID, Integer> getNumberOfKillsInRound(UUID roundId) {
+    return this.fightHistoryJpaRepository.findNumberOfKillsInRound(roundId)
+        .stream().collect(Collectors.toMap(
+            r -> r.getPlayerId(), r -> r.getNumberOfKills()
+        ));
+  }
+
+  public Map<UUID, Integer> getGivenDamageInRound(UUID roundId) {
+    return this.fightHistoryJpaRepository.findGivenDamageInRound(roundId)
+        .stream().collect(Collectors.toMap(
+            r -> r.getPlayerId(), r -> r.getGivenDamage()
+        ));
   }
 }

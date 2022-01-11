@@ -65,6 +65,11 @@ public class TradingHistoryService {
     return this.getPlayerBalancesInRound(roundId).get(playerId);
   }
 
+  public Map<UUID, Integer> getNumberOfTradesInRound(UUID roundId) {
+    return this.tradingHistoryJpaRepository.findNumberOfTradesInRound(roundId)
+        .stream().collect(Collectors.toMap(t -> t.getPlayerId(), t -> t.getNumberOfTrades()));
+  }
+
   public Integer getNumberOfTradesForPlayerInRound(UUID playerId, UUID roundId) {
     return this.tradingHistoryJpaRepository.findTradingHistoryForPlayerInRound(playerId, roundId)
         .size();
