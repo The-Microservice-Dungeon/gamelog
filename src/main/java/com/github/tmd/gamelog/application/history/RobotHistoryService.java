@@ -142,6 +142,15 @@ public class RobotHistoryService {
         ));
   }
 
+  public Map<UUID, Integer> getPassedMovementDifficultyInRound(UUID roundId) {
+    return this.movementHistoryJpaRepository.findMovementHistoryInRound(roundId)
+        .stream().collect(Collectors.toMap(
+            m -> m.getPlayerId(),
+            m -> m.getMovementDifficulty() * m.getRobots().size(),
+            (o, o2) -> o + o2
+        ));
+  }
+
   // TODO: Rarity should be defined elsewhere
   private Integer _getRarity(MiningHistoryResourceJpa resourceJpa) {
     return resourceJpa.ordinal() + 1;
