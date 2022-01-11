@@ -5,6 +5,11 @@ package com.github.tmd.gamelog.application.score.core;
  * that can be combined (=accumulated) to a score
  * @param <T> the type that will be accumulated.
  */
-public interface AccumulatableRoundScore<T extends Number> {
+public interface AccumulatableRoundScore<T extends Number> extends ScorableRoundScore {
   T accumulate();
+
+  @Override
+  default Double score() {
+    return this.accumulate().doubleValue();
+  }
 }

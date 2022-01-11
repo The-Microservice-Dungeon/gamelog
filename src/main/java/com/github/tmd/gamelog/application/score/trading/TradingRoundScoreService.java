@@ -1,11 +1,12 @@
 package com.github.tmd.gamelog.application.score.trading;
 
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
+import com.github.tmd.gamelog.application.score.core.AbstractRoundScoreService;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TradingRoundScoreService {
+public class TradingRoundScoreService extends AbstractRoundScoreService<TradingRoundScore> {
   private final TradingHistoryService tradingHistoryService;
 
   public TradingRoundScoreService(
