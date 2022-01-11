@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
-public interface RoundScoreJpaRepository extends JpaRepository<RoundScoreDto, Long> {
+public interface RoundScoreDtoRepository extends JpaRepository<RoundScoreDto, Long> {
         RoundScoreDto findByGameIdAndRoundIdAndPlayerId(String gameId, String roundId, UUID playerId);
 
         ArrayList<RoundScoreDto> findAllByRoundId(String roundId);

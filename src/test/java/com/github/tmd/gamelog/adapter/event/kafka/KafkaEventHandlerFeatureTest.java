@@ -2,9 +2,9 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.github.tmd.gamelog.adapter.jpa.RoundScoreDtoRepository;
 import com.github.tmd.gamelog.adapter.jpa.dto.MovementScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
 import com.github.tmd.gamelog.domain.CommandContext;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.Round;
@@ -24,7 +24,7 @@ public class KafkaEventHandlerFeatureTest{
     KafkaEventHandler kafkaEventHandler;
 
     @MockBean
-    RoundScoreJpaRepository roundScoreJpaRepository;
+    RoundScoreDtoRepository roundScoreJpaRepository;
 
     private UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 

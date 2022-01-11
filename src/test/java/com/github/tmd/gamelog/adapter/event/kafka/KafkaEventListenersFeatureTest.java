@@ -2,22 +2,11 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
-import com.github.tmd.gamelog.adapter.jpa.RoundScoreJpaRepository;
-import com.github.tmd.gamelog.domain.CommandContext;
+import com.github.tmd.gamelog.adapter.jpa.RoundScoreDtoRepository;
 import com.github.tmd.gamelog.domain.CommandContextRepository;
-import com.github.tmd.gamelog.domain.Player;
-import com.github.tmd.gamelog.domain.Round;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.common.header.Header;
-import org.apache.kafka.common.header.internals.RecordHeader;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.nio.charset.StandardCharsets;
 
 @SpringBootTest
 public class KafkaEventListenersFeatureTest {
@@ -29,7 +18,7 @@ public class KafkaEventListenersFeatureTest {
     KafkaEventListeners kafkaEventListeners;
 
     @Autowired
-    RoundScoreJpaRepository roundScoreJpaRepository;
+    RoundScoreDtoRepository roundScoreJpaRepository;
 
     /*
     TODO: Test disabled since the pipeline fails. Also this test is too complicated now.

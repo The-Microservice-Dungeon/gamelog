@@ -4,10 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.adapter.jpa.RoundScoreRepository;
-import com.github.tmd.gamelog.domain.CommandContext;
-import com.github.tmd.gamelog.domain.Player;
-import com.github.tmd.gamelog.domain.Round;
-import com.github.tmd.gamelog.domain.RoundScore;
 import com.github.tmd.gamelog.adapter.jpa.dto.MovementScoreDto;
 import com.github.tmd.gamelog.adapter.jpa.dto.RoundScoreDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,13 +21,13 @@ public class RoundScoreRepositoryTest {
     private RoundScoreRepository roundScoreRepository;
 
     @Mock
-    private RoundScoreJpaRepository roundScoreJpaRepository;
+    private RoundScoreDtoRepository roundScoreDtoRepository;
 
     private UUID playerId = UUID.fromString("c6dcbdac-be0b-4de0-b50d-7870caa5f744");
 
     @BeforeEach
     public void init() {
-        roundScoreRepository = new RoundScoreRepository(roundScoreJpaRepository, new RoundScoreDtoMapper());
+        roundScoreRepository = new RoundScoreRepository(roundScoreDtoRepository, new RoundScoreDtoMapper());
     }
 
 
@@ -39,7 +35,7 @@ public class RoundScoreRepositoryTest {
     void testFindByGameAndRoundAndPlayerNotExisting() {
         CommandContext commandContext = this.createGameContext();
 
-        Mockito.when(roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", playerId)).thenReturn(null);
+        Mockito.when(roundScoreDtoRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", playerId)).thenReturn(null);
         RoundScore roundScore = roundScoreRepository.findByCommandContext(commandContext);
         assertThat(roundScore).isNull();
     }
@@ -57,7 +53,7 @@ public class RoundScoreRepositoryTest {
         mockRoundScoreDto.setMovementScore(movementScoreDto);
 
         Mockito
-            .when(this.roundScoreJpaRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", playerId))
+            .when(this.roundScoreDtoRepository.findByGameIdAndRoundIdAndPlayerId("1", "2", playerId))
             .thenReturn(mockRoundScoreDto);
 
         RoundScore roundScore = this.roundScoreRepository.findByCommandContext(commandContext);

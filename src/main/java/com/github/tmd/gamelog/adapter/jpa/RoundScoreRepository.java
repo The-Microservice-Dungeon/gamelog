@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public class RoundScoreRepository implements com.github.tmd.gamelog.domain.RoundScoreRepository {
 
     private final RoundScoreDtoMapper roundScoreDtoMapper;
-    private final RoundScoreJpaRepository roundScoreJpaRepository;
+    private final RoundScoreDtoRepository roundScoreJpaRepository;
 
     public RoundScoreRepository(
-            RoundScoreJpaRepository roundScoreJpaRepository,
+            RoundScoreDtoRepository roundScoreJpaRepository,
             RoundScoreDtoMapper roundScoreDtoMapper
     ) {
         this.roundScoreJpaRepository = roundScoreJpaRepository;
