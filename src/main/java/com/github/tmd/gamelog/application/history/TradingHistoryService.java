@@ -7,6 +7,7 @@ import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpaRepos
 import com.github.tmd.gamelog.adapter.rest_client.client.TradingRestClient;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -52,10 +53,16 @@ public class TradingHistoryService {
     }
   }
 
+  public Map<UUID, Integer> getPlayerBalancesInRound(UUID roundId) {
+    return this.playerBalanceHistoryJpaRepository.findAllBalancesInRound(roundId)
+        .stream().collect(Collectors.toMap(
+            b -> b.getPlayerId(),
+            b -> b.getBalance()
+        ));
+  }
+
   public Integer getPlayerBalanceInRound(UUID playerId, UUID roundId) {
-    return this.playerBalanceHistoryJpaRepository.findBalanceForPlayerInRound(playerId, roundId)
-        .map(PlayerBalanceHistoryJpa::getBalance)
-        .orElseThrow(() -> new RuntimeException("No Balance History for player with ID %s in round with ID %s found".formatted(playerId, roundId)));
+    return this.getPlayerBalancesInRound(roundId).get(playerId);
   }
 
   public Integer getNumberOfTradesForPlayerInRound(UUID playerId, UUID roundId) {
