@@ -28,7 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"player_id", "assumed_round_id"})
+    @UniqueConstraint(columnNames = {"player_id", "round_id"})
 })
 public class PlayerBalanceHistoryJpa {
   @Id
@@ -44,13 +44,10 @@ public class PlayerBalanceHistoryJpa {
   @Column(name = "balance", updatable = false, nullable = false)
   private Integer balance;
 
-  // Since we're performing a synchronous call at the end of a round to achieve this we cannot
-  // be sure whether the retrieved state belongs to the correct round. We can only assume this.
-  // See TradingHistoryService for more details
   @NonNull
   @Type(type="uuid-char")
-  @Column(name = "assumed_round_id", updatable = false, nullable = false)
-  private UUID assumedRoundId;
+  @Column(name = "round_id", updatable = false, nullable = false)
+  private UUID roundId;
 
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)

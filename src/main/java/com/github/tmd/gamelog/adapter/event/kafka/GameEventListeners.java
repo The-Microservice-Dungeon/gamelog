@@ -86,11 +86,12 @@ public class GameEventListeners {
       case ENDED -> {
         // TODO: Well this could take a loooooong time
         // TODO: Multiple synchronous calls
+        // TODO: Schedule the calls so that they could be called at a later point
         for(var player : gameHistoryService.getAllParticipatingPlayersInGame(gameId)) {
           this.robotHistoryService.insertRobotRoundHistoryForPlayer(roundId, player);
         }
 
-        this.tradingHistoryService.insertBalanceHistory(roundId);
+        this.tradingHistoryService.insertBalanceHistory(roundId, event.roundNumber());
       }
     }
   }

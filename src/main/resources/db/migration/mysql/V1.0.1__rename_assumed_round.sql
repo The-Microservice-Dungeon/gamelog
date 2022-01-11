@@ -1,0 +1,1 @@
+alter table player_balance_history_jpa change assumed_round_id round_id varchar(255) not null;
