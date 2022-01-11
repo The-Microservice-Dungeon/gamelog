@@ -77,9 +77,7 @@ public class GameEventListeners {
   @KafkaListener(topics = "roundStatus")
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
       @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
-
-    // TODO: Round ID not present
-    UUID roundId = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    UUID roundId = event.roundId();
 
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(), event.roundStatus(), timestamp);
