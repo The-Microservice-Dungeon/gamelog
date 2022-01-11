@@ -27,7 +27,7 @@ public class MiningRoundScoreAccumulator extends AbstractRoundScoreAccumulator<M
 
     var miningRoundScores = new HashMap<UUID, MiningRoundScore>();
     for(UUID id : allPlayerIds) {
-      var mining = minedResources.getOrDefault(id, Collections.emptySet());
+      var mining = minedResources.getOrDefault(id, Collections.emptyList());
       miningRoundScores.put(id, new MiningRoundScore(mining));
     }
 
