@@ -17,7 +17,7 @@ public record MovementRoundScore(
   }
 
   @Override
-  public Double score() {
+  public Double rawRoundScore() {
     return passedDifficulty.doubleValue();
   }
 }
