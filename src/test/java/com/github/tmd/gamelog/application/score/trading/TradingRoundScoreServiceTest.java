@@ -1,5 +1,7 @@
 package com.github.tmd.gamelog.application.score.trading;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
@@ -74,31 +76,29 @@ class TradingRoundScoreServiceTest {
   @Test
   void shouldGetTradingRoundScoreForRound1() {
     // When
-    var player1Score = this.tradingRoundScoreService.getRoundScoreForPlayerInRound(player1, round1);
-    var player2Score = this.tradingRoundScoreService.getRoundScoreForPlayerInRound(player2, round1);
+    var scores = tradingRoundScoreService.accumulateRoundScores(round1);
 
     // Then
-    assertThat(player1Score.balance()).isEqualTo(2050);
-    assertThat(player2Score.balance()).isEqualTo(2050);
+    assertThat(scores.get(player1).balance()).isEqualTo(2050);
+    assertThat(scores.get(player2).balance()).isEqualTo(2050);
 
     var b = this.commandHistoryJpaRepository.findAll();
     var a = this.tradingHistoryJpaRepository.findAll();
 
-    assertThat(player1Score.numOfTrades()).isEqualTo(1);
-    assertThat(player2Score.numOfTrades()).isEqualTo(1);
+    assertThat(scores.get(player1).numOfTrades()).isEqualTo(1);
+    assertThat(scores.get(player2).numOfTrades()).isEqualTo(1);
   }
 
   @Test
   void shouldGetTradingRoundScoreForRound2() {
     // When
-    var player1Score = this.tradingRoundScoreService.getRoundScoreForPlayerInRound(player1, round2);
-    var player2Score = this.tradingRoundScoreService.getRoundScoreForPlayerInRound(player2, round2);
+    var scores = tradingRoundScoreService.accumulateRoundScores(round1);
 
     // Then
-    assertThat(player1Score.balance()).isEqualTo(1234);
-    assertThat(player2Score.balance()).isEqualTo(2048);
+    assertThat(scores.get(player1).balance()).isEqualTo(1234);
+    assertThat(scores.get(player2).balance()).isEqualTo(2048);
 
-    assertThat(player1Score.numOfTrades()).isEqualTo(2);
-    assertThat(player2Score.numOfTrades()).isEqualTo(1);
+    assertThat(scores.get(player1).numOfTrades()).isEqualTo(2);
+    assertThat(scores.get(player2).numOfTrades()).isEqualTo(1);
   }
 }
