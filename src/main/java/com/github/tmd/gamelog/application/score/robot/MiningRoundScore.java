@@ -5,11 +5,12 @@ import com.github.tmd.gamelog.application.__tmpstructs.ResourceMinedThingy;
 import com.github.tmd.gamelog.application.score.core.AccumulatableRoundScore;
 import com.github.tmd.gamelog.application.score.core.CategorizableRoundScore;
 import com.github.tmd.gamelog.application.score.core.RoundScoreCategory;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public record MiningRoundScore(
-    Set<ResourceMinedThingy> minedAmounts
+    List<ResourceMinedThingy> minedAmounts
 ) implements CategorizableRoundScore, AccumulatableRoundScore {
 
   @Override
@@ -17,7 +18,7 @@ public record MiningRoundScore(
     var miningScore = 0;
 
     for(var mining : minedAmounts) {
-      miningScore += mining.rarity() * mining.amount();
+      miningScore += mining.value();
     }
 
     return miningScore;

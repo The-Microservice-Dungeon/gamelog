@@ -4,6 +4,10 @@ package com.github.tmd.gamelog.application.__tmpstructs;
 public record ResourceMinedThingy(
     Integer rarity,
     Integer amount
-) {
+) implements ValueableScoreAttribute<Integer> {
 
+  @Override
+  public Integer value() {
+    return rarity * amount;
+  }
 }

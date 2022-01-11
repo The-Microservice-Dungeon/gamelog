@@ -4,5 +4,6 @@ public enum RoundScoreCategory {
   TRADING,
   FIGHTING,
   MINING,
-  MOVEMENT;
+  MOVEMENT,
+  ROBOT;
 }

@@ -14,9 +14,12 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
 import com.github.tmd.gamelog.application.__tmpstructs.ResourceMinedThingy;
+import com.github.tmd.gamelog.application.__tmpstructs.RobotLevelsThingy;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -124,15 +127,15 @@ public class RobotHistoryService {
         ));
   }
 
-  public Map<UUID, Set<ResourceMinedThingy>> getMinedResourceInRound(UUID roundId) {
+  public Map<UUID, List<ResourceMinedThingy>> getMinedResourceInRound(UUID roundId) {
     return this.miningHistoryJpaRepository.findMiningHistoryInRound(roundId)
         .stream().collect(Collectors.toMap(
           r -> r.getPlayerId(),
             r -> {
-              var set = new HashSet<ResourceMinedThingy>();
-              set.add(new ResourceMinedThingy(this._getRarity(r.getResource()),
+              var lst = new ArrayList<ResourceMinedThingy>();
+              lst.add(new ResourceMinedThingy(this._getRarity(r.getResource()),
                 r.getMinedAmount()));
-              return set;
+              return lst;
             },
             (o, o2) -> {
               o.addAll(o2);
@@ -147,6 +150,32 @@ public class RobotHistoryService {
             m -> m.getPlayerId(),
             m -> m.getOverallMovementDifficulty() * m.getNumberOfMovedRobots(),
             (o, o2) -> o + o2
+        ));
+  }
+
+  // TODO: This will simply return all Robot scores, it should maybe return the difference
+  //       and therefore upgraded robots?
+  public Map<UUID, List<RobotLevelsThingy>> getRobotLevelsInRound(UUID roundId) {
+    return this.robotHistoryJpaRepository.findByRoundId(roundId)
+        .stream().collect(Collectors.toMap(
+            r -> r.getPlayerId(),
+            r -> {
+              var lst = new ArrayList<RobotLevelsThingy>();
+              lst.add(new RobotLevelsThingy(
+                  r.getHealthLevel(),
+                  r.getDamageLevel(),
+                  r.getMiningSpeedLevel(),
+                  r.getMiningLevel(),
+                  r.getEnergyLevel(),
+                  r.getEnergyRegenLevel(),
+                  r.getStorageLevel()
+              ));
+              return lst;
+            },
+            (o, o2) -> {
+              o.addAll(o2);
+              return o;
+            }
         ));
   }
 
