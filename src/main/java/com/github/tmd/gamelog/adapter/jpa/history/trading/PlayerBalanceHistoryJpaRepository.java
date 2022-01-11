@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayerBalanceHistoryJpaRepository extends CrudRepository<PlayerBalanceHistoryJpa, UUID> {
-  @Query("select pbh.playerId, pbh.balance from PlayerBalanceHistoryJpa pbh where pbh.roundId = ?1")
+  @Query("select pbh.playerId as playerId, pbh.balance as balance from PlayerBalanceHistoryJpa "
+      + "pbh where pbh.roundId = ?1")
   Set<OnlyPlayerAndBalanceProjection> findAllBalancesInRound(UUID roundId);
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface PlanetBlockHistoryJpaRepository extends CrudRepository<PlanetBlockHistoryJpa, UUID> {
   // TODO: Untested
   @Query("""
-  select ch.playerId, count(pbh.planetId) as blockCount
+  select ch.playerId as playerId, count(pbh.planetId) as blockCount
     from PlanetBlockHistoryJpa pbh 
       join CommandHistoryJpa ch on ch.transactionId = pbh.transactionId
       where ch.roundId = ?1

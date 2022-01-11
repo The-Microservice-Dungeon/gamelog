@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TradingHistoryJpaRepository extends CrudRepository<TradingHistoryJpa, UUID> {
   @Query("""
-    select ch.playerId, pbh.moneyChange
+    select ch.playerId as playerId, pbh.moneyChange as moneyChange
     from TradingHistoryJpa pbh 
       join CommandHistoryJpa ch 
         on ch.transactionId = pbh.transactionId 
@@ -18,7 +18,7 @@ public interface TradingHistoryJpaRepository extends CrudRepository<TradingHisto
   Set<OnlyPlayerAndMoneyChangeProjection> findTradingHistoryForPlayerInRound(UUID playerId, UUID roundId);
 
   @Query("""
-    select ch.playerId, pbh.moneyChange
+    select ch.playerId as playerId, pbh.moneyChange as moneyChange
     from TradingHistoryJpa pbh 
       join CommandHistoryJpa ch 
         on ch.transactionId = pbh.transactionId 
@@ -27,7 +27,7 @@ public interface TradingHistoryJpaRepository extends CrudRepository<TradingHisto
   Set<OnlyPlayerAndMoneyChangeProjection> findTradingHistoryInRound(UUID roundId);
 
   @Query("""
-  select ch.playerId, count(pbh.moneyChange)
+  select ch.playerId as playerId, count(pbh.moneyChange) as numberOfTrades
     from TradingHistoryJpa pbh 
       join CommandHistoryJpa ch 
         on ch.transactionId = pbh.transactionId 

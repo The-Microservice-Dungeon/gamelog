@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface FightHistoryJpaRepository extends CrudRepository<FightHistoryJpa, UUID> {
   // TODO: untested
   @Query("""
-    select rh1.playerId as attackerPlayerId, rh2.playerId as defenderPlayerId, rh2.attackDamage as damage, fh.defenderHealth
+    select rh1.playerId as attackerPlayerId, rh2.playerId as defenderPlayerId, rh2.attackDamage as damage, fh.defenderHealth as defenderHealth
       from FightHistoryJpa fh
         join CommandHistoryJpa ch on ch.transactionId = fh.transactionId
         join RobotHistoryJpa rh1 on fh.attacker = rh1.robotId

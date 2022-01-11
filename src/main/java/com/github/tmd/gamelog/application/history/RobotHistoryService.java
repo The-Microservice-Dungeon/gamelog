@@ -12,7 +12,6 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
-import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
 import com.github.tmd.gamelog.application.__tmpstructs.ResourceMinedThingy;
 import java.time.Instant;
@@ -146,7 +145,7 @@ public class RobotHistoryService {
     return this.movementHistoryJpaRepository.findMovementHistoryInRound(roundId)
         .stream().collect(Collectors.toMap(
             m -> m.getPlayerId(),
-            m -> m.getMovementDifficulty() * m.getRobots().size(),
+            m -> m.getOverallMovementDifficulty() * m.getNumberOfMovedRobots(),
             (o, o2) -> o + o2
         ));
   }

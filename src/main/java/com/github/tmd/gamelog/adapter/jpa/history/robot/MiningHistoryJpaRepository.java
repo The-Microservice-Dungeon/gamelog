@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface MiningHistoryJpaRepository extends CrudRepository<MiningHistoryJpa, UUID> {
   // TODO: untested
   @Query("""
-    select ch.playerId, mh.minedAmount, mh.resourceJpa as resource
+    select ch.playerId as playerId, mh.minedAmount as minedAmount, mh.resourceJpa as resource
     from MiningHistoryJpa mh 
       join CommandHistoryJpa ch on ch.transactionId = mh.transactionId
       where ch.roundId = ?1
