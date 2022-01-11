@@ -92,7 +92,7 @@ class TradingRoundScoreServiceTest {
   @Test
   void shouldGetTradingRoundScoreForRound2() {
     // When
-    var scores = tradingRoundScoreService.accumulateRoundScores(round1);
+    var scores = tradingRoundScoreService.accumulateRoundScores(round2);
 
     // Then
     assertThat(scores.get(player1).balance()).isEqualTo(1234);
