@@ -14,9 +14,12 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpa;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
+import com.github.tmd.gamelog.application.__tmpstructs.ResourceMinedThingy;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -120,5 +123,27 @@ public class RobotHistoryService {
         .stream().collect(Collectors.toMap(
             r -> r.getPlayerId(), r -> r.getGivenDamage()
         ));
+  }
+
+  public Map<UUID, Set<ResourceMinedThingy>> getMinedResourceInRound(UUID roundId) {
+    return this.miningHistoryJpaRepository.findMiningHistoryInRound(roundId)
+        .stream().collect(Collectors.toMap(
+          r -> r.getPlayerId(),
+            r -> {
+              var set = new HashSet<ResourceMinedThingy>();
+              set.add(new ResourceMinedThingy(this._getRarity(r.getResource()),
+                r.getMinedAmount()));
+              return set;
+            },
+            (o, o2) -> {
+              o.addAll(o2);
+              return o;
+            }
+        ));
+  }
+
+  // TODO: Rarity should be defined elsewhere
+  private Integer _getRarity(MiningHistoryResourceJpa resourceJpa) {
+    return resourceJpa.ordinal() + 1;
   }
 }
