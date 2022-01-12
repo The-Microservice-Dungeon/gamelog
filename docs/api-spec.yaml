@@ -2,58 +2,22 @@ openapi: 3.0.3
 
 info:
   title: Game Log
-  version: 0.2.0
+  version: 1.0.0
 
 paths:
-  /players/{id}/trophies:
-    summary: > 
-      Get all granted trophies to one player
-    get:
-      tags:
-        - Trophy
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-            format: uuid
-            example: ba0e1deb-db59-4f07-a0d8-4def1f484d31
-          required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PlayerTrophyCabinet'
-        '404':
-          description: Player not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-
-  /scoreboards/{category}:
-    summary: >
-      Get the Scoreboard of one specific category
+  "/scoreboard/{game-id}":
+    summary: Get the Scoreboard of one specific game
     get:
       tags:
         - Scoreboard
       parameters:
         - in: path
-          name: category
-          schema:
-            $ref: '#/components/schemas/ScoreboardCategory'
-          required: true
-        - in: query
-          name: order
-          description: Parameter indicates the score sort
+          name: game-id
           schema:
             type: string
-            enum:
-              - ASC
-              - DESC
-          required: false
+            format: uuid
+            example: ba0e1deb-db59-4f07-a0d8-4def1f484d31
+          required: true
       responses:
         '200':
           description: OK
@@ -132,6 +96,7 @@ components:
             $ref: '#/components/schemas/Trophy'            
     ApiError:
       type: object
+      additionalProperties: true
       required:
         - error
         - message
