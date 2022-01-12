@@ -1,6 +1,7 @@
 package com.github.tmd.gamelog.adapter.jpa.score;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
