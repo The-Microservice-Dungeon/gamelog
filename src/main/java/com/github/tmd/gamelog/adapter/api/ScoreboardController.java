@@ -4,6 +4,7 @@ import com.github.tmd.gamelog.application.score.ScoreboardService;
 import com.github.tmd.gamelog.application.score.dto.ScoreboardDto;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class ScoreboardController {
     this.scoreboardService = scoreboardService;
   }
 
-  @GetMapping("scoreboard/{game-id}")
+  @GetMapping(value = "scoreboard/{game-id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ScoreboardDto> getScoreboardOfGame(@PathVariable("game-id") UUID gameId) {
     return scoreboardService.getScoreboardForGame(gameId)
         .map(ResponseEntity::ok)
