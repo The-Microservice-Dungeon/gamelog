@@ -3,11 +3,13 @@ package com.github.tmd.gamelog.application.score;
 import com.github.tmd.gamelog.application.score.core.AbstractCategorizedRoundScoreAccumulator;
 import com.github.tmd.gamelog.domain.score.core.CategorizableScore;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,10 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoundScoreAggregator {
   // Inject every categorized accumulator
-  private final ObjectProvider<AbstractCategorizedRoundScoreAccumulator<CategorizableScore>> roundScoreAccumulators;
+  private final List<AbstractCategorizedRoundScoreAccumulator<CategorizableScore>> roundScoreAccumulators;
 
+  @Autowired
   public RoundScoreAggregator(
-      ObjectProvider<AbstractCategorizedRoundScoreAccumulator<CategorizableScore>> roundScoreAccumulators) {
+      List<AbstractCategorizedRoundScoreAccumulator<CategorizableScore>> roundScoreAccumulators) {
     this.roundScoreAccumulators = roundScoreAccumulators;
   }
 
