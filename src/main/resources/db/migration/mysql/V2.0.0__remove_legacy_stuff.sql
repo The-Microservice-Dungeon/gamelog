@@ -1,0 +1,1 @@
+DROP TABLE round_score_dto;
