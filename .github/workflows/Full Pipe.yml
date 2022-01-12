@@ -14,15 +14,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      mysql:
-        image: mysql:8.0.26
+      mariadb:
+        image: mariadb:latest
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_HOST: mysql
-          MYSQL_DATABASE: gamelog
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+          MARIADB_ROOT_HOST: mariadb
+          MARIADB_DATABASE: gamelog
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
       zookeeper:
         image: confluentinc/cp-zookeeper:latest
