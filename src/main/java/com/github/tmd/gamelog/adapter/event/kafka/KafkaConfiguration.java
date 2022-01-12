@@ -21,9 +21,13 @@ import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.serializer.DelegatingByTypeSerializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+/**
+ * Kafka Configuration is found here
+ */
 @Configuration
 @EnableKafka
 public class KafkaConfiguration {
+
   private final KafkaProperties kafkaProperties;
 
   public KafkaConfiguration(
@@ -31,18 +35,34 @@ public class KafkaConfiguration {
     this.kafkaProperties = kafkaProperties;
   }
 
+  /**
+   * Spring Boot Message Converter - further abstraction provided by spring rather than the
+   * {@link org.apache.kafka.common.serialization.Deserializer}
+   */
   @Bean
   public ByteArrayJsonMessageConverter byteArrayJsonMessageConverter() {
     return new ByteArrayJsonMessageConverter();
   }
 
+  /**
+   * We need a special Producer Factory for the DLT Messages. These will probably not conform
+   * to any schema and therefore will be serialized in a plain byte stream
+   * @return ProducerFactory for DLT
+   */
   @Bean
   public ProducerFactory<?, ?> dltHandlerProducerFactory() {
-    return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties(), new StringSerializer(),
+    return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties(),
+        new StringSerializer(),
         new DelegatingByTypeSerializer(Map.of(byte[].class, new ByteArraySerializer(),
             Object.class, new JsonSerializer<Object>())));
   }
 
+  /**
+   * Since we defined a producer factory above for DLTs the Spring Boot AutoConfiguration is
+   * disabled and we need to define a ProducerFactory for the "normal" case
+   * @param customizers Spring Boot Customizers
+   * @return Standard ProducerFactory as it would be configured by spring boot
+   */
   @Bean
   @Primary
   public ProducerFactory<?, ?> kafkaProducerFactory(
@@ -57,8 +77,12 @@ public class KafkaConfiguration {
     return factory;
   }
 
+  /**
+   * We also need a KafkaTemplate for the DLTs
+   */
   @Bean
-  public KafkaTemplate<?, ?> retryTopicDefaultKafkaTemplate(ProducerListener<Object, Object> kafkaProducerListener) {
+  public KafkaTemplate<?, ?> retryTopicDefaultKafkaTemplate(
+      ProducerListener<Object, Object> kafkaProducerListener) {
     KafkaTemplate<Object, Object> kafkaTemplate = new KafkaTemplate(dltHandlerProducerFactory());
     kafkaTemplate.setMessageConverter(byteArrayJsonMessageConverter());
     kafkaTemplate.setProducerListener(kafkaProducerListener);
@@ -67,6 +91,10 @@ public class KafkaConfiguration {
     // return new KafkaTemplate<>(dltHandlerProducerFactory());
   }
 
+  /**
+   * Since we defined a KafkaTemplate above for DLTs the Spring Boot AutoConfiguration is
+   * disabled and we need to define a KafkaTemplate for the "normal" case
+   */
   @Bean
   @Primary
   public KafkaTemplate<?, ?> kafkaTemplate(ProducerFactory<Object, Object> kafkaProducerFactory,
@@ -79,7 +107,9 @@ public class KafkaConfiguration {
     return kafkaTemplate;
   }
 
-
+  /**
+   * Provide a error handler for the Kafka Listeners - we simply use logging here
+   */
   @Bean
   public CommonLoggingErrorHandler errorHandler() {
     return new CommonLoggingErrorHandler();

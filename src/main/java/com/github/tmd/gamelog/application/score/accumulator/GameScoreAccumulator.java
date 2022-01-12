@@ -2,9 +2,10 @@ package com.github.tmd.gamelog.application.score.accumulator;
 
 import com.github.tmd.gamelog.application.score.AggregatedRoundScore;
 import com.github.tmd.gamelog.application.score.GameScore;
-import com.github.tmd.gamelog.application.score.RoundScoreService;
+import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class GameScoreAccumulator  {
     return this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
         .collect(Collectors.toMap(
-            c -> c.getKey(),
+            Entry::getKey,
             c -> this.calculateGameScore(c.getValue())
         ));
   }

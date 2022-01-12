@@ -6,6 +6,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper for RoundScore related stuff
+ */
 @Component
 public class RoundScoreMapper {
   public RoundScoreJpaEmbeddable toPersistence(AggregatedRoundScore aggregatedRoundScore) {

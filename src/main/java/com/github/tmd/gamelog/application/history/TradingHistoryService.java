@@ -4,7 +4,7 @@ import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJp
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpaRepository;
-import com.github.tmd.gamelog.adapter.rest_client.client.TradingRestClient;
+import com.github.tmd.gamelog.adapter.rest.client.TradingRestClient;
 import java.time.Instant;
 import java.time.temporal.Temporal;
 import java.util.Map;

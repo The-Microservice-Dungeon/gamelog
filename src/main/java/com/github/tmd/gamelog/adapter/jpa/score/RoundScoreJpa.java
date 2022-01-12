@@ -20,6 +20,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Holds all scores wihtin a single round
+ */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +36,9 @@ public class RoundScoreJpa {
   @Column(name = "round_id", updatable = false, nullable = false, unique = true)
   private UUID roundId;
 
+  /**
+   * Player -> Aggregated Round Scores
+   */
   @ElementCollection
   @CollectionTable(name = "player_round_scores", joinColumns = {@JoinColumn(name = "round_id")})
   @MapKeyColumn(name = "player_id")

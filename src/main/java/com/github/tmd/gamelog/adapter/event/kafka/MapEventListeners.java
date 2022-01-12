@@ -10,6 +10,10 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+/**
+ * Kafka listeners for Map Service, defined in:
+ * <a href="https://the-microservice-dungeon.github.io/docs/asyncapi/map">Map AsyncAPI</a>
+ */
 @Component
 public class MapEventListeners {
 

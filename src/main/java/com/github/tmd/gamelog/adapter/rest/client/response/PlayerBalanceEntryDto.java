@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.adapter.rest_client.client.response;
+package com.github.tmd.gamelog.adapter.rest.client.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;

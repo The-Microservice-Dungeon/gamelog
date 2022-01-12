@@ -21,6 +21,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
+/**
+ * Kafka listeners for Trading Service, defined in:
+ * <a href="https://the-microservice-dungeon.github.io/docs/asyncapi/trading">Trading AsyncAPI</a>
+ */
 @Component
 @Slf4j
 public class TradingEventListeners {

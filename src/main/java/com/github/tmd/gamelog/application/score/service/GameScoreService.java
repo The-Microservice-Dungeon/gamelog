@@ -1,5 +1,6 @@
-package com.github.tmd.gamelog.application.score;
+package com.github.tmd.gamelog.application.score.service;
 
+import com.github.tmd.gamelog.application.score.GameScore;
 import com.github.tmd.gamelog.application.score.accumulator.GameScoreAccumulator;
 import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
 import java.util.Map;

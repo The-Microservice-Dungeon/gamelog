@@ -4,6 +4,9 @@ import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
+/**
+ * We define some configuration Properties here in a type-safe manner.
+ */
 @ConstructorBinding
 @ConfigurationProperties(prefix = "tmd")
 @Getter

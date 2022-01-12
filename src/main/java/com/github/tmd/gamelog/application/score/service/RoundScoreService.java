@@ -1,7 +1,9 @@
-package com.github.tmd.gamelog.application.score;
+package com.github.tmd.gamelog.application.score.service;
 
 import com.github.tmd.gamelog.adapter.jpa.score.RoundScoreJpa;
 import com.github.tmd.gamelog.adapter.jpa.score.RoundScoreRepository;
+import com.github.tmd.gamelog.application.score.AggregatedRoundScore;
+import com.github.tmd.gamelog.application.score.RoundScoreAggregator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -53,7 +55,7 @@ public class RoundScoreService {
         .roundId(roundId);
 
     Map<UUID, AggregatedRoundScore> scores =
-        this.roundScoreAggregator.accumulateAndSaveRoundScoresForRound(roundId);
+        this.roundScoreAggregator.aggregateAndSaveRoundScoresForRound(roundId);
 
     this.roundScoreRepository.saveAggregatedRoundScoresForRound(roundId, scores);
 

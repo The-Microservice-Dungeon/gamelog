@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.score;
+package com.github.tmd.gamelog.application.score.service;
 
 import com.github.tmd.gamelog.application.score.dto.ScoreboardDto;
 import com.github.tmd.gamelog.application.score.dto.ScoreboardEntryDto;
@@ -7,7 +7,6 @@ import com.github.tmd.gamelog.domain.PlayerRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.SortedSet;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

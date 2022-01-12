@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.application.score;
 
-import com.github.tmd.gamelog.application.score.core.ValueableScoreAttribute;
+import com.github.tmd.gamelog.application.score.core.ValuebleScoreAttribute;
 
 public record RobotLevelsScoreAttribute(
     Integer healthLevel,
@@ -10,7 +10,7 @@ public record RobotLevelsScoreAttribute(
     Integer energyLevel,
     Integer energyRegenLevel,
     Integer storageLevel
-) implements ValueableScoreAttribute<Integer> {
+) implements ValuebleScoreAttribute<Integer> {
 
   @Override
   public Integer value() {

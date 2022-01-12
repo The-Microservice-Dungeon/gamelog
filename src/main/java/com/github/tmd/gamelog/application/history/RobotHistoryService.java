@@ -12,7 +12,7 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
-import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
+import com.github.tmd.gamelog.adapter.rest.client.RobotRestClient;
 import com.github.tmd.gamelog.application.score.ResourceMinedScoreAttribute;
 import com.github.tmd.gamelog.application.score.ResourceRarity;
 import com.github.tmd.gamelog.application.score.RobotLevelsScoreAttribute;

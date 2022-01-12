@@ -13,6 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The score types
+ */
 @Embeddable
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

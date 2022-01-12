@@ -13,6 +13,9 @@ import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.header.Headers;
 
+/**
+ * A simple Interceptor that logs every incoming Kafka record
+ */
 @Slf4j
 public class KafkaLoggingInterceptor implements ConsumerInterceptor<Object, Object> {
 
@@ -25,6 +28,7 @@ public class KafkaLoggingInterceptor implements ConsumerInterceptor<Object, Obje
       var offset = record.offset();
       var key = Objects.toString(record.key());
 
+      // Convert the payload to a string
       String value;
       if(record.value() instanceof String) {
         value = (String) record.value();
@@ -36,6 +40,7 @@ public class KafkaLoggingInterceptor implements ConsumerInterceptor<Object, Obje
 
       var headers = headersToString(record.headers());
 
+      // Log everything
       log.trace("""
           Received Message in consumer
           Topic: %s
@@ -69,7 +74,7 @@ public class KafkaLoggingInterceptor implements ConsumerInterceptor<Object, Obje
 
   public final String headersToString(Headers headers) {
     return StreamSupport.stream(Spliterators.spliteratorUnknownSize(headers.iterator(), Spliterator.ORDERED) ,false)
-        .map(header -> "Key: %s, Value: %s\n".formatted(header.key(), new String(header.value())))
+        .map(header -> "Key: %s, Value: %s %n".formatted(header.key(), new String(header.value())))
         .collect(Collectors.joining());
   }
 }

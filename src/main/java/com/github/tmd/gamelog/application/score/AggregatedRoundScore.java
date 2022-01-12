@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Aggregated Round scores where each category is represented
+ */
 @Builder
 @Data
 public class AggregatedRoundScore implements ScorableScore {

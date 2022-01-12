@@ -20,6 +20,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
+/**
+ * Kafka listeners for Robot Service, defined in:
+ * <a href="https://the-microservice-dungeon.github.io/docs/asyncapi/robot">Robot AsyncAPI</a>
+ */
 @Component
 @Slf4j
 public class RobotEventListeners {

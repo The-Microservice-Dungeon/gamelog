@@ -6,7 +6,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
-import com.github.tmd.gamelog.application.score.RoundScoreService;
+import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -22,6 +22,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
+/**
+ * Kafka listeners for Game Service, defined in:
+ * <a href="https://the-microservice-dungeon.github.io/docs/asyncapi/game">Game AsyncAPI</a>
+ */
 @Component
 @Slf4j
 public class GameEventListeners {
