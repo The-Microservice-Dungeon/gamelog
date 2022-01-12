@@ -11,7 +11,7 @@ public interface AccumulatableRoundScore<T extends Number> extends ScorableScore
   T accumulate();
 
   @Override
-  default Double rawRoundScore() {
+  default Double score() {
     return this.accumulate().doubleValue();
   }
 }

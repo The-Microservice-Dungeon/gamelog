@@ -8,15 +8,13 @@ public record MovementRoundScore(
     Integer passedDifficulty
 ) implements CategorizableScore, ScorableScore {
 
-
-
   @Override
   public ScoreCategory category() {
     return ScoreCategory.MOVEMENT;
   }
 
   @Override
-  public Double rawRoundScore() {
+  public Double score() {
     return passedDifficulty.doubleValue();
   }
 }

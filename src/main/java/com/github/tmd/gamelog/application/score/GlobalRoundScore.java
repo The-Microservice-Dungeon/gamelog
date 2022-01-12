@@ -6,7 +6,7 @@ public record GlobalRoundScore(Double score)
   implements ScorableScore
 {
   @Override
-  public Double rawRoundScore() {
+  public Double score() {
     return score;
   }
 }
