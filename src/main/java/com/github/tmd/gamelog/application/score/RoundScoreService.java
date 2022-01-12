@@ -25,7 +25,7 @@ public class RoundScoreService {
   public Map<UUID, List<AggregatedRoundScore>> getAllOrderedAggregatedScoresInGame(UUID gameId) {
     try {
       var result = this.roundScoreRepository.findAllOrderedRoundScoresInGame(gameId);
-      if(result == null) {
+      if(result == null || result.isEmpty()) {
         throw new RuntimeException("Nothing found");
       }
       return result;

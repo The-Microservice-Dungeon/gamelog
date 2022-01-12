@@ -8,10 +8,12 @@ import com.github.tmd.gamelog.domain.PlayerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository for objects of class Player.
  */
+@Repository
 public class PlayerRepositoryImpl implements PlayerRepository {
 
     private final PlayerJpaRepository playerJpaRepository;
