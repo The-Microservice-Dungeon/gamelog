@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 /**
  * Holds all scores wihtin a single round
@@ -33,6 +34,7 @@ import lombok.Setter;
 @Table(name = "round_scores")
 public class RoundScoreJpa {
   @Id
+  @Type(type="uuid-char")
   @Column(name = "round_id", updatable = false, nullable = false, unique = true)
   private UUID roundId;
 
