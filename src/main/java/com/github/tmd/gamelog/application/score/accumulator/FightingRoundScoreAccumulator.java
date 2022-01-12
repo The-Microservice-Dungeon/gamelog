@@ -1,8 +1,9 @@
-package com.github.tmd.gamelog.application.score.robot;
+package com.github.tmd.gamelog.application.score.accumulator;
 
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
-import com.github.tmd.gamelog.application.score.core.AbstractRoundScoreAccumulator;
-import com.github.tmd.gamelog.application.score.trading.TradingRoundScore;
+import com.github.tmd.gamelog.application.score.core.AbstractCategorizedRoundScoreAccumulator;
+import com.github.tmd.gamelog.application.score.FightingRoundScore;
+import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FightingRoundScoreAccumulator extends AbstractRoundScoreAccumulator<FightingRoundScore> {
+public class FightingRoundScoreAccumulator extends
+    AbstractCategorizedRoundScoreAccumulator<FightingRoundScore> {
   private final RobotHistoryService robotHistoryService;
 
   @Autowired

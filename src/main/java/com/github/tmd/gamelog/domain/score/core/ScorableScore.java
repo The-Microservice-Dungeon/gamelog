@@ -1,6 +1,6 @@
-package com.github.tmd.gamelog.application.score.core;
+package com.github.tmd.gamelog.domain.score.core;
 
-public interface ScorableRoundScore {
+public interface ScorableScore {
   Double rawRoundScore();
 
   default Double score() {

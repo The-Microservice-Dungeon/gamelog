@@ -6,6 +6,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
+import com.github.tmd.gamelog.application.score.RoundScoreService;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
@@ -28,15 +28,18 @@ public class GameEventListeners {
   private final GameHistoryService gameHistoryService;
   private final RobotHistoryService robotHistoryService;
   private final TradingHistoryService tradingHistoryService;
+  private final RoundScoreService roundScoreService;
 
   @Autowired
   public GameEventListeners(
       GameHistoryService gameHistoryService,
       RobotHistoryService robotHistoryService,
-      TradingHistoryService tradingHistoryService) {
+      TradingHistoryService tradingHistoryService,
+      RoundScoreService roundScoreService) {
     this.gameHistoryService = gameHistoryService;
     this.robotHistoryService = robotHistoryService;
     this.tradingHistoryService = tradingHistoryService;
+    this.roundScoreService = roundScoreService;
   }
 
   @DltHandler
@@ -92,6 +95,9 @@ public class GameEventListeners {
         }
 
         this.tradingHistoryService.insertBalanceHistory(roundId, event.roundNumber());
+
+        // Now everything is completed, and we can calculate the roun scores
+        this.roundScoreService.accumulateAndSaveRoundScoresForRound(event.roundId());
       }
     }
   }

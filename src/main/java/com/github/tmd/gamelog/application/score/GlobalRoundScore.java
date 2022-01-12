@@ -1,9 +1,9 @@
 package com.github.tmd.gamelog.application.score;
 
-import com.github.tmd.gamelog.application.score.core.ScorableRoundScore;
+import com.github.tmd.gamelog.domain.score.core.ScorableScore;
 
 public record GlobalRoundScore(Double score)
-  implements ScorableRoundScore
+  implements ScorableScore
 {
   @Override
   public Double rawRoundScore() {

@@ -13,15 +13,14 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRep
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest_client.client.RobotRestClient;
-import com.github.tmd.gamelog.application.__tmpstructs.ResourceMinedThingy;
-import com.github.tmd.gamelog.application.__tmpstructs.RobotLevelsThingy;
+import com.github.tmd.gamelog.application.score.ResourceMinedScoreAttribute;
+import com.github.tmd.gamelog.application.score.ResourceRarity;
+import com.github.tmd.gamelog.application.score.RobotLevelsScoreAttribute;
 import java.time.Instant;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -127,13 +126,13 @@ public class RobotHistoryService {
         ));
   }
 
-  public Map<UUID, List<ResourceMinedThingy>> getMinedResourceInRound(UUID roundId) {
+  public Map<UUID, List<ResourceMinedScoreAttribute>> getMinedResourceInRound(UUID roundId) {
     return this.miningHistoryJpaRepository.findMiningHistoryInRound(roundId)
         .stream().collect(Collectors.toMap(
           r -> r.getPlayerId(),
             r -> {
-              var lst = new ArrayList<ResourceMinedThingy>();
-              lst.add(new ResourceMinedThingy(this._getRarity(r.getResource()),
+              var lst = new ArrayList<ResourceMinedScoreAttribute>();
+              lst.add(new ResourceMinedScoreAttribute(this._getRarity(r.getResource()),
                 r.getMinedAmount()));
               return lst;
             },
@@ -155,13 +154,13 @@ public class RobotHistoryService {
 
   // TODO: This will simply return all Robot scores, it should maybe return the difference
   //       and therefore upgraded robots?
-  public Map<UUID, List<RobotLevelsThingy>> getRobotLevelsInRound(UUID roundId) {
+  public Map<UUID, List<RobotLevelsScoreAttribute>> getRobotLevelsInRound(UUID roundId) {
     return this.robotHistoryJpaRepository.findByRoundId(roundId)
         .stream().collect(Collectors.toMap(
             r -> r.getPlayerId(),
             r -> {
-              var lst = new ArrayList<RobotLevelsThingy>();
-              lst.add(new RobotLevelsThingy(
+              var lst = new ArrayList<RobotLevelsScoreAttribute>();
+              lst.add(new RobotLevelsScoreAttribute(
                   r.getHealthLevel(),
                   r.getDamageLevel(),
                   r.getMiningSpeedLevel(),
@@ -180,7 +179,7 @@ public class RobotHistoryService {
   }
 
   // TODO: Rarity should be defined elsewhere
-  private Integer _getRarity(MiningHistoryResourceJpa resourceJpa) {
-    return resourceJpa.ordinal() + 1;
+  private ResourceRarity _getRarity(MiningHistoryResourceJpa resourceJpa) {
+    return new ResourceRarity(resourceJpa.ordinal() + 1);
   }
 }

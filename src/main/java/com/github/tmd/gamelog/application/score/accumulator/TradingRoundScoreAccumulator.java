@@ -1,7 +1,9 @@
-package com.github.tmd.gamelog.application.score.trading;
+package com.github.tmd.gamelog.application.score.accumulator;
 
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
-import com.github.tmd.gamelog.application.score.core.AbstractRoundScoreAccumulator;
+import com.github.tmd.gamelog.application.score.core.AbstractCategorizedRoundScoreAccumulator;
+import com.github.tmd.gamelog.application.score.TradingRoundScore;
+import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,7 +11,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TradingRoundScoreAccumulator extends AbstractRoundScoreAccumulator<TradingRoundScore> {
+public class TradingRoundScoreAccumulator extends
+    AbstractCategorizedRoundScoreAccumulator<TradingRoundScore> {
   private final TradingHistoryService tradingHistoryService;
 
   public TradingRoundScoreAccumulator(

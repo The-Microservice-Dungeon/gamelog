@@ -8,6 +8,7 @@ import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJp
 import com.github.tmd.gamelog.adapter.jpa.history.trading.PlayerBalanceHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.trading.TradingHistoryJpaRepository;
+import com.github.tmd.gamelog.application.score.accumulator.TradingRoundScoreAccumulator;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;

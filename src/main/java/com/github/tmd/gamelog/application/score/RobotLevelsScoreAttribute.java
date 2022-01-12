@@ -1,7 +1,8 @@
-package com.github.tmd.gamelog.application.__tmpstructs;
+package com.github.tmd.gamelog.application.score;
 
-// TODO: find name and package
-public record RobotLevelsThingy(
+import com.github.tmd.gamelog.application.score.core.ValueableScoreAttribute;
+
+public record RobotLevelsScoreAttribute(
     Integer healthLevel,
     Integer damageLevel,
     Integer miningSpeedLevel,
