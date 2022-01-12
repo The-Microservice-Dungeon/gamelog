@@ -37,7 +37,7 @@ public class ScoreboardService {
               });
       return Optional.of(new ScoreboardDto(scoreboardEntries));
     } catch (RuntimeException e) {
-      log.error("Could not determine a scoreboard for game %s".formatted(gameId));
+      log.error("Could not determine a scoreboard for game %s".formatted(gameId), e);
       return Optional.empty();
     }
   }
