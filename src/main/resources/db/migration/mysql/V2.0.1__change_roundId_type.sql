@@ -1,4 +1,5 @@
-alter table player_round_scores drop constraint IF EXISTS FKg1tm0im2hjnku2a4u9a892uha;
+alter table player_round_scores drop constraint FKg1tm0im2hjnku2a4u9a892uha;
+
 drop table player_round_scores;
 drop table round_scores;
 
@@ -20,4 +21,4 @@ create table player_round_scores
     primary key (round_id, player_id)
 ) engine = InnoDB;
 
-alter table player_round_scores add constraint FKg1tm0im2hjnku2a4u9a892uha foreign key (round_id) references round_scores (round_id);
+alter table player_round_scores add constraint FKg1tm0im2hjnku2a4u9a892uha foreign key (round_id) references round_scores (round_id);S
