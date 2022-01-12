@@ -4,18 +4,20 @@ import com.github.tmd.gamelog.adapter.jpa.dto.PlayerDto;
 import com.github.tmd.gamelog.adapter.jpa.mapper.PlayerDtoMapper;
 import com.github.tmd.gamelog.domain.Player;
 
+import com.github.tmd.gamelog.domain.PlayerRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Repository for objects of class Player.
  */
-public class PlayerRepository {
+public class PlayerRepositoryImpl implements PlayerRepository {
 
     private final PlayerJpaRepository playerJpaRepository;
     private final PlayerDtoMapper playerDtoMapper;
 
-    public PlayerRepository(PlayerJpaRepository playerJpaRepository, PlayerDtoMapper playerDtoMapper) {
+    public PlayerRepositoryImpl(PlayerJpaRepository playerJpaRepository, PlayerDtoMapper playerDtoMapper) {
         this.playerJpaRepository = playerJpaRepository;
         this.playerDtoMapper = playerDtoMapper;
     }
@@ -27,6 +29,12 @@ public class PlayerRepository {
             players.add(playerDtoMapper.mapDtoToEntity(playerDto));
         }
         return players;
+    }
+
+    public Player findById(UUID playerId) {
+        return playerJpaRepository.findById(playerId)
+            .map(playerDtoMapper::mapDtoToEntity)
+            .orElseThrow(() -> new RuntimeException("Player with ID %s not found".formatted(playerId)));
     }
 
     public void upsert(Player player) {

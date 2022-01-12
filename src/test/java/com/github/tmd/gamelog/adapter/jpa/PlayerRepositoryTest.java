@@ -25,7 +25,7 @@ public class PlayerRepositoryTest {
     @Autowired
     private PlayerJpaRepository playerJpaRepository;
     private PlayerDtoMapper playerDtoMapper;
-    private PlayerRepository playerRepository;
+    private PlayerRepositoryImpl playerRepository;
 
     @Autowired
     private TrophyJpaRepository trophyJpaRepository;
@@ -34,7 +34,7 @@ public class PlayerRepositoryTest {
     @BeforeEach
     void beforeEach() {
         playerDtoMapper = new PlayerDtoMapper();
-        playerRepository = new PlayerRepository(playerJpaRepository, playerDtoMapper);
+        playerRepository = new PlayerRepositoryImpl(playerJpaRepository, playerDtoMapper);
         trophyRepository = new TrophyRepository(trophyJpaRepository, new TrophyDtoMapper());
         trophyRepository.initRepository();
     }
