@@ -7,8 +7,12 @@ import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +39,21 @@ public class GameEventListeners {
   private final TradingHistoryService tradingHistoryService;
   private final RoundScoreService roundScoreService;
 
+  // TODO: We're exposing and setting metrics here and are therefore violating the SRP
+  private final MeterRegistry meterRegistry;
+
   @Autowired
   public GameEventListeners(
       GameHistoryService gameHistoryService,
       RobotHistoryService robotHistoryService,
       TradingHistoryService tradingHistoryService,
-      RoundScoreService roundScoreService) {
+      RoundScoreService roundScoreService,
+      MeterRegistry meterRegistry) {
     this.gameHistoryService = gameHistoryService;
     this.robotHistoryService = robotHistoryService;
     this.tradingHistoryService = tradingHistoryService;
     this.roundScoreService = roundScoreService;
+    this.meterRegistry = meterRegistry;
   }
 
   @DltHandler
@@ -72,6 +81,11 @@ public class GameEventListeners {
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
+
+    // We're setting the round status as a plain string label, while maintaining a constant gauge
+    // this is a hack to be able to query round status. Also used in the other round status
+    meterRegistry.gauge("tmd_game_status", Set.of(Tag.of("game_id", event.gameId().toString()),
+        Tag.of("status", event.status().toString())), 1);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
@@ -82,6 +96,9 @@ public class GameEventListeners {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(),
         event.lobbyAction(), timestamp);
+
+    meterRegistry.counter("tmd_game_players", Set.of(Tag.of("game_id", gameId.toString()),
+        Tag.of("status", event.lobbyAction().toString()))).increment();
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
@@ -97,7 +114,26 @@ public class GameEventListeners {
         event.roundStatus(), timestamp);
 
     switch (event.roundStatus()) {
+      case STARTED -> {
+        // Set Round Number
+        meterRegistry.gauge("tmd_game_round", Set.of(Tag.of("game_id", gameId.toString())),
+            event.roundNumber());
+
+        // We're setting the round status as a plain string label, while maintaining a constant gauge
+        // this is a hack to be able to query round status. Also used in the other round status
+        meterRegistry.gauge("tmd_game_round_status",
+            Set.of(Tag.of("game_id", gameId.toString()), Tag.of("status", "Started")), 1);
+      }
+      case COMMAND_INPUT_ENDED -> {
+        meterRegistry.gauge("tmd_game_round_status",
+            Set.of(Tag.of("game_id", gameId.toString()), Tag.of("status", "Command Input Ended")),
+            1);
+      }
       case ENDED -> {
+
+        meterRegistry.gauge("tmd_game_round_status",
+            Set.of(Tag.of("game_id", gameId.toString()), Tag.of("status", "Ended")), 1);
+
         // TODO: This part of the event handler is crucial and should be refactored
         // TODO: Well this could take a loooooong time
         // TODO: Multiple synchronous calls
