@@ -17,24 +17,24 @@ public class MetricService {
   public void publishGameStatus(String gameId, String status) {
     // We're setting the round status as a plain string label, while maintaining a constant gauge
     // this is a hack to be able to query round status. Also used in the other round status
-    meterRegistry.gauge("tmd_game_status", Set.of(Tag.of("game_id", gameId),
+    meterRegistry.gauge("tmd.game.status", Tags.of(Tag.of("game.id", gameId),
         Tag.of("status", status)), 1);
   }
 
   public void publishPlayerStatus(String gameId, String status) {
-    meterRegistry.counter("tmd_game_players", Set.of(Tag.of("game_id", gameId),
+    meterRegistry.counter("tmd.game.players", Tags.of(Tag.of("game.id", gameId),
         Tag.of("status", status))).increment();
   }
 
   public void publishRoundNumber(String gameId, Integer roundNumber) {
-    meterRegistry.gauge("tmd_game_round", Set.of(Tag.of("game_id", gameId)),
-        roundNumber);
+    meterRegistry.gauge("tmd.game.round", Tags.of(Tag.of("game.id", gameId)),
+        roundNumber.intValue());
   }
 
   public void publishRoundStatus(String gameId, String status) {
     // We're setting the round status as a plain string label, while maintaining a constant gauge
     // this is a hack to be able to query round status. Also used in the other round status
-    meterRegistry.gauge("tmd_game_round_status",
-        Set.of(Tag.of("game_id", gameId), Tag.of("status", status)), 1);
+    meterRegistry.gauge("tmd.game.round.status",
+        Tags.of(Tag.of("game.id", gameId), Tag.of("status", status)), 1);
   }
 }
