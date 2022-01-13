@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class GameEventListeners {
+
   private final GameHistoryService gameHistoryService;
   private final RobotHistoryService robotHistoryService;
   private final TradingHistoryService tradingHistoryService;
@@ -54,19 +55,21 @@ public class GameEventListeners {
       @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
       @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
     log.error("""
-        =============== GAME DLT ===============
-        Message: {}
-        Original Topic: {}
-        Original Offset: {}
-        Desc Exception: {}
-        Error Message: {}
-        Stacktrace: {}
-        """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage, stacktrace);
+            =============== GAME DLT ===============
+            Message: {}
+            Original Topic: {}
+            Original Offset: {}
+            Desc Exception: {}
+            Error Message: {}
+            Stacktrace: {}
+            """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage,
+        stacktrace);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "status")
-  public void gameStatusChangedEvent(@Payload GameStatusEvent event, @Header(name = "timestamp") String timestampHeader) {
+  public void gameStatusChangedEvent(@Payload GameStatusEvent event,
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
   }
@@ -74,26 +77,32 @@ public class GameEventListeners {
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
-      @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-    gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), event.lobbyAction(), timestamp);
+    gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(),
+        event.lobbyAction(), timestamp);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "roundStatus")
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
-      @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID gameId) {
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
+
     UUID roundId = event.roundId();
 
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-    gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(), event.roundStatus(), timestamp);
+    gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(),
+        event.roundStatus(), timestamp);
 
     switch (event.roundStatus()) {
       case ENDED -> {
+        // TODO: This part of the event handler is crucial and should be refactored
         // TODO: Well this could take a loooooong time
         // TODO: Multiple synchronous calls
         // TODO: Schedule the calls so that they could be called at a later point
-        for(var player : gameHistoryService.getAllParticipatingPlayersInGame(gameId)) {
+        for (var player : gameHistoryService.getAllParticipatingPlayersInGame(gameId)) {
           this.robotHistoryService.insertRobotRoundHistoryForPlayer(roundId, player);
         }
 

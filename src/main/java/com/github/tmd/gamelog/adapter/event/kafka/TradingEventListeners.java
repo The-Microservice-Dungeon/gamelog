@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class TradingEventListeners {
+
   private final TradingHistoryService tradingHistoryService;
 
   public TradingEventListeners(
@@ -43,21 +44,24 @@ public class TradingEventListeners {
       @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
       @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
     log.error("""
-        =============== TRADING DLT ===============
-        Message: {}
-        Original Topic: {}
-        Original Offset: {}
-        Desc Exception: {}
-        Error Message: {}
-        Stacktrace: {}
-        """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage, stacktrace);
+            =============== TRADING DLT ===============
+            Message: {}
+            Original Topic: {}
+            Original Offset: {}
+            Desc Exception: {}
+            Error Message: {}
+            Stacktrace: {}
+            """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage,
+        stacktrace);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "trades")
-  public void tradingEvent(@Payload TradingEvent event, @Header(name = "timestamp") String timestampHeader, @Header(name = "transactionId") UUID transactionId, MessageHeaders headers) {
-    if(event.success()) {
-      // TODO: Point-relevant
+  public void tradingEvent(@Payload TradingEvent event,
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
+      MessageHeaders headers) {
+    if (event.success()) {
       var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       this.tradingHistoryService.insertTradingHistory(transactionId, event.amount(), timestamp);
     }

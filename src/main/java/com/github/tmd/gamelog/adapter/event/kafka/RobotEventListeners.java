@@ -43,21 +43,24 @@ public class RobotEventListeners {
       @Header(KafkaHeaders.EXCEPTION_STACKTRACE) String stacktrace,
       @Header(KafkaHeaders.EXCEPTION_MESSAGE) String errorMessage) {
     log.error("""
-        =============== ROBOT DLT ===============
-        Message: {}
-        Original Topic: {}
-        Original Offset: {}
-        Desc Exception: {}
-        Error Message: {}
-        Stacktrace: {}
-        """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage, stacktrace);
+            =============== ROBOT DLT ===============
+            Message: {}
+            Original Topic: {}
+            Original Offset: {}
+            Desc Exception: {}
+            Error Message: {}
+            Stacktrace: {}
+            """, msg, originalTopic, ByteBuffer.wrap(offset).getLong(), descException, errorMessage,
+        stacktrace);
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "movement")
-  public void movementEvent(@Payload MovementEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
-    if(event.success()) {
-      // TODO: Point-relevant
+  public void movementEvent(@Payload MovementEvent event,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      MessageHeaders headers) {
+    if (event.success()) {
       var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertMovementHistory(transactionId, event.robots(), event.planet()
           .planetId(), event.planet().movementDifficulty(), timestamp);
@@ -66,9 +69,11 @@ public class RobotEventListeners {
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "planet-blocked")
-  public void planetBlockedEvent(@Payload PlanetBlockedEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
-    if(event.success()) {
-      // TODO: Point-relevant
+  public void planetBlockedEvent(@Payload PlanetBlockedEvent event,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      MessageHeaders headers) {
+    if (event.success()) {
       var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId(), timestamp);
     }
@@ -76,19 +81,24 @@ public class RobotEventListeners {
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "mining")
-  public void miningEvent(@Payload MiningEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
-    if(event.success()) {
-      // TODO: Point-relevant
+  public void miningEvent(@Payload MiningEvent event,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      MessageHeaders headers) {
+    if (event.success()) {
       var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-      robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(), event.resourceType(), timestamp);
+      robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(),
+          event.resourceType(), timestamp);
     }
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "fighting")
-  public void fightingEvent(@Payload FightingEvent event, @Header(name = "transactionId") UUID transactionId, @Header(name = "timestamp") String timestampHeader, MessageHeaders headers) {
-    if(event.success()) {
-      // TODO: Point-relevant
+  public void fightingEvent(@Payload FightingEvent event,
+      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
+      MessageHeaders headers) {
+    if (event.success()) {
       var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       robotHistoryService.insertFightHistory(transactionId, event.attacker(), event.defender(),
           event.remainingDefenderHealth(), timestamp);
