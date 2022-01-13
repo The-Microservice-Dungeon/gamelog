@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.metrics;
 
+import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
@@ -13,6 +14,17 @@ public class MetricService {
 
   public MetricService(MeterRegistry meterRegistry) {
     this.meterRegistry = meterRegistry;
+  }
+
+  public void reset() {
+    // We will remove the meters for whatever reason... We're abusing meters for purposes they're
+    // not meant for since they hold the state of the game. When a game starts we must remove the
+    // previously populated meters in order to start with a clean state for the next game.
+    // TODO: There's probably a better approach..
+    meterRegistry.getMeters()
+        .stream().filter(m -> m.getId().getName().startsWith("tmd"))
+        .forEach(meterRegistry::remove);
+    meterRegistry.clear();
   }
 
   public void publishGameStatus(String gameId, String status) {

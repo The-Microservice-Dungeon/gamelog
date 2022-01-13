@@ -110,6 +110,9 @@ public class GameEventListeners {
 
     switch (event.roundStatus()) {
       case STARTED -> {
+        // Reset Metrics on start
+        meterService.reset();
+
         // Set Round Number
         meterService.publishRoundNumber(gameId.toString(), event.roundNumber());
       }
