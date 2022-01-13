@@ -25,7 +25,7 @@ public class TradingMetricPublisher {
   }
 
   @Async
-  @Scheduled(fixedRate = 15, timeUnit = TimeUnit.SECONDS, fixedDelay = 15)
+  @Scheduled(timeUnit = TimeUnit.SECONDS, fixedDelay = 15)
   public void publishItemPriceHistory() {
     try {
       var result = tradingRestClient.getItemPriceHistory();
@@ -46,7 +46,7 @@ public class TradingMetricPublisher {
   }
 
   @Async
-  @Scheduled(fixedRate = 15, timeUnit = TimeUnit.SECONDS, fixedDelay = 15)
+  @Scheduled(timeUnit = TimeUnit.SECONDS, fixedDelay = 15)
   public void publishResourcePriceHistory() {
     try {
       var result = tradingRestClient.getResourcePriceHistory();
