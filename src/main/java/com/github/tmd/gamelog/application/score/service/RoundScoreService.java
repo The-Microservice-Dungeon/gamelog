@@ -55,7 +55,7 @@ public class RoundScoreService {
         .roundId(roundId);
 
     Map<UUID, AggregatedRoundScore> scores =
-        this.roundScoreAggregator.aggregateAndSaveRoundScoresForRound(roundId);
+        this.roundScoreAggregator.aggregateRoundScoresForRound(roundId);
 
     this.roundScoreRepository.saveAggregatedRoundScoresForRound(roundId, scores);
 

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +26,11 @@ public class RoundScoreAggregator {
   }
 
   /**
-   * Aggregates AND SAVES the Scores for single round.
+   * Aggregates the Scores for single round.
    * @param roundId Round ID
    * @return Map of Player ID as key and AggregatedRoundScore as value
    */
-  public Map<UUID, AggregatedRoundScore> aggregateAndSaveRoundScoresForRound(UUID roundId) {
+  public Map<UUID, AggregatedRoundScore> aggregateRoundScoresForRound(UUID roundId) {
     // Holds wip aggregations for each player
     Map<UUID, AggregatedRoundScore.AggregatedRoundScoreBuilder> scoreBuilders =
         new HashMap<>();
