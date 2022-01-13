@@ -69,7 +69,6 @@ public class GameEventListeners {
   public void gameStatusChangedEvent(@Payload GameStatusEvent event, @Header(name = "timestamp") String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
-    throw new RuntimeException();
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
