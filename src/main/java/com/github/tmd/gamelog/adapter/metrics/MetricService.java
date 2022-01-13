@@ -50,4 +50,18 @@ public class MetricService {
     meterRegistry.gauge("tmd.game.round.status",
         Tags.of(Tag.of("game.id", gameId), Tag.of("status", status)), 1);
   }
+
+  public void publishItemPrice(String itemName, Integer value) {
+    meterRegistry.gauge("tmd.trading.current.item.price.%s".formatted(itemName), value.intValue());
+    meterRegistry.gauge("tmd.trading.current.item.price", Tags.of(Tag.of("name", itemName)), value.intValue());
+  }
+
+  public void publishResourcePrice(String resourceName, Integer value) {
+    meterRegistry.gauge("tmd.trading.current.resource.price.%s".formatted(resourceName), value.intValue());
+    meterRegistry.gauge("tmd.trading.current.resource.price", Tags.of(Tag.of("name", resourceName)), value.intValue());
+  }
+
+  public void publishTrade() {
+    meterRegistry.counter("tmd.trading.trades.count").increment();
+  }
 }

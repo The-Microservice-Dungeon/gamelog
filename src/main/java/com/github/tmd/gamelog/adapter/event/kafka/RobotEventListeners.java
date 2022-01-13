@@ -4,9 +4,13 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
+import com.github.tmd.gamelog.adapter.metrics.MetricService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.DltHandler;
@@ -29,10 +33,13 @@ import org.springframework.stereotype.Component;
 public class RobotEventListeners {
 
   private final RobotHistoryService robotHistoryService;
+  private final MetricService metricService;
 
   public RobotEventListeners(
-      RobotHistoryService robotHistoryService) {
+      RobotHistoryService robotHistoryService,
+      MetricService metricService) {
     this.robotHistoryService = robotHistoryService;
+    this.metricService = metricService;
   }
 
   @DltHandler

@@ -1,13 +1,13 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
-import com.github.tmd.gamelog.adapter.event.gameEvent.trading.BankCreatedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
+import com.github.tmd.gamelog.adapter.metrics.MetricService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import java.nio.ByteBuffer;
-import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.DltHandler;
@@ -30,10 +30,13 @@ import org.springframework.stereotype.Component;
 public class TradingEventListeners {
 
   private final TradingHistoryService tradingHistoryService;
+  private final MetricService metricService;
 
   public TradingEventListeners(
-      TradingHistoryService tradingHistoryService) {
+      TradingHistoryService tradingHistoryService,
+      MetricService metricService) {
     this.tradingHistoryService = tradingHistoryService;
+    this.metricService = metricService;
   }
 
   @DltHandler
@@ -64,6 +67,7 @@ public class TradingEventListeners {
     if (event.success()) {
       var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
       this.tradingHistoryService.insertTradingHistory(transactionId, event.amount(), timestamp);
+      metricService.publishTrade();
     }
   }
 
@@ -71,19 +75,23 @@ public class TradingEventListeners {
   /*@KafkaListener(topics = "bank-created")
   public void bankCreatedEvent(@Payload BankCreatedEvent event, MessageHeaders headers) {
 
-  }
+  }*/
 
   @KafkaListener(topics = "current-item-prices")
-  public void currentItemPricesChangedEvent(@Payload CurrentItemPriceEvent event,
+  public void currentItemPricesChangedEvent(@Payload Set<CurrentItemPriceEvent> event,
       MessageHeaders headers) {
-
+    event.stream().forEach(
+        e -> metricService.publishItemPrice(e.name(), e.price())
+    );
   }
 
   @KafkaListener(topics = "current-resource-prices")
-  public void currentResourcePricesChangedEvent(@Payload CurrentResourcePriceEvent event,
+  public void currentResourcePricesChangedEvent(@Payload Set<CurrentResourcePriceEvent> event,
       MessageHeaders headers) {
-
-  }*/
+    event.stream().forEach(
+        e -> metricService.publishResourcePrice(e.name(), e.price())
+    );
+  }
 
   // endregion
 }
