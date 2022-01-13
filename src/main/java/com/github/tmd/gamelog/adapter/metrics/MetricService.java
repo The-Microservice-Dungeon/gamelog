@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.adapter.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
