@@ -3,12 +3,11 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
+import com.github.tmd.gamelog.adapter.metrics.MetricService;
 import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
@@ -38,9 +37,7 @@ public class GameEventListeners {
   private final RobotHistoryService robotHistoryService;
   private final TradingHistoryService tradingHistoryService;
   private final RoundScoreService roundScoreService;
-
-  // TODO: We're exposing and setting metrics here and are therefore violating the SRP
-  private final MeterRegistry meterRegistry;
+  private final MetricService meterService;
 
   @Autowired
   public GameEventListeners(
@@ -48,12 +45,12 @@ public class GameEventListeners {
       RobotHistoryService robotHistoryService,
       TradingHistoryService tradingHistoryService,
       RoundScoreService roundScoreService,
-      MeterRegistry meterRegistry) {
+      MetricService meterRegistry) {
     this.gameHistoryService = gameHistoryService;
     this.robotHistoryService = robotHistoryService;
     this.tradingHistoryService = tradingHistoryService;
     this.roundScoreService = roundScoreService;
-    this.meterRegistry = meterRegistry;
+    this.meterService = meterRegistry;
   }
 
   @DltHandler
@@ -82,10 +79,7 @@ public class GameEventListeners {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
 
-    // We're setting the round status as a plain string label, while maintaining a constant gauge
-    // this is a hack to be able to query round status. Also used in the other round status
-    meterRegistry.gauge("tmd_game_status", Set.of(Tag.of("game_id", event.gameId().toString()),
-        Tag.of("status", event.status().toString())), 1);
+    meterService.publishGameStatus(event.gameId().toString(), event.status().toString());
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
@@ -97,8 +91,7 @@ public class GameEventListeners {
     gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(),
         event.lobbyAction(), timestamp);
 
-    meterRegistry.counter("tmd_game_players", Set.of(Tag.of("game_id", gameId.toString()),
-        Tag.of("status", event.lobbyAction().toString()))).increment();
+    meterService.publishPlayerStatus(gameId.toString(), event.lobbyAction().toString());
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
@@ -113,26 +106,14 @@ public class GameEventListeners {
     gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(),
         event.roundStatus(), timestamp);
 
+    meterService.publishRoundStatus(gameId.toString(), event.roundStatus().toString());
+
     switch (event.roundStatus()) {
       case STARTED -> {
         // Set Round Number
-        meterRegistry.gauge("tmd_game_round", Set.of(Tag.of("game_id", gameId.toString())),
-            event.roundNumber());
-
-        // We're setting the round status as a plain string label, while maintaining a constant gauge
-        // this is a hack to be able to query round status. Also used in the other round status
-        meterRegistry.gauge("tmd_game_round_status",
-            Set.of(Tag.of("game_id", gameId.toString()), Tag.of("status", "Started")), 1);
-      }
-      case COMMAND_INPUT_ENDED -> {
-        meterRegistry.gauge("tmd_game_round_status",
-            Set.of(Tag.of("game_id", gameId.toString()), Tag.of("status", "Command Input Ended")),
-            1);
+        meterService.publishRoundNumber(gameId.toString(), event.roundNumber());
       }
       case ENDED -> {
-
-        meterRegistry.gauge("tmd_game_round_status",
-            Set.of(Tag.of("game_id", gameId.toString()), Tag.of("status", "Ended")), 1);
 
         // TODO: This part of the event handler is crucial and should be refactored
         // TODO: Well this could take a loooooong time
