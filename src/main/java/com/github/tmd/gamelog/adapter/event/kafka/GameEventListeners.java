@@ -117,7 +117,6 @@ public class GameEventListeners {
         meterService.publishRoundNumber(gameId.toString(), event.roundNumber());
       }
       case ENDED -> {
-
         // TODO: This part of the event handler is crucial and should be refactored
         // TODO: Well this could take a loooooong time
         // TODO: Multiple synchronous calls

@@ -8,6 +8,9 @@ import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
+// TODO: Provide score metrics. We need to publish the aggregated score as a metric, otherwise
+//  our data will not be consistent.
+
 @Service
 public class MetricService {
   private final MeterRegistry meterRegistry;
