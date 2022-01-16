@@ -1,9 +1,8 @@
 package com.github.tmd.gamelog.application.score.accumulator;
 
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
-import com.github.tmd.gamelog.application.score.core.AbstractCategorizedRoundScoreAccumulator;
-import com.github.tmd.gamelog.application.score.TradingRoundScore;
-import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
+import com.github.tmd.gamelog.domain.score.core.AbstractCategorizedRoundScoreAccumulator;
+import com.github.tmd.gamelog.domain.score.vo.TradingRoundScore;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

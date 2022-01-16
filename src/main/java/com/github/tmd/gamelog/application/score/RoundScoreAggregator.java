@@ -1,7 +1,8 @@
 package com.github.tmd.gamelog.application.score;
 
-import com.github.tmd.gamelog.application.score.core.AbstractCategorizedRoundScoreAccumulator;
+import com.github.tmd.gamelog.domain.score.core.AbstractCategorizedRoundScoreAccumulator;
 import com.github.tmd.gamelog.domain.score.core.CategorizableScore;
+import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -13,9 +13,9 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRep
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest.client.RobotRestClient;
-import com.github.tmd.gamelog.application.score.ResourceMinedScoreAttribute;
-import com.github.tmd.gamelog.application.score.ResourceRarity;
-import com.github.tmd.gamelog.application.score.RobotLevelsScoreAttribute;
+import com.github.tmd.gamelog.domain.score.vo.ResourceMinedScoreAttribute;
+import com.github.tmd.gamelog.domain.score.vo.ResourceRarity;
+import com.github.tmd.gamelog.domain.score.vo.RobotLevelsScoreAttribute;
 import java.time.Instant;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;

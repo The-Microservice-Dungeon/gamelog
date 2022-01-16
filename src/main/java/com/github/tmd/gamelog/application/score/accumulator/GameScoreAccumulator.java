@@ -1,7 +1,7 @@
 package com.github.tmd.gamelog.application.score.accumulator;
 
-import com.github.tmd.gamelog.application.score.AggregatedRoundScore;
-import com.github.tmd.gamelog.application.score.GameScore;
+import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.entity.GameScore;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.util.List;
 import java.util.Map;

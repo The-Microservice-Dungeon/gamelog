@@ -1,6 +1,6 @@
-package com.github.tmd.gamelog.application.score;
+package com.github.tmd.gamelog.domain.score.vo;
 
-import com.github.tmd.gamelog.application.score.core.ValuebleScoreAttribute;
+import com.github.tmd.gamelog.domain.score.core.ValuebleScoreAttribute;
 
 public record ResourceMinedScoreAttribute(
     ResourceRarity rarity,

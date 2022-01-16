@@ -1,6 +1,7 @@
 package com.github.tmd.gamelog.adapter.jpa.score;
 
-import com.github.tmd.gamelog.application.score.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.repository.AggregatedRoundScoreRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +10,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RoundScoreRepository {
+public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository {
   private final RoundScoreJpaRepository roundScoreJpaRepository;
   private final RoundScoreMapper roundScoreMapper;
 
-  public RoundScoreRepository(
+  public RoundScoreRepositoryImpl(
       RoundScoreJpaRepository roundScoreJpaRepository,
       RoundScoreMapper roundScoreMapper) {
     this.roundScoreJpaRepository = roundScoreJpaRepository;

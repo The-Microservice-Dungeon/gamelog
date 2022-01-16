@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.domain.trophies.achievements;
 
-import com.github.tmd.gamelog.domain.RoundScore;
+import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
 import com.github.tmd.gamelog.domain.trophies.RoundCheckedTrophy;
 import com.github.tmd.gamelog.domain.trophies.Trophy;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class TradingGoldTrophy extends Trophy implements RoundCheckedTrophy {
     private String badgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Trading%20Gold%20-%20Grand%20Nagus.png";
 
     @Override
-    public Boolean awardingConditionFulfilled(RoundScore roundScore) {
+    public Boolean awardingConditionFulfilled(AggregatedRoundScore roundScore) {
         return false;
     }
 }

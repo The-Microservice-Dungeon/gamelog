@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.score;
+package com.github.tmd.gamelog.domain.score.vo;
 
 public record ResourceRarity(Integer rarity) {
 

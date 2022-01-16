@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.score;
+package com.github.tmd.gamelog.domain.score.entity;
 
 import com.github.tmd.gamelog.domain.score.core.ScorableScore;
 import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
+// TODO: Introduce a strong reference to the player, game, round - if somehow possible. This is
+//      a value object at the moment. 
 /**
  * Aggregated Round scores where each category is represented
  */

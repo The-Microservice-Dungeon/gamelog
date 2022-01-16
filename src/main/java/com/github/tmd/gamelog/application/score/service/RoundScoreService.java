@@ -1,9 +1,10 @@
 package com.github.tmd.gamelog.application.score.service;
 
 import com.github.tmd.gamelog.adapter.jpa.score.RoundScoreJpa;
-import com.github.tmd.gamelog.adapter.jpa.score.RoundScoreRepository;
-import com.github.tmd.gamelog.application.score.AggregatedRoundScore;
+import com.github.tmd.gamelog.adapter.jpa.score.RoundScoreRepositoryImpl;
+import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
 import com.github.tmd.gamelog.application.score.RoundScoreAggregator;
+import com.github.tmd.gamelog.domain.score.repository.AggregatedRoundScoreRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,12 +15,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RoundScoreService {
   private final RoundScoreAggregator roundScoreAggregator;
-  private final RoundScoreRepository roundScoreRepository;
+  private final AggregatedRoundScoreRepository roundScoreRepository;
 
 
   public RoundScoreService(
       RoundScoreAggregator roundScoreAggregator,
-      RoundScoreRepository roundScoreRepository) {
+      AggregatedRoundScoreRepository roundScoreRepository) {
     this.roundScoreAggregator = roundScoreAggregator;
     this.roundScoreRepository = roundScoreRepository;
   }

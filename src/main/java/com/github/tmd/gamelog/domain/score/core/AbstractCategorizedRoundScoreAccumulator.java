@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.score.core;
+package com.github.tmd.gamelog.domain.score.core;
 
 import com.github.tmd.gamelog.domain.score.core.CategorizableScore;
 import com.github.tmd.gamelog.domain.score.core.ScorableScore;
