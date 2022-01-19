@@ -15,7 +15,7 @@ public interface RoundScoreJpaRepository extends JpaRepository<RoundScoreJpa, UU
   @Query("""
     select distinct rs 
     from RoundScoreJpa rs 
-      right join GameRoundStatusHistoryJpa gsh on gsh.roundId = rs.roundId
+      join GameRoundStatusHistoryJpa gsh on gsh.roundId = rs.roundId
     where gsh.gameId = ?1
     order by gsh.roundNumber ASC
   """)
