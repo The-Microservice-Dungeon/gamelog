@@ -27,9 +27,6 @@ public class RoundScoreService {
   public Map<UUID, List<AggregatedRoundScore>> getAllOrderedAggregatedScoresInGame(UUID gameId) {
     try {
       var result = this.roundScoreRepository.findAllOrderedRoundScoresInGame(gameId);
-      if(result == null || result.isEmpty()) {
-        throw new RuntimeException("Nothing found");
-      }
       return result;
     } catch (RuntimeException e) {
       log.error("Could not aggregate rounds for game with ID %s".formatted(gameId), e);
