@@ -1,0 +1,1 @@
+alter table game_player_status_history_jpa drop column status;

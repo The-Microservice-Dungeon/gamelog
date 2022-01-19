@@ -7,7 +7,6 @@ import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.CommandHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GamePlayerStatusHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GamePlayerStatusHistoryJpaRepository;
-import com.github.tmd.gamelog.adapter.jpa.history.game.GamePlayerStatusJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameRoundStatusHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameRoundStatusHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.game.GameRoundStatusJpa;
@@ -72,13 +71,12 @@ public class GameHistoryService {
   }
 
   @Transactional
-  public void insertGamePlayerStatusHistory(UUID gameId, UUID playerId, String userName, LobbyAction status, Temporal timestamp) {
+  public void insertGamePlayerStatusHistory(UUID gameId, UUID playerId, String userName, Temporal timestamp) {
     if (userName == null || userName.isBlank()) {
       userName = playerId.toString();
     }
     this.gamePlayerStatusHistoryJpaRepository.save(
-        new GamePlayerStatusHistoryJpa(gameId, playerId, userName,
-            GamePlayerStatusJpa.fromLobbyAction(status), Instant.from(timestamp)));
+        new GamePlayerStatusHistoryJpa(gameId, playerId, userName, Instant.from(timestamp)));
   }
 
   @Transactional

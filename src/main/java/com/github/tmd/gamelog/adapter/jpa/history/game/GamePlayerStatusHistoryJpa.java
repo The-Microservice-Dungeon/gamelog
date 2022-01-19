@@ -44,11 +44,6 @@ public class GamePlayerStatusHistoryJpa {
   private String userName;
 
   @NonNull
-  @Enumerated(EnumType.STRING)
-  @Column(name = "status", updatable = false, nullable = false)
-  private GamePlayerStatusJpa status;
-
-  @NonNull
   @Column(name = "timestamp", nullable = false, updatable = false)
   private Instant timestamp;
 

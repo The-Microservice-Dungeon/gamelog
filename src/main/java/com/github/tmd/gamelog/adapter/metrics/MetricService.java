@@ -37,9 +37,8 @@ public class MetricService {
         Tag.of("status", status)), 1);
   }
 
-  public void publishPlayerStatus(String gameId, String status) {
-    meterRegistry.counter("tmd.game.players", Tags.of(Tag.of("game.id", gameId),
-        Tag.of("status", status))).increment();
+  public void publishPlayerStatus(String gameId) {
+    meterRegistry.counter("tmd.game.players", Tags.of(Tag.of("game.id", gameId))).increment();
   }
 
   public void publishRoundNumber(String gameId, Integer roundNumber) {

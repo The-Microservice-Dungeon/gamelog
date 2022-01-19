@@ -88,10 +88,9 @@ public class GameEventListeners {
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-    gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(),
-        event.lobbyAction(), timestamp);
+    gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), timestamp);
 
-    meterService.publishPlayerStatus(gameId.toString(), event.lobbyAction().toString());
+    meterService.publishPlayerStatus(gameId.toString());
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)

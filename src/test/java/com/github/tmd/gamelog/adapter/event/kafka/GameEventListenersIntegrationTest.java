@@ -80,8 +80,7 @@ class GameEventListenersIntegrationTest {
     var userName = "player1";
     var payload = """
         {
-          "userId": "%s",
-          "lobbyAction": "joined",
+          "playerId": "%s",
           "userName": "%s"
         }
         """.formatted(userId.toString(), userName);
@@ -100,8 +99,7 @@ class GameEventListenersIntegrationTest {
     template.send(producerRecord);
 
     // Then
-    verify(gameHistoryService, after(5000).only()).insertGamePlayerStatusHistory(eq(gameId), eq(userId), eq(userName), eq(
-        LobbyAction.JOINED), any());
+    verify(gameHistoryService, after(5000).only()).insertGamePlayerStatusHistory(eq(gameId), eq(userId), eq(userName), any());
   }
 
   @Test
