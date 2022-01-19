@@ -13,7 +13,7 @@ public interface RoundScoreJpaRepository extends JpaRepository<RoundScoreJpa, UU
   RoundScoreJpa findByRoundId(UUID roundId);
 
   @Query("""
-    select distinct rs 
+    select rs 
     from RoundScoreJpa rs 
       join GameRoundStatusHistoryJpa gsh on gsh.roundId = rs.roundId
     where gsh.gameId = ?1
