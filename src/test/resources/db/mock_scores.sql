@@ -8,28 +8,6 @@ SET @round1_id = 'a03cea0f-1a6b-4127-973a-658839913225';
 SET @round2_id = 'fb4d537b-61e1-4165-ad01-0745504a1955';
 SET @round3_id = 'c0305195-0005-4ee9-8350-023ee9e588d0';
 
-/* We assume to have only one running game at a time */
-insert into game_status_history_jpa(id, created_at, game_id, status, TIMESTAMP)
-VALUES (uuid(), now(), @game_id, 'CREATED', now()),
-       (uuid(), now(), @game_id, 'STARTED', now());
-
-/* All players are participating within the game */
-insert into game_player_status_history_jpa(id, created_at, game_id, TIMESTAMP, user_id, user_name)
-VALUES (uuid(), now(), @game_id, now(), @player1_id, 'Karl-Peter'),
-       (uuid(), now(), @game_id, now(), @player2_id, 'Leonie 123'),
-       (uuid(), now(), @game_id, now(), @player3_id, 'Gustav Gans');
-
-/* We played 3 Rounds in the game */
-insert into game_round_status_history_jpa(id, created_at, game_id, round_id, round_number, status, TIMESTAMP)
-VALUES (uuid(), now(), @game_id, @round1_id, 1, 0, now()),
-       (uuid(), now(), @game_id, @round1_id, 1, 1, now()),
-       (uuid(), now(), @game_id, @round1_id, 1, 2, now()),
-       (uuid(), now(), @game_id, @round2_id, 2, 0, now()),
-       (uuid(), now(), @game_id, @round2_id, 2, 1, now()),
-       (uuid(), now(), @game_id, @round2_id, 2, 2, now()),
-       (uuid(), now(), @game_id, @round3_id, 3, 0, now()),
-       (uuid(), now(), @game_id, @round3_id, 3, 1, now()),
-       (uuid(), now(), @game_id, @round3_id, 3, 2, now());
 
 insert into round_scores(round_id)
 VALUES (@round1_id),
