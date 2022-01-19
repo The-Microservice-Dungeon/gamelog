@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public enum RoundStatus {
   @JsonProperty("started")
   STARTED,
-  @JsonProperty("command_input_ended")
+  @JsonProperty("command input ended")
   COMMAND_INPUT_ENDED,
   @JsonProperty("ended")
   ENDED;
