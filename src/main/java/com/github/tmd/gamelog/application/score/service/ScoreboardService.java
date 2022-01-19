@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.application.score.service;
 
+import com.github.tmd.gamelog.application.GameService;
 import com.github.tmd.gamelog.domain.Game;
 import com.github.tmd.gamelog.domain.Game.GameId;
 import com.github.tmd.gamelog.domain.Player;

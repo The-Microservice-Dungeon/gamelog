@@ -4,14 +4,13 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.metrics.MetricService;
+import com.github.tmd.gamelog.application.PlayerService;
 import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.application.history.RobotHistoryService;
 import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
-import io.micrometer.core.instrument.Tag;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
-import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,7 @@ public class GameEventListeners {
   private final RobotHistoryService robotHistoryService;
   private final TradingHistoryService tradingHistoryService;
   private final RoundScoreService roundScoreService;
+  private final PlayerService playerService;
   private final MetricService meterService;
 
   @Autowired
@@ -45,11 +45,12 @@ public class GameEventListeners {
       RobotHistoryService robotHistoryService,
       TradingHistoryService tradingHistoryService,
       RoundScoreService roundScoreService,
-      MetricService meterRegistry) {
+      PlayerService playerService, MetricService meterRegistry) {
     this.gameHistoryService = gameHistoryService;
     this.robotHistoryService = robotHistoryService;
     this.tradingHistoryService = tradingHistoryService;
     this.roundScoreService = roundScoreService;
+    this.playerService = playerService;
     this.meterService = meterRegistry;
   }
 
@@ -89,6 +90,8 @@ public class GameEventListeners {
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), timestamp);
+
+    playerService.createOrUpdatePlayer(event.userId(), event.userName());
 
     meterService.publishPlayerStatus(gameId.toString());
   }

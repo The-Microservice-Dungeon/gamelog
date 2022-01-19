@@ -56,8 +56,10 @@ class ScoreboardControllerTest {
         .body("scoreboard", hasSize(2))
         .body("scoreboard[0].score", equalTo(202.0f))
         .body("scoreboard[0].player.id", equalTo("bc234084-c980-41eb-8ff3-c94c46d81a46"))
+        .body("scoreboard[0].player.name", equalTo("Leonie"))
         .body("scoreboard[1].score", equalTo(112.0f))
-        .body("scoreboard[1].player.id", equalTo("e67180fb-3582-4772-9c0b-411a1b1b8306"));
+        .body("scoreboard[1].player.id", equalTo("e67180fb-3582-4772-9c0b-411a1b1b8306"))
+        .body("scoreboard[1].player.name", equalTo("Karl-Peter"));
   }
 
   @Test
@@ -78,13 +80,15 @@ class ScoreboardControllerTest {
         .body("scoreboard", hasSize(2))
         .body("scoreboard[0].score", equalTo(202.0f))
         .body("scoreboard[0].player.id", equalTo("bc234084-c980-41eb-8ff3-c94c46d81a46"))
+        .body("scoreboard[0].player.name", equalTo("Leonie"))
         .body("scoreboard[1].score", equalTo(112.0f))
-        .body("scoreboard[1].player.id", equalTo("e67180fb-3582-4772-9c0b-411a1b1b8306"));
+        .body("scoreboard[1].player.id", equalTo("e67180fb-3582-4772-9c0b-411a1b1b8306"))
+        .body("scoreboard[1].player.name", equalTo("Karl-Peter"));
   }
 
   private Scoreboard buildDummyScoreboard(Game game) {
-    var player1 = new Player(UUID.fromString("e67180fb-3582-4772-9c0b-411a1b1b8306"));
-    var player2 = new Player(UUID.fromString("bc234084-c980-41eb-8ff3-c94c46d81a46"));
+    var player1 = new Player(UUID.fromString("e67180fb-3582-4772-9c0b-411a1b1b8306"), "Karl-Peter");
+    var player2 = new Player(UUID.fromString("bc234084-c980-41eb-8ff3-c94c46d81a46"), "Leonie");
 
     var player1_round1 = AggregatedRoundScore.builder()
         .fightingScore(1.1)

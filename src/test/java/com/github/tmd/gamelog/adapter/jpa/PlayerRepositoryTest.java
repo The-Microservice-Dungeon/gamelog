@@ -57,7 +57,7 @@ public class PlayerRepositoryTest {
         Trophy trophy = trophyRepository.findAll().get(0);
         PlayerTrophy playerTrophy = new PlayerTrophy(trophy, UUID.randomUUID(), new Date());
         playerTrophies.add(playerTrophy);
-        Player player = new Player(UUID.randomUUID(), playerTrophies);
+        Player player = new Player(UUID.randomUUID(), Player.UNKNOWN_QUALIFIER, playerTrophies);
         return player;
     }
 

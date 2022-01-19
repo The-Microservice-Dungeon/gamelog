@@ -12,16 +12,27 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 public class Player {
+    public static String UNKNOWN_QUALIFIER = "__UNKNOWN__";
+
     private UUID id;
+    private String name;
     private Set<PlayerTrophy> earnedTrophies;
 
     public Player() {
         this.id = null;
+        this.name = UNKNOWN_QUALIFIER;
         this.earnedTrophies = new HashSet<PlayerTrophy>();
     }
 
     public Player(UUID id) {
         this.id = id;
+        this.name = UNKNOWN_QUALIFIER;
+        this.earnedTrophies = new HashSet<PlayerTrophy>();
+    }
+
+    public Player(UUID id, String name) {
+        this.id = id;
+        this.name = name;
         this.earnedTrophies = new HashSet<PlayerTrophy>();
     }
 

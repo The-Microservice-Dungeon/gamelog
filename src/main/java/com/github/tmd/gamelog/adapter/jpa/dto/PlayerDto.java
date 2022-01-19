@@ -20,6 +20,9 @@ public class PlayerDto {
     @Column(name = "player_id")
     private UUID id;
 
+    @Column(name = "player_name", nullable = false)
+    private String name;
+
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "player_id")
     private Set<PlayerTrophyDto> earnedTrophies;

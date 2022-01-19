@@ -24,6 +24,7 @@ public class PlayerDtoMapper {
     public PlayerDto mapEntityToDto(Player player) {
         PlayerDto playerDto = new PlayerDto();
         playerDto.setId(player.getId());
+        playerDto.setName(player.getName());
         playerDto.setEarnedTrophies(mapTrophiesToTrophyDtos(player.getEarnedTrophies()));
         return playerDto;
     }
@@ -31,6 +32,7 @@ public class PlayerDtoMapper {
     public Player mapDtoToEntity(PlayerDto playerDto) {
         Player player = new Player();
         player.setId(playerDto.getId());
+        player.setName(player.getName());
         player.setEarnedTrophies(mapTrophyDtosToTrophies(playerDto.getEarnedTrophies()));
         return player;
     }

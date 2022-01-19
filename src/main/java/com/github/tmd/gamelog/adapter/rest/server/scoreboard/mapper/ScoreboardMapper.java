@@ -26,6 +26,6 @@ public class ScoreboardMapper {
   }
 
   private ScoreboardPlayerEntryJsonDto toJson(Player player) {
-    return new ScoreboardPlayerEntryJsonDto(player.getId(), "__PLACEHOLDER__");
+    return new ScoreboardPlayerEntryJsonDto(player.getId(), player.getName());
   }
 }

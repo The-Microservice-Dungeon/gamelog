@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.score.service;
+package com.github.tmd.gamelog.application;
 
 import com.github.tmd.gamelog.domain.Game;
 import com.github.tmd.gamelog.domain.Game.GameId;
