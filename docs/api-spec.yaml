@@ -5,6 +5,24 @@ info:
   version: 1.0.0
 
 paths:
+  "/scoreboard":
+    summary: Get the Scoreboard of the current active game
+    get:
+      tags:
+        - Scoreboard
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scoreboard'
+        '404':
+          description: No active game
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
   "/scoreboard/{game-id}":
     summary: Get the Scoreboard of one specific game
     get:
@@ -26,7 +44,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Scoreboard'
         '404':
-          description: Category not found
+          description: No Scoreboard for this game found
           content:
             application/json:
               schema:

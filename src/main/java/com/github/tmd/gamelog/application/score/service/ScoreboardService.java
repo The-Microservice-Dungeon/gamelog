@@ -1,15 +1,10 @@
 package com.github.tmd.gamelog.application.score.service;
 
-import com.github.tmd.gamelog.application.score.dto.ScoreboardDto;
-import com.github.tmd.gamelog.application.score.dto.ScoreboardEntryDto;
-import com.github.tmd.gamelog.application.score.dto.ScoreboardPlayerEntryDto;
 import com.github.tmd.gamelog.domain.Game;
 import com.github.tmd.gamelog.domain.Game.GameId;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerRepository;
 import com.github.tmd.gamelog.domain.score.entity.Scoreboard;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,24 +28,6 @@ public class ScoreboardService {
     this.playerRepository = playerRepository;
     this.roundScoreService = roundScoreService;
     this.gameService = gameService;
-  }
-
-  public Optional<ScoreboardDto> getScoreboardForGame(UUID gameId) {
-    try {
-      var scoreboardEntries = new ArrayList<ScoreboardEntryDto>();
-      gameScoreService.getScoresInGame(gameId).entrySet()
-              .stream().sorted(Comparator.comparing(o -> o.getValue().score()))
-              .forEachOrdered(e -> {
-                scoreboardEntries.add(new ScoreboardEntryDto(
-                    new ScoreboardPlayerEntryDto(e.getKey(), "__PLACEHOLDER__"),
-                    e.getValue().score()
-                ));
-              });
-      return Optional.of(new ScoreboardDto(scoreboardEntries));
-    } catch (RuntimeException e) {
-      log.error("Could not determine a scoreboard for game %s".formatted(gameId), e);
-      return Optional.empty();
-    }
   }
 
   public Optional<Scoreboard> getScoreboardByGameId(GameId id) {
