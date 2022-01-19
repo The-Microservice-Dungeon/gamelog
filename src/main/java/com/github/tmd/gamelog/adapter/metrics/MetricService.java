@@ -20,17 +20,16 @@ public class MetricService {
   // Just for testing and Grafana setup
   private void initMetrics() {
     this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, 0);
-    this.meterRegistry.counter(DungeonMetrics.GAME_STATUS_INFO,
-        Tags.of(Tag.of("status", "UNKNOWN")));
+    this.meterRegistry.gauge(DungeonMetrics.GAME_STATUS_INFO,
+        Tags.of(Tag.of("status", "UNKNOWN")), -1);
   }
 
   public void publishRoundNumber(Integer roundNumber) {
     this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, roundNumber);
   }
 
-  public void publishGameStatus(String status) {
-    this.meterRegistry.counter(DungeonMetrics.GAME_STATUS_INFO,
-        Tags.of(Tag.of("status", status))
-        ).increment();
+  public void publishGameStatus(Integer value, String status) {
+    this.meterRegistry.gauge(DungeonMetrics.GAME_STATUS_INFO,
+        Tags.of(Tag.of("status", status)), value);
   }
 }

@@ -17,7 +17,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
 
   @Override
   public void onGameStatus(GameStatusEvent event, Instant timestamp) {
-    this.metricService.publishGameStatus(event.status().toString());
+    this.metricService.publishGameStatus(event.status().ordinal(), event.status().toString());
   }
 
   @Override
