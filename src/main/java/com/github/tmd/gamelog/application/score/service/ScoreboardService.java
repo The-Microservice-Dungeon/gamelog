@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.application.score.service;
 import com.github.tmd.gamelog.application.score.dto.ScoreboardDto;
 import com.github.tmd.gamelog.application.score.dto.ScoreboardEntryDto;
 import com.github.tmd.gamelog.application.score.dto.ScoreboardPlayerEntryDto;
+import com.github.tmd.gamelog.domain.Game;
 import com.github.tmd.gamelog.domain.Game.GameId;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerRepository;
@@ -21,14 +22,17 @@ public class ScoreboardService {
   private final GameScoreService gameScoreService;
   private final PlayerRepository playerRepository;
   private final RoundScoreService roundScoreService;
+  private final GameService gameService;
 
   public ScoreboardService(
       GameScoreService gameScoreService,
       PlayerRepository playerRepository,
-      RoundScoreService roundScoreService) {
+      RoundScoreService roundScoreService,
+      GameService gameService) {
     this.gameScoreService = gameScoreService;
     this.playerRepository = playerRepository;
     this.roundScoreService = roundScoreService;
+    this.gameService = gameService;
   }
 
   public Optional<ScoreboardDto> getScoreboardForGame(UUID gameId) {
@@ -50,18 +54,32 @@ public class ScoreboardService {
   }
 
   public Optional<Scoreboard> getScoreboardByGameId(GameId id) {
-    var gameScores = gameScoreService.getScoresInGame(id.id())
+    return this.gameService.findGameById(id)
+        .map(this::buildFromGame);
+  }
+
+  public Optional<Scoreboard> getScoreboardOfActiveGame() {
+    return this.gameService.findActiveGame()
+        .map(this::buildFromGame);
+  }
+
+  private Scoreboard buildFromGame(Game game) {
+    var gameScores = gameScoreService.getScoresInGame(game.getId().id())
         .entrySet()
         .stream()
         .collect(Collectors.toMap(gs -> resolvePlayerId(gs.getKey()), gs -> gs.getValue()));
-    var roundScores = roundScoreService.getAllOrderedAggregatedScoresInGame(id.id())
+    var roundScores = roundScoreService.getAllOrderedAggregatedScoresInGame(game.getId().id())
         .entrySet()
         .stream()
         .collect(Collectors.toMap(rs -> resolvePlayerId(rs.getKey()), rs -> rs.getValue()));
 
-    var scoreboard = Scoreboard.builder().gameScores(gameScores).roundScores(roundScores).build();
+    var scoreboard = Scoreboard.builder()
+        .gameScores(gameScores)
+        .game(game)
+        .roundScores(roundScores)
+        .build();
 
-    return Optional.of(scoreboard);
+    return scoreboard;
   }
 
   // Helper method to create a fallback if we don't have a player for the ID

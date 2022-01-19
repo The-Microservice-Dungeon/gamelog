@@ -23,16 +23,18 @@ class ScoreboardRepositoryImplTest {
   @Test
   void getScoreboardByGameId() {
     // Given
-    var gameId = UUID.fromString("22838d5f-3e11-46fd-9074-d76d0e2ad27c");
+    var rawId = UUID.fromString("22838d5f-3e11-46fd-9074-d76d0e2ad27c");
+    var gameId = new GameId(rawId);
 
     // When
-    var optScoreboard = this.scoreboardRepository.getScoreboardByGameId(new GameId(gameId));
+    var optScoreboard = this.scoreboardRepository.getScoreboardByGameId(gameId);
 
     // Then
     // For the sake of simplicity and because the score calculation might change, we're just
     // testing trivial
     assertThat(optScoreboard).isNotEmpty();
     var scoreboard = optScoreboard.get();
+    assertThat(scoreboard.getGame().getId()).isEqualTo(gameId);
     assertThat(scoreboard.getGameScores()).hasSize(3);
     assertThat(scoreboard.getRoundScores()).hasSize(3);
   }
