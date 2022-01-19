@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface MovementHistoryJpaRepository extends CrudRepository<MovementHistoryJpa, UUID> {
   // TODO: untested
   @Query("""
-    select ch.playerId as playerId, sum(mh.movementDifficulty) as overallMovementDifficulty, sum(count(mh.robots)) as numberOfMovedRobots
+    select ch.playerId as playerId, sum(mh.movementDifficulty) as overallMovementDifficulty, sum(size(mh.robots)) as numberOfMovedRobots
     from MovementHistoryJpa mh
       join CommandHistoryJpa ch on ch.transactionId = mh.transactionId
       where ch.roundId = ?1

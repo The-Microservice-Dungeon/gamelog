@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.application.score;
 
 import com.github.tmd.gamelog.domain.score.core.AbstractCategorizedRoundScoreAccumulator;
 import com.github.tmd.gamelog.domain.score.core.CategorizableScore;
+import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
 import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoundScoreAggregator {
   // Inject every categorized accumulator
-  private final List<AbstractCategorizedRoundScoreAccumulator<CategorizableScore>> roundScoreAccumulators;
+  private final List<AbstractCategorizedRoundScoreAccumulator<?>> roundScoreAccumulators;
 
   @Autowired
   public RoundScoreAggregator(
-      List<AbstractCategorizedRoundScoreAccumulator<CategorizableScore>> roundScoreAccumulators) {
+      List<AbstractCategorizedRoundScoreAccumulator<?>> roundScoreAccumulators) {
     this.roundScoreAccumulators = roundScoreAccumulators;
   }
 
@@ -46,12 +47,16 @@ public class RoundScoreAggregator {
 
         // Based on the category, set the score in the aggregation
         var actualScore = accumulatedScores.getValue();
+        var score = actualScore.score();
+        if(score == null) {
+          score = 0.0;
+        }
         switch (actualScore.category()) {
-          case TRADING -> scoreBuilder.tradingScore(actualScore.score());
-          case ROBOT -> scoreBuilder.robotScore(actualScore.score());
-          case MOVEMENT -> scoreBuilder.movementScore(actualScore.score());
-          case MINING -> scoreBuilder.miningScore(actualScore.score());
-          case FIGHTING -> scoreBuilder.fightingScore(actualScore.score());
+          case TRADING -> scoreBuilder.tradingScore(score);
+          case ROBOT -> scoreBuilder.robotScore(score);
+          case MOVEMENT -> scoreBuilder.movementScore(score);
+          case MINING -> scoreBuilder.miningScore(score);
+          case FIGHTING -> scoreBuilder.fightingScore(score);
         }
         // Put it back in
         scoreBuilders.put(accumulatedScores.getKey(), scoreBuilder);

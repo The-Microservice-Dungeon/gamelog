@@ -14,11 +14,16 @@ import lombok.Data;
 @Builder
 @Data
 public class AggregatedRoundScore implements ScorableScore {
-  private final Double fightingScore;
-  private final Double miningScore;
-  private final Double movementScore;
-  private final Double robotScore;
-  private final Double tradingScore;
+  @Builder.Default
+  private final Double fightingScore = 0.0;
+  @Builder.Default
+  private final Double miningScore = 0.0;
+  @Builder.Default
+  private final Double movementScore = 0.0;
+  @Builder.Default
+  private final Double robotScore = 0.0;
+  @Builder.Default
+  private final Double tradingScore = 0.0;
 
   @Override
   public Double score() {
