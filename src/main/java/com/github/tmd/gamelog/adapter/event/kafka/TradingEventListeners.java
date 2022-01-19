@@ -4,12 +4,14 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEv
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
 import com.github.tmd.gamelog.adapter.metrics.MetricService;
-import com.github.tmd.gamelog.application.history.TradingHistoryService;
+import com.github.tmd.gamelog.application.GameLifecycleHook;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
@@ -28,15 +30,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class TradingEventListeners {
+  private final List<GameLifecycleHook> lifecycleHooks;
 
-  private final TradingHistoryService tradingHistoryService;
-  private final MetricService metricService;
-
+  @Autowired
   public TradingEventListeners(
-      TradingHistoryService tradingHistoryService,
-      MetricService metricService) {
-    this.tradingHistoryService = tradingHistoryService;
-    this.metricService = metricService;
+      List<GameLifecycleHook> lifecycleHooks) {
+    this.lifecycleHooks = lifecycleHooks;
   }
 
   @DltHandler
@@ -64,11 +63,8 @@ public class TradingEventListeners {
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
       MessageHeaders headers) {
-    if (event.success()) {
-      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-      this.tradingHistoryService.insertTradingHistory(transactionId, event.amount(), timestamp);
-      metricService.publishTrade();
-    }
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+    lifecycleHooks.forEach(hook -> hook.onTrade(event, transactionId, timestamp));
   }
 
   // region Irrelevant Kafka Listeners for scores
@@ -79,18 +75,16 @@ public class TradingEventListeners {
 
   @KafkaListener(topics = "current-item-prices")
   public void currentItemPricesChangedEvent(@Payload Set<CurrentItemPriceEvent> event,
-      MessageHeaders headers) {
-    event.stream().forEach(
-        e -> metricService.publishItemPrice(e.name(), e.price())
-    );
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+    lifecycleHooks.forEach(hook -> hook.onCurrentItemPricesAnnouncement(event, timestamp));
   }
 
   @KafkaListener(topics = "current-resource-prices")
   public void currentResourcePricesChangedEvent(@Payload Set<CurrentResourcePriceEvent> event,
-      MessageHeaders headers) {
-    event.stream().forEach(
-        e -> metricService.publishResourcePrice(e.name(), e.price())
-    );
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+    lifecycleHooks.forEach(hook -> hook.onCurrentResourcePricesAnnouncement(event, timestamp));
   }
 
   // endregion

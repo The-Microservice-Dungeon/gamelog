@@ -4,13 +4,12 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.metrics.MetricService;
+import com.github.tmd.gamelog.application.GameLifecycleHook;
 import com.github.tmd.gamelog.application.PlayerService;
-import com.github.tmd.gamelog.application.history.GameHistoryService;
-import com.github.tmd.gamelog.application.history.RobotHistoryService;
-import com.github.tmd.gamelog.application.history.TradingHistoryService;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,27 +30,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class GameEventListeners {
-
-  private final GameHistoryService gameHistoryService;
-  private final RobotHistoryService robotHistoryService;
-  private final TradingHistoryService tradingHistoryService;
-  private final RoundScoreService roundScoreService;
-  private final PlayerService playerService;
-  private final MetricService meterService;
+  private final List<GameLifecycleHook> lifecycleHooks;
 
   @Autowired
   public GameEventListeners(
-      GameHistoryService gameHistoryService,
-      RobotHistoryService robotHistoryService,
-      TradingHistoryService tradingHistoryService,
-      RoundScoreService roundScoreService,
-      PlayerService playerService, MetricService meterRegistry) {
-    this.gameHistoryService = gameHistoryService;
-    this.robotHistoryService = robotHistoryService;
-    this.tradingHistoryService = tradingHistoryService;
-    this.roundScoreService = roundScoreService;
-    this.playerService = playerService;
-    this.meterService = meterRegistry;
+      List<GameLifecycleHook> lifecycleHooks) {
+    this.lifecycleHooks = lifecycleHooks;
   }
 
   @DltHandler
@@ -78,9 +62,7 @@ public class GameEventListeners {
   public void gameStatusChangedEvent(@Payload GameStatusEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-    gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
-
-    meterService.publishGameStatus(event.gameId().toString(), event.status().toString());
+    lifecycleHooks.forEach(hook -> hook.onGameStatus(event, timestamp));
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
@@ -89,11 +71,7 @@ public class GameEventListeners {
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-    gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), timestamp);
-
-    playerService.createOrUpdatePlayer(event.userId(), event.userName());
-
-    meterService.publishPlayerStatus(gameId.toString());
+    lifecycleHooks.forEach(hook -> hook.onPlayerStatus(event, gameId, timestamp));
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
@@ -101,37 +79,8 @@ public class GameEventListeners {
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
-
     UUID roundId = event.roundId();
-
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-    gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(),
-        event.roundStatus(), timestamp);
-
-    meterService.publishRoundStatus(gameId.toString(), event.roundStatus().toString());
-
-    switch (event.roundStatus()) {
-      case STARTED -> {
-        // Reset Metrics on start
-        meterService.reset();
-
-        // Set Round Number
-        meterService.publishRoundNumber(gameId.toString(), event.roundNumber());
-      }
-      case ENDED -> {
-        // TODO: This part of the event handler is crucial and should be refactored
-        // TODO: Well this could take a loooooong time
-        // TODO: Multiple synchronous calls
-        // TODO: Schedule the calls so that they could be called at a later point
-        for (var player : gameHistoryService.getAllParticipatingPlayersInGame(gameId)) {
-          this.robotHistoryService.insertRobotRoundHistoryForPlayer(roundId, player);
-        }
-
-        this.tradingHistoryService.insertBalanceHistory(roundId, event.roundNumber());
-
-        // Now everything is completed, and we can calculate the roun scores
-        this.roundScoreService.accumulateAndSaveRoundScoresForRound(event.roundId());
-      }
-    }
+    lifecycleHooks.forEach(hook -> hook.onRoundStatus(event, gameId, timestamp));
   }
 }

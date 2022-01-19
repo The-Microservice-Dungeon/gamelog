@@ -5,14 +5,13 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
 import com.github.tmd.gamelog.adapter.metrics.MetricService;
-import com.github.tmd.gamelog.application.history.RobotHistoryService;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
+import com.github.tmd.gamelog.application.GameLifecycleHook;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
@@ -31,15 +30,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class RobotEventListeners {
+  private final List<GameLifecycleHook> lifecycleHooks;
 
-  private final RobotHistoryService robotHistoryService;
-  private final MetricService metricService;
-
+  @Autowired
   public RobotEventListeners(
-      RobotHistoryService robotHistoryService,
-      MetricService metricService) {
-    this.robotHistoryService = robotHistoryService;
-    this.metricService = metricService;
+      List<GameLifecycleHook> lifecycleHooks) {
+    this.lifecycleHooks = lifecycleHooks;
   }
 
   @DltHandler
@@ -65,51 +61,40 @@ public class RobotEventListeners {
   @KafkaListener(topics = "movement")
   public void movementEvent(@Payload MovementEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
-      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
-      MessageHeaders headers) {
-    if (event.success()) {
-      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-      robotHistoryService.insertMovementHistory(transactionId, event.robots(), event.planet()
-          .planetId(), event.planet().movementDifficulty(), timestamp);
-    }
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+
+    lifecycleHooks.forEach(hook -> hook.onRobotMovement(event, transactionId, timestamp));
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "planet-blocked")
   public void planetBlockedEvent(@Payload PlanetBlockedEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
-      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
-      MessageHeaders headers) {
-    if (event.success()) {
-      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-      robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId(), timestamp);
-    }
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+
+    lifecycleHooks.forEach(hook -> hook.onRobotPlanetBlocked(event, transactionId, timestamp));
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "mining")
   public void miningEvent(@Payload MiningEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
-      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
-      MessageHeaders headers) {
-    if (event.success()) {
-      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-      robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(),
-          event.resourceType(), timestamp);
-    }
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+
+    lifecycleHooks.forEach(hook -> hook.onRobotMining(event, transactionId, timestamp));
   }
 
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "fighting")
   public void fightingEvent(@Payload FightingEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
-      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
-      MessageHeaders headers) {
-    if (event.success()) {
-      var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
-      robotHistoryService.insertFightHistory(transactionId, event.attacker(), event.defender(),
-          event.remainingDefenderHealth(), timestamp);
-    }
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
+
+    lifecycleHooks.forEach(hook -> hook.onRobotFighting(event, transactionId, timestamp));
   }
 
   // region Irrelevant Kafka Listeners for scores
