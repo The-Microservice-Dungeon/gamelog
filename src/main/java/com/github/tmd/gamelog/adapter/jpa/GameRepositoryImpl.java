@@ -24,13 +24,13 @@ public class GameRepositoryImpl implements GameRepository {
 
   @Override
   public Optional<Game> findGameById(GameId gameId) {
-    return gameStatusHistoryJpaRepository.findByGameId(gameId.id())
+    return gameStatusHistoryJpaRepository.findFirstByGameIdOrderByTimestampDesc(gameId.id())
         .map(gameMapper::toDomain);
   }
 
   @Override
   public Optional<Game> findActiveGame() {
-    return gameStatusHistoryJpaRepository.findFirstByStatus(GameStatusJpa.STARTED)
+    return gameStatusHistoryJpaRepository.findFirstByStatusOrderByTimestampDesc(GameStatusJpa.STARTED)
         .map(gameMapper::toDomain);
   }
 

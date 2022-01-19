@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameStatusHistoryJpaRepository extends CrudRepository<GameStatusHistoryJpa, UUID> {
-  Optional<GameStatusHistoryJpa> findByGameId(UUID gameId);
-  Optional<GameStatusHistoryJpa> findFirstByStatus(GameStatusJpa status);
+  Optional<GameStatusHistoryJpa> findFirstByGameIdOrderByTimestampDesc(UUID gameId);
+  Optional<GameStatusHistoryJpa> findFirstByStatusOrderByTimestampDesc(GameStatusJpa status);
 }
