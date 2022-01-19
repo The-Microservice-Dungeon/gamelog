@@ -108,7 +108,7 @@ jobs:
           password: ${{ secrets.PROD_PWD }}
           port: 22
           envs: SERVICE_NAME
+          script_stop: true
           script: |
             echo ${{ secrets.PROD_PWD }} | sudo -S docker-compose -f $SERVICE_NAME/service-compose.yml pull
             echo ${{ secrets.PROD_PWD }} | sudo -S docker-compose -f $SERVICE_NAME/service-compose.yml up -d
-
