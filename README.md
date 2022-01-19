@@ -23,6 +23,12 @@ mvn spring-boot:run
 ```
 This will compile the project and start the application.
 
+### Grafana / Prometheus
+
+We configured a Grafana Dashboard for displaying game-related metrics and some score values. The 
+necessary configuration files are found in this repo as well ([Prometheus](./src/main/prometheus), [Grafana](./src/main/grafana)).
+
+
 ## Todo
 This README file should be adapted to include the following information:
 
