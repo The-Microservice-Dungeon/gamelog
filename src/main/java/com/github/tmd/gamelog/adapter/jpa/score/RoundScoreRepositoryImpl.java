@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa.score;
 
-import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
 import com.github.tmd.gamelog.domain.score.repository.AggregatedRoundScoreRepository;
 import java.util.ArrayList;
 import java.util.HashMap;

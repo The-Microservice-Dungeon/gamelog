@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.domain.score.entity;
+package com.github.tmd.gamelog.domain.score.vo;
 
 import com.github.tmd.gamelog.domain.score.core.ScorableScore;
 import com.github.tmd.gamelog.domain.score.core.ScoreCategory;

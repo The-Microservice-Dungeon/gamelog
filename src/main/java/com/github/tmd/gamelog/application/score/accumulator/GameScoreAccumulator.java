@@ -1,7 +1,7 @@
 package com.github.tmd.gamelog.application.score.accumulator;
 
-import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
-import com.github.tmd.gamelog.domain.score.entity.GameScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedGameScore;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class GameScoreAccumulator  {
     this.roundScoreService = roundScoreService;
   }
 
-  public Map<UUID, GameScore> accumulateGameScore(UUID gameId) {
+  public Map<UUID, AggregatedGameScore> accumulateGameScore(UUID gameId) {
     return this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
         .collect(Collectors.toMap(
@@ -28,13 +28,13 @@ public class GameScoreAccumulator  {
         ));
   }
 
-  private GameScore calculateGameScore(List<AggregatedRoundScore> aggregatedRoundScores) {
+  private AggregatedGameScore calculateGameScore(List<AggregatedRoundScore> aggregatedRoundScores) {
     var rawScore = 0.0;
 
     for(var aggRoundScore : aggregatedRoundScores) {
       rawScore += aggRoundScore.score();
     }
 
-    return new GameScore(rawScore);
+    return new AggregatedGameScore(rawScore);
   }
 }

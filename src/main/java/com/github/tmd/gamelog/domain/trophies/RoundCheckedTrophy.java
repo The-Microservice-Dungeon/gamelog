@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.domain.trophies;
 
-import com.github.tmd.gamelog.domain.score.entity.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
 
 /**
  * Interface for round-checked Trophies.

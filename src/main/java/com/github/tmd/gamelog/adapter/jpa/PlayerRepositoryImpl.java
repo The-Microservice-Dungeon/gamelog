@@ -7,6 +7,7 @@ import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
@@ -33,10 +34,9 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         return players;
     }
 
-    public Player findById(UUID playerId) {
+    public Optional<Player> findById(UUID playerId) {
         return playerJpaRepository.findById(playerId)
-            .map(playerDtoMapper::mapDtoToEntity)
-            .orElseThrow(() -> new RuntimeException("Player with ID %s not found".formatted(playerId)));
+            .map(playerDtoMapper::mapDtoToEntity);
     }
 
     public void upsert(Player player) {
