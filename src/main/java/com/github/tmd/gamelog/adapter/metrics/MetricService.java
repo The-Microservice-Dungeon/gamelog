@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MetricService {
+
   private final MeterRegistry meterRegistry;
 
   public MetricService(MeterRegistry meterRegistry) {
@@ -28,6 +29,9 @@ public class MetricService {
     this.publishResourcePrice("COAL", 10);
     this.publishResourcePrice("IRON", 20);
     this.publishResourcePrice("GEM", 30);
+
+    this.publishScores("Player 1", 120.0, 10.0, 11.0, 12.0, 13.0, 14.0);
+    this.publishScores("Player 2", 140.0, 15.0, 20.0, 22.0, 23.0, 24.0);
   }
 
   public void publishRoundNumber(Integer roundNumber) {
@@ -47,5 +51,45 @@ public class MetricService {
   public void publishResourcePrice(String resourceName, Integer value) {
     this.meterRegistry.gauge(DungeonMetrics.TRADING_RESOURCE_PRICES,
         Tags.of(Tag.of("name", resourceName)), value);
+  }
+
+  public void publishScores(String playerName, Double totalScore, Double tradingScore,
+      Double fightingScore, Double miningScore, Double movementScore, Double robotScore) {
+    this.publishTotalScore(playerName, totalScore);
+    this.publishTradingScore(playerName, tradingScore);
+    this.publishFightingScore(playerName, fightingScore);
+    this.publishMiningScore(playerName, miningScore);
+    this.publishMovementScore(playerName, movementScore);
+    this.publishRobotScore(playerName, robotScore);
+  }
+
+  private void publishTotalScore(String playerName, Double score) {
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_TOTAL,
+        Tags.of(Tag.of("player.name", playerName)), score);
+  }
+
+  private void publishTradingScore(String playerName, Double score) {
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_TRADING,
+        Tags.of(Tag.of("player.name", playerName)), score);
+  }
+
+  private void publishFightingScore(String playerName, Double score) {
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_FIGHTING,
+        Tags.of(Tag.of("player.name", playerName)), score);
+  }
+
+  private void publishMiningScore(String playerName, Double score) {
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_MINING,
+        Tags.of(Tag.of("player.name", playerName)), score);
+  }
+
+  private void publishMovementScore(String playerName, Double score) {
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_MOVEMENT,
+        Tags.of(Tag.of("player.name", playerName)), score);
+  }
+
+  private void publishRobotScore(String playerName, Double score) {
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_ROBOT,
+        Tags.of(Tag.of("player.name", playerName)), score);
   }
 }
