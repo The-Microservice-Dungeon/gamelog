@@ -34,27 +34,27 @@ public class MetricService {
     this.publishScores("Player 2", 140.0, 15.0, 20.0, 22.0, 23.0, 24.0);
   }
 
-  public void publishRoundNumber(Integer roundNumber) {
+  public void publishRoundNumber(int roundNumber) {
     this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, roundNumber);
   }
 
-  public void publishGameStatus(Integer value, String status) {
+  public void publishGameStatus(int value, String status) {
     this.meterRegistry.gauge(DungeonMetrics.GAME_STATUS_INFO,
         Tags.of(Tag.of("status", status)), value);
   }
 
-  public void publishItemPrice(String itemName, Integer value) {
+  public void publishItemPrice(String itemName, int value) {
     this.meterRegistry.gauge(DungeonMetrics.TRADING_ITEM_PRICES,
         Tags.of(Tag.of("name", itemName)), value);
   }
 
-  public void publishResourcePrice(String resourceName, Integer value) {
+  public void publishResourcePrice(String resourceName, int value) {
     this.meterRegistry.gauge(DungeonMetrics.TRADING_RESOURCE_PRICES,
         Tags.of(Tag.of("name", resourceName)), value);
   }
 
-  public void publishScores(String playerName, Double totalScore, Double tradingScore,
-      Double fightingScore, Double miningScore, Double movementScore, Double robotScore) {
+  public void publishScores(String playerName, double totalScore, double tradingScore,
+      double fightingScore, double miningScore, double movementScore, double robotScore) {
     this.publishTotalScore(playerName, totalScore);
     this.publishTradingScore(playerName, tradingScore);
     this.publishFightingScore(playerName, fightingScore);
@@ -63,32 +63,32 @@ public class MetricService {
     this.publishRobotScore(playerName, robotScore);
   }
 
-  private void publishTotalScore(String playerName, Double score) {
+  private void publishTotalScore(String playerName, double score) {
     this.meterRegistry.gauge(DungeonMetrics.SCORE_TOTAL,
         Tags.of(Tag.of("player.name", playerName)), score);
   }
 
-  private void publishTradingScore(String playerName, Double score) {
+  private void publishTradingScore(String playerName, double score) {
     this.meterRegistry.gauge(DungeonMetrics.SCORE_TRADING,
         Tags.of(Tag.of("player.name", playerName)), score);
   }
 
-  private void publishFightingScore(String playerName, Double score) {
+  private void publishFightingScore(String playerName, double score) {
     this.meterRegistry.gauge(DungeonMetrics.SCORE_FIGHTING,
         Tags.of(Tag.of("player.name", playerName)), score);
   }
 
-  private void publishMiningScore(String playerName, Double score) {
+  private void publishMiningScore(String playerName, double score) {
     this.meterRegistry.gauge(DungeonMetrics.SCORE_MINING,
         Tags.of(Tag.of("player.name", playerName)), score);
   }
 
-  private void publishMovementScore(String playerName, Double score) {
+  private void publishMovementScore(String playerName, double score) {
     this.meterRegistry.gauge(DungeonMetrics.SCORE_MOVEMENT,
         Tags.of(Tag.of("player.name", playerName)), score);
   }
 
-  private void publishRobotScore(String playerName, Double score) {
+  private void publishRobotScore(String playerName, double score) {
     this.meterRegistry.gauge(DungeonMetrics.SCORE_ROBOT,
         Tags.of(Tag.of("player.name", playerName)), score);
   }
