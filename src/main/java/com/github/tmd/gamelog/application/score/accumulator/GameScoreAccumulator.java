@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.application.score.accumulator;
 
+import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
 import com.github.tmd.gamelog.domain.score.vo.AggregatedGameScore;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
@@ -19,7 +20,7 @@ public class GameScoreAccumulator  {
     this.roundScoreService = roundScoreService;
   }
 
-  public Map<UUID, AggregatedGameScore> accumulateGameScore(UUID gameId) {
+  public Map<Player, AggregatedGameScore> accumulateGameScore(UUID gameId) {
     return this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
         .collect(Collectors.toMap(

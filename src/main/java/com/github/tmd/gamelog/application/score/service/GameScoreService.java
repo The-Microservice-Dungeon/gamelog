@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.application.score.service;
 
+import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.score.vo.AggregatedGameScore;
 import com.github.tmd.gamelog.application.score.accumulator.GameScoreAccumulator;
 import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
@@ -16,11 +17,11 @@ public class GameScoreService {
     this.gameScoreAccumulator = gameScoreAccumulator;
   }
 
-  public Map<UUID, AggregatedGameScore> getScoresInGame(UUID gameId) {
+  public Map<Player, AggregatedGameScore> getScoresInGame(UUID gameId) {
     return gameScoreAccumulator.accumulateGameScore(gameId);
   }
 
-  public Map<UUID, AggregatedGameScore> getScoresOfCategoryInGame(UUID gameId, ScoreCategory category) {
+  public Map<Player, AggregatedGameScore> getScoresOfCategoryInGame(UUID gameId, ScoreCategory category) {
     return gameScoreAccumulator.accumulateGameScore(gameId);
   }
 }

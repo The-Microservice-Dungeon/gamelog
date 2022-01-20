@@ -39,9 +39,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
       var roundScores = roundScoreService.getAggregatedRoundScoresForRound(event.roundId());
 
       for (var entry : roundScores.entrySet()) {
-        // TODO: use the playerName instead of the UUID -> Probably refactoring of the
-        //  aggregation to use a strong player reference.
-        var playerName = entry.getKey().toString();
+        var playerName = entry.getKey().getName();
         var totalScore = entry.getValue().score();
         var tradingScore = entry.getValue().getTradingScore();
         var fightingScore = entry.getValue().getFightingScore();

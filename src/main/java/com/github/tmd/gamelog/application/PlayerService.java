@@ -2,6 +2,7 @@ package com.github.tmd.gamelog.application;
 
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.PlayerRepository;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,9 @@ public class PlayerService {
         .orElse(new Player(playerId, name));
 
     this.playerRepository.upsert(playerToSave);
+  }
+
+  public Optional<Player> findPlayerById(UUID playerId) {
+    return this.playerRepository.findById(playerId);
   }
 }

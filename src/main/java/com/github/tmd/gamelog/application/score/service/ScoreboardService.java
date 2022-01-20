@@ -42,14 +42,8 @@ public class ScoreboardService {
   }
 
   private Scoreboard buildFromGame(Game game) {
-    var gameScores = gameScoreService.getScoresInGame(game.getId().id())
-        .entrySet()
-        .stream()
-        .collect(Collectors.toMap(gs -> resolvePlayerId(gs.getKey()), gs -> gs.getValue()));
-    var roundScores = roundScoreService.getAllOrderedAggregatedScoresInGame(game.getId().id())
-        .entrySet()
-        .stream()
-        .collect(Collectors.toMap(rs -> resolvePlayerId(rs.getKey()), rs -> rs.getValue()));
+    var gameScores = gameScoreService.getScoresInGame(game.getId().id());
+    var roundScores = roundScoreService.getAllOrderedAggregatedScoresInGame(game.getId().id());
 
     var scoreboard = Scoreboard.builder()
         .gameScores(gameScores)
@@ -58,11 +52,5 @@ public class ScoreboardService {
         .build();
 
     return scoreboard;
-  }
-
-  // Helper method to create a fallback if we don't have a player for the ID
-  private Player resolvePlayerId(UUID playerId) {
-    return playerRepository.findById(playerId)
-        .orElse(new Player(playerId));
   }
 }
