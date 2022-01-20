@@ -1,11 +1,16 @@
 package com.github.tmd.gamelog.adapter.metrics;
 
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.kafka.common.protocol.types.Field.Str;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,22 +40,19 @@ public class MetricService {
   }
 
   public void publishRoundNumber(int roundNumber) {
-    this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, roundNumber);
+    buildStrongGauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), roundNumber);
   }
 
   public void publishGameStatus(int value, String status) {
-    this.meterRegistry.gauge(DungeonMetrics.GAME_STATUS_INFO,
-        Tags.of(Tag.of("status", status)), value);
+    buildStrongGauge(DungeonMetrics.GAME_STATUS_INFO, Tags.of(Tag.of("status", status)), value);
   }
 
   public void publishItemPrice(String itemName, int value) {
-    this.meterRegistry.gauge(DungeonMetrics.TRADING_ITEM_PRICES,
-        Tags.of(Tag.of("name", itemName)), value);
+    buildStrongGauge(DungeonMetrics.TRADING_ITEM_PRICES, Tags.of("name", itemName), value);
   }
 
   public void publishResourcePrice(String resourceName, int value) {
-    this.meterRegistry.gauge(DungeonMetrics.TRADING_RESOURCE_PRICES,
-        Tags.of(Tag.of("name", resourceName)), value);
+    buildStrongGauge(DungeonMetrics.TRADING_RESOURCE_PRICES, Tags.of("name", resourceName), value);
   }
 
   public void publishScores(String playerName, double totalScore, double tradingScore,
@@ -64,32 +66,38 @@ public class MetricService {
   }
 
   private void publishTotalScore(String playerName, double score) {
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_TOTAL,
-        Tags.of(Tag.of("player.name", playerName)), score);
+    buildStrongGauge(DungeonMetrics.SCORE_TOTAL, Tags.of("player.name", playerName), score);
   }
 
   private void publishTradingScore(String playerName, double score) {
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_TRADING,
-        Tags.of(Tag.of("player.name", playerName)), score);
+    buildStrongGauge(DungeonMetrics.SCORE_TRADING, Tags.of("player.name", playerName), score);
   }
 
   private void publishFightingScore(String playerName, double score) {
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_FIGHTING,
-        Tags.of(Tag.of("player.name", playerName)), score);
+    buildStrongGauge(DungeonMetrics.SCORE_FIGHTING, Tags.of("player.name", playerName), score);
   }
 
   private void publishMiningScore(String playerName, double score) {
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_MINING,
-        Tags.of(Tag.of("player.name", playerName)), score);
+    buildStrongGauge(DungeonMetrics.SCORE_MINING, Tags.of("player.name", playerName), score);
   }
 
   private void publishMovementScore(String playerName, double score) {
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_MOVEMENT,
-        Tags.of(Tag.of("player.name", playerName)), score);
+    buildStrongGauge(DungeonMetrics.SCORE_MOVEMENT, Tags.of("player.name", playerName), score);
   }
 
   private void publishRobotScore(String playerName, double score) {
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_ROBOT,
-        Tags.of(Tag.of("player.name", playerName)), score);
+    buildStrongGauge(DungeonMetrics.SCORE_ROBOT, Tags.of("player.name", playerName), score);
+  }
+
+  // We need strong references to maintain the metrics.
+  // We're here totally misusing meters for displaying game-related stuff, and in a normal this is
+  // meter use-case this would not be necessary. However, we're hacking our way around to provide
+  // strong references by utilizing the Gauge Builder rather than using the extension method
+  // on the meter registry which does not have an option to set strong references
+  private Gauge buildStrongGauge(String name, Tags tags, double val) {
+    return Gauge.builder(name, val, value1 -> value1.doubleValue())
+        .tags(tags)
+        .strongReference(true)
+        .register(meterRegistry);
   }
 }
