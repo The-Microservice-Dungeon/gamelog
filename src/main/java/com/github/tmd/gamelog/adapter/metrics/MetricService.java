@@ -20,7 +20,7 @@ public class MetricService {
 
   public MetricService(MeterRegistry meterRegistry) {
     this.meterRegistry = meterRegistry;
-    this.initMetrics();
+    // this.initMetrics();
   }
 
   // Just for testing and Grafana setup
