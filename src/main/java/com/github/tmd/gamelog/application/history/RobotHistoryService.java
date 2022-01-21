@@ -97,7 +97,7 @@ public class RobotHistoryService {
       try {
         result = this.robotRestClient.getRobotsOfPlayer(playerId);
       } catch (FeignException e) {
-        // TODO: We can't assume any balances for the round if the call fails. A proper solution would
+        // TODO: We can't assume any robot stats for the round if the call fails. A proper solution would
         //  be to schedule the call for a later point and updating the database entry. However this
         //  is not feasible with our current architecture and would require way more effort than
         //  we can invest atm. Therefore we're defaulting to an empty collection and hope for the
