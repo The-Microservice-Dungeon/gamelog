@@ -5,5 +5,5 @@ import java.util.UUID;
 
 public record PlayerStatusChangedEvent(
     @JsonProperty("playerId") UUID userId,
-    @JsonProperty("userName") String userName
+    @JsonProperty("name") String userName
 ) {}
