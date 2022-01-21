@@ -26,7 +26,7 @@ public class MetricService {
   // Just for testing and Grafana setup
   private void initMetrics() {
     this.publishRoundNumber(0);
-    this.publishGameStatus(-1, "UNKNOWN");
+    this.publishGameStatus(-1);
     this.publishItemPrice("rocket", 100);
     this.publishItemPrice("robot", 120);
     this.publishItemPrice("xxx", 50);
@@ -43,8 +43,8 @@ public class MetricService {
     buildStrongGauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), roundNumber);
   }
 
-  public void publishGameStatus(int value, String status) {
-    buildStrongGauge(DungeonMetrics.GAME_STATUS_INFO, Tags.of(Tag.of("status", status)), value);
+  public void publishGameStatus(int value) {
+    buildStrongGauge(DungeonMetrics.GAME_STATUS_INFO, Tags.empty(), value);
   }
 
   public void publishItemPrice(String itemName, int value) {
