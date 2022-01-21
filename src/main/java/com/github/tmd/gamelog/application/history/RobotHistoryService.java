@@ -13,14 +13,18 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRep
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest.client.RobotRestClient;
+import com.github.tmd.gamelog.adapter.rest.client.response.RobotDto;
 import com.github.tmd.gamelog.domain.score.vo.ResourceMinedScoreAttribute;
 import com.github.tmd.gamelog.domain.score.vo.ResourceRarity;
 import com.github.tmd.gamelog.domain.score.vo.RobotLevelsScoreAttribute;
+import feign.FeignException;
 import java.time.Instant;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -88,7 +92,21 @@ public class RobotHistoryService {
    */
   public void insertRobotRoundHistoryForPlayer(UUID roundId, UUID playerId) {
     try {
-      var result = this.robotRestClient.getRobotsOfPlayer(playerId)
+      Set<RobotDto> result;
+
+      try {
+        result = this.robotRestClient.getRobotsOfPlayer(playerId);
+      } catch (FeignException e) {
+        // TODO: We can't assume any balances for the round if the call fails. A proper solution would
+        //  be to schedule the call for a later point and updating the database entry. However this
+        //  is not feasible with our current architecture and would require way more effort than
+        //  we can invest atm. Therefore we're defaulting to an empty collection and hope for the
+        //  best that the other services are resilient.
+        log.error("Couldn't retrieve Robot of player {} in round {}. Defaulting to an empty collection...", playerId, roundId, e);
+        result = Collections.emptySet();
+      }
+
+      var mappedToPersistence = result
           .stream().map(
               robot -> new RobotHistoryJpa(roundId, robot.id(), robot.player(), robot.planet(),
                   robot.alive(),
@@ -98,7 +116,7 @@ public class RobotHistoryService {
                   robot.miningLevel(),
                   robot.energyLevel(), robot.energyRegenLevel(), robot.storageLevel()))
           .collect(Collectors.toSet());
-      this.robotHistoryJpaRepository.saveAll(result);
+      this.robotHistoryJpaRepository.saveAll(mappedToPersistence);
     } catch (RuntimeException e) {
       log.error("Could not load robot history for round", e);
       throw e;
