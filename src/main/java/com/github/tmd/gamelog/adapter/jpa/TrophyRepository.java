@@ -6,15 +6,19 @@ import com.github.tmd.gamelog.domain.trophies.Trophy;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository for objects of class Trophy.
  */
+@Repository
 public class TrophyRepository implements com.github.tmd.gamelog.domain.TrophyRepository {
 
     private final TrophyJpaRepository trophyJpaRepository;
     private final TrophyDtoMapper trophyDtoMapper;
 
+    @Autowired
     public TrophyRepository(TrophyJpaRepository trophyJpaRepository, TrophyDtoMapper trophyDtoMapper) {
         this.trophyJpaRepository = trophyJpaRepository;
         this.trophyDtoMapper = trophyDtoMapper;
