@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.domain.trophies.achievements;
 
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.PlayerStatistics;
 import com.github.tmd.gamelog.domain.trophies.RoundCheckedTrophy;
 import com.github.tmd.gamelog.domain.trophies.Trophy;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class TravelingBronzeTrophy extends Trophy implements RoundCheckedTrophy 
     private String badgeUrl = "https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/achievements/Traveling%20Bronze%20-%20Sputnik.png";
 
     @Override
-    public Boolean awardingConditionFulfilled(AggregatedRoundScore roundScore) {
-        return false;
+    public Boolean awardingConditionFulfilled(PlayerStatistics playerStatistics) {
+        return playerStatistics.getTraveledDistance() >= 1;
     }
 }
