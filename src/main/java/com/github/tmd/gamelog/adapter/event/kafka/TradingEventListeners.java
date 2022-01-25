@@ -66,13 +66,8 @@ public class TradingEventListeners {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     lifecycleHooks.forEach(hook -> hook.onTrade(event, transactionId, timestamp));
   }
-
-  // region Irrelevant Kafka Listeners for scores
-  /*@KafkaListener(topics = "bank-created")
-  public void bankCreatedEvent(@Payload BankCreatedEvent event, MessageHeaders headers) {
-
-  }*/
-
+  
+  @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "current-item-prices")
   public void currentItemPricesChangedEvent(@Payload Set<CurrentItemPriceEvent> event,
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
@@ -80,12 +75,11 @@ public class TradingEventListeners {
     lifecycleHooks.forEach(hook -> hook.onCurrentItemPricesAnnouncement(event, timestamp));
   }
 
+  @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "current-resource-prices")
   public void currentResourcePricesChangedEvent(@Payload Set<CurrentResourcePriceEvent> event,
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     lifecycleHooks.forEach(hook -> hook.onCurrentResourcePricesAnnouncement(event, timestamp));
   }
-
-  // endregion
 }
