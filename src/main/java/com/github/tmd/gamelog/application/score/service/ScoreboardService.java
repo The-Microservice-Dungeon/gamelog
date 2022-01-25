@@ -9,6 +9,7 @@ import com.github.tmd.gamelog.domain.score.entity.Scoreboard;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +32,13 @@ public class ScoreboardService {
     this.gameService = gameService;
   }
 
+  @Transactional
   public Optional<Scoreboard> getScoreboardByGameId(GameId id) {
     return this.gameService.findGameById(id)
         .map(this::buildFromGame);
   }
 
+  @Transactional
   public Optional<Scoreboard> getScoreboardOfActiveGame() {
     return this.gameService.findActiveGame()
         .map(this::buildFromGame);

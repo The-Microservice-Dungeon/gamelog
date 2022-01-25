@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,6 +22,7 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
     this.roundScoreMapper = roundScoreMapper;
   }
 
+  @Transactional
   public void saveAggregatedRoundScoresForRound(UUID roundId,
       Map<UUID, AggregatedRoundScore> roundScores) {
     var toSave = RoundScoreJpa.builder()
@@ -31,6 +33,7 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
     this.roundScoreJpaRepository.save(toSave);
   }
 
+  @Transactional
   public Map<UUID, List<AggregatedRoundScore>> findAllOrderedRoundScoresInGame(UUID gameId) {
     var foundRoundScores = roundScoreJpaRepository.findAllOrderedRoundScoresInGame(gameId);
     Map<UUID, List<AggregatedRoundScore>> mapThingy = new HashMap<>();
@@ -46,6 +49,7 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
     return mapThingy;
   }
 
+  @Transactional
   public Map<UUID, AggregatedRoundScore> getAggregatedRoundScoresForRound(UUID roundId) {
     return this.roundScoreMapper.toAggregatedRoundScoreMap(this.roundScoreJpaRepository.findByRoundId(roundId).getPlayerRoundScores());
   }
