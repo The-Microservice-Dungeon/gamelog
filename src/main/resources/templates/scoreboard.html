@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Gamelog: Scoreboard</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+</head>
+<body>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col" style="width: 15%">Badge</th>
+    <th scope="col" style="width: 10%">Place</th>
+    <th scope="col" style="width: 20%">Score</th>
+    <th scope="col">Player</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr th:each="placement,iter: ${placements}">
+      <td>
+        <span th:switch="${iter.count}">
+          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20First%20Place.png" width="75"/>
+          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20Second%20Place.png" width="75"/>
+          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20Third%20Place.png" width="75"/>
+        </span>
+      </td>
+      <td th:text="${iter.count}"></td>
+      <td th:text="${placement.score}"></td>
+      <td th:text="${placement.player}"></td>
+    </tr>
+  </tbody>
+</table>
+
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+</body>
+</html>
