@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 public record RoundStatusChangedEvent(
+    @JsonProperty("gameId") UUID gameId,
     @JsonProperty("roundId") UUID roundId,
     @JsonProperty("roundNumber") Integer roundNumber,
     @JsonProperty("roundStatus") RoundStatus roundStatus

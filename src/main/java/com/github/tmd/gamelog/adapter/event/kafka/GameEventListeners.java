@@ -77,9 +77,9 @@ public class GameEventListeners {
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "roundStatus")
   public void roundStatusChangedEvent(@Payload RoundStatusChangedEvent event,
-      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
-      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
     UUID roundId = event.roundId();
+    var gameId = event.gameId();
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     lifecycleHooks.forEach(hook -> hook.onRoundStatus(event, gameId, timestamp));
   }
