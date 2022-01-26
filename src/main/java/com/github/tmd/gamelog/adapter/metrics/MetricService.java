@@ -51,7 +51,7 @@ public class MetricService {
   public void publishItemPrice(String itemName, int value) {
     var atomicRef = this.atomicItemPrices.getOrDefault(itemName, new AtomicInteger());
     atomicRef.set(value);
-    this.atomicResourcePrices.put(itemName, atomicRef);
+    this.atomicItemPrices.put(itemName, atomicRef);
 
     var scoreMetric = DungeonMetrics.TRADING_ITEM_PRICES;
     var tags = Tags.of("name", itemName);
