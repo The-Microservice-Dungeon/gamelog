@@ -30,7 +30,7 @@
         </span>
       </td>
       <td th:text="${iter.count}"></td>
-      <td th:text="${placement.totalScore}"></td>
+      <td th:text="${#numbers.formatDecimal(placement.totalScore(), 2, 2)}"></td>
       <td th:text="${placement.fightingScore}"></td>
       <td th:text="${placement.miningScore}"></td>
       <td th:text="${placement.movementScore}"></td>
