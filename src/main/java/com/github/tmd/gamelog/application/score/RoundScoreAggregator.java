@@ -1,7 +1,7 @@
 package com.github.tmd.gamelog.application.score;
 
 import com.github.tmd.gamelog.domain.score.core.AbstractCategorizedRoundScoreAccumulator;
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +32,11 @@ public class RoundScoreAggregator {
    * @param roundId Round ID
    * @return Map of Player ID as key and AggregatedRoundScore as value
    */
-  public Map<UUID, AggregatedRoundScore> aggregateRoundScoresForRound(UUID roundId) {
+  public Map<UUID, AggregatedScore> aggregateRoundScoresForRound(UUID roundId) {
     log.debug("Aggregating round scores for round with Id {}", roundId);
 
     // Holds wip aggregations for each player
-    Map<UUID, AggregatedRoundScore.AggregatedRoundScoreBuilder> scoreBuilders =
+    Map<UUID, AggregatedScore.AggregatedScoreBuilder> scoreBuilders =
         new HashMap<>();
 
     // Iterate over every Accumulator
@@ -45,7 +45,7 @@ public class RoundScoreAggregator {
       for(var accumulatedScores : accumulator.accumulateRoundScores(roundId).entrySet()) {
         // Get the wip aggregation
         var scoreBuilder = scoreBuilders.getOrDefault(accumulatedScores.getKey(),
-            AggregatedRoundScore.builder());
+            AggregatedScore.builder());
 
         // Based on the category, set the score in the aggregation
         var actualScore = accumulatedScores.getValue();

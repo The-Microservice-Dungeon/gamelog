@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa.score;
 
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -11,18 +11,18 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RoundScoreMapper {
-  public RoundScoreJpaEmbeddable toPersistence(AggregatedRoundScore aggregatedRoundScore) {
+  public RoundScoreJpaEmbeddable toPersistence(AggregatedScore aggregatedScore) {
     return RoundScoreJpaEmbeddable.builder()
-        .fightingScore(aggregatedRoundScore.getFightingScore())
-        .miningScore(aggregatedRoundScore.getMiningScore())
-        .robotScore(aggregatedRoundScore.getRobotScore())
-        .movementScore(aggregatedRoundScore.getMovementScore())
-        .tradingScore(aggregatedRoundScore.getTradingScore())
+        .fightingScore(aggregatedScore.getFightingScore())
+        .miningScore(aggregatedScore.getMiningScore())
+        .robotScore(aggregatedScore.getRobotScore())
+        .movementScore(aggregatedScore.getMovementScore())
+        .tradingScore(aggregatedScore.getTradingScore())
         .build();
   }
 
-  public AggregatedRoundScore toAggregatedRoundScore(RoundScoreJpaEmbeddable embeddable) {
-    return AggregatedRoundScore.builder()
+  public AggregatedScore toAggregatedRoundScore(RoundScoreJpaEmbeddable embeddable) {
+    return AggregatedScore.builder()
         .fightingScore(embeddable.getFightingScore())
         .miningScore(embeddable.getMiningScore())
         .movementScore(embeddable.getMovementScore())
@@ -31,7 +31,7 @@ public class RoundScoreMapper {
         .build();
   }
 
-  public Map<UUID, AggregatedRoundScore> toAggregatedRoundScoreMap(Map<String,
+  public Map<UUID, AggregatedScore> toAggregatedRoundScoreMap(Map<String,
       RoundScoreJpaEmbeddable> embeddableMap) {
     return embeddableMap.entrySet().stream()
         .collect(Collectors.toMap(
@@ -41,7 +41,7 @@ public class RoundScoreMapper {
   }
 
   public Map<String, RoundScoreJpaEmbeddable> toPersistenceMap(Map<UUID,
-      AggregatedRoundScore> embeddableMap) {
+      AggregatedScore> embeddableMap) {
     return embeddableMap.entrySet().stream()
         .collect(Collectors.toMap(
             e -> e.getKey().toString(),

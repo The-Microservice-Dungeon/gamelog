@@ -2,7 +2,6 @@ package com.github.tmd.gamelog.domain.score.vo;
 
 import com.github.tmd.gamelog.domain.score.core.ScorableScore;
 import com.github.tmd.gamelog.domain.score.core.ScoreCategory;
-import javax.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,7 +12,7 @@ import lombok.Data;
  */
 @Builder
 @Data
-public class AggregatedRoundScore implements ScorableScore {
+public class AggregatedScore implements ScorableScore {
   @Builder.Default
   private final Double fightingScore = 0.0;
   @Builder.Default

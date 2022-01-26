@@ -1,8 +1,7 @@
 package com.github.tmd.gamelog.application.score;
 
 import com.github.tmd.gamelog.domain.Player;
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
-import com.github.tmd.gamelog.domain.score.vo.AggregatedGameScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class GameScoreAggregator {
     this.roundScoreService = roundScoreService;
   }
 
-  public Map<Player, AggregatedGameScore> aggregateGameScore(UUID gameId) {
+  public Map<Player, AggregatedScore> aggregateGameScore(UUID gameId) {
     log.debug("Aggregating game scores for game with Id {}", gameId);
     var gameScores = this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
@@ -40,13 +39,20 @@ public class GameScoreAggregator {
     return gameScores;
   }
 
-  private AggregatedGameScore calculateGameScore(List<AggregatedRoundScore> aggregatedRoundScores) {
-    var rawScore = 0.0;
+  private AggregatedScore calculateGameScore(List<AggregatedScore> aggregatedScores) {
+    return aggregatedScores.stream().reduce(AggregatedScore.builder().build(), (aggregatedScore, aggregatedScore2) -> {
+      Double fightingScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
+      Double miningScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
+      Double movementScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
+      Double robotScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
+      Double tradingScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
 
-    for(var aggRoundScore : aggregatedRoundScores) {
-      rawScore += aggRoundScore.score();
-    }
-
-    return new AggregatedGameScore(rawScore);
+      return AggregatedScore.builder().fightingScore(fightingScore)
+          .miningScore(miningScore)
+          .movementScore(movementScore)
+          .robotScore(robotScore)
+          .tradingScore(tradingScore)
+          .build();
+    });
   }
 }

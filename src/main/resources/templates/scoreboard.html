@@ -9,9 +9,14 @@
 <table class="table">
   <thead>
   <tr>
-    <th scope="col" style="width: 15%">Badge</th>
-    <th scope="col" style="width: 10%">Place</th>
-    <th scope="col" style="width: 20%">Score</th>
+    <th scope="col">Badge</th>
+    <th scope="col">Place</th>
+    <th scope="col">Total Score</th>
+    <th scope="col">Fighting Score</th>
+    <th scope="col">Mining Score</th>
+    <th scope="col">Movement Score</th>
+    <th scope="col">Robot Score</th>
+    <th scope="col">Trading Score</th>
     <th scope="col">Player</th>
   </tr>
   </thead>
@@ -25,7 +30,12 @@
         </span>
       </td>
       <td th:text="${iter.count}"></td>
-      <td th:text="${placement.score}"></td>
+      <td th:text="${placement.totalScore}"></td>
+      <td th:text="${placement.fightingScore}"></td>
+      <td th:text="${placement.miningScore}"></td>
+      <td th:text="${placement.movementScore}"></td>
+      <td th:text="${placement.robotScore}"></td>
+      <td th:text="${placement.tradingScore}"></td>
       <td th:text="${placement.playerName} + ' (' + ${placement.playerId} + ')'"></td>
     </tr>
   </tbody>

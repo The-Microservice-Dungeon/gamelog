@@ -1,9 +1,8 @@
 package com.github.tmd.gamelog.application.score.service;
 
-import com.github.tmd.gamelog.adapter.jpa.score.RoundScoreJpa;
 import com.github.tmd.gamelog.application.PlayerService;
 import com.github.tmd.gamelog.domain.Player;
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import com.github.tmd.gamelog.application.score.RoundScoreAggregator;
 import com.github.tmd.gamelog.domain.score.repository.AggregatedRoundScoreRepository;
 import java.util.List;
@@ -30,7 +29,7 @@ public class RoundScoreService {
     this.playerService = playerService;
   }
 
-  public Map<Player, List<AggregatedRoundScore>> getAllOrderedAggregatedScoresInGame(UUID gameId) {
+  public Map<Player, List<AggregatedScore>> getAllOrderedAggregatedScoresInGame(UUID gameId) {
     try {
       var result = this.roundScoreRepository.findAllOrderedRoundScoresInGame(gameId)
           .entrySet()
@@ -51,7 +50,7 @@ public class RoundScoreService {
     }
   }
 
-  public Map<Player, AggregatedRoundScore> getAggregatedRoundScoresForRound(UUID roundId) {
+  public Map<Player, AggregatedScore> getAggregatedRoundScoresForRound(UUID roundId) {
     var foundScores = this.roundScoreRepository.getAggregatedRoundScoresForRound(roundId)
         .entrySet()
         .stream()
@@ -74,8 +73,8 @@ public class RoundScoreService {
     return foundScores;
   }
 
-  public Map<Player, AggregatedRoundScore> accumulateAndSaveRoundScoresForRound(UUID roundId) {
-    Map<UUID, AggregatedRoundScore> scores =
+  public Map<Player, AggregatedScore> accumulateAndSaveRoundScoresForRound(UUID roundId) {
+    Map<UUID, AggregatedScore> scores =
         this.roundScoreAggregator.aggregateRoundScoresForRound(roundId);
 
     if(log.isDebugEnabled()) {

@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.adapter.jpa.score;
 
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import com.github.tmd.gamelog.domain.score.repository.AggregatedRoundScoreRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
 
   @Transactional
   public void saveAggregatedRoundScoresForRound(UUID roundId,
-      Map<UUID, AggregatedRoundScore> roundScores) {
+      Map<UUID, AggregatedScore> roundScores) {
     var toSave = RoundScoreJpa.builder()
         .roundId(roundId)
         .playerRoundScores(this.roundScoreMapper.toPersistenceMap(roundScores))
@@ -34,9 +34,9 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
   }
 
   @Transactional
-  public Map<UUID, List<AggregatedRoundScore>> findAllOrderedRoundScoresInGame(UUID gameId) {
+  public Map<UUID, List<AggregatedScore>> findAllOrderedRoundScoresInGame(UUID gameId) {
     var foundRoundScores = roundScoreJpaRepository.findAllOrderedRoundScoresInGame(gameId);
-    Map<UUID, List<AggregatedRoundScore>> mapThingy = new HashMap<>();
+    Map<UUID, List<AggregatedScore>> mapThingy = new HashMap<>();
 
     for(var roundScore : foundRoundScores) {
       for(var singleScore : roundScore.getPlayerRoundScores().entrySet()) {
@@ -50,7 +50,7 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
   }
 
   @Transactional
-  public Map<UUID, AggregatedRoundScore> getAggregatedRoundScoresForRound(UUID roundId) {
+  public Map<UUID, AggregatedScore> getAggregatedRoundScoresForRound(UUID roundId) {
     return this.roundScoreMapper.toAggregatedRoundScoreMap(this.roundScoreJpaRepository.findByRoundId(roundId).getPlayerRoundScores());
   }
 }

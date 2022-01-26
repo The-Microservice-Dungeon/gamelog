@@ -12,7 +12,7 @@ public record FightingRoundScore(
 
   @Override
   public Integer accumulate() {
-    return numOfPerformedKills + numOfVictims + numOfPerformedDamage;
+    return numOfPerformedKills - numOfVictims + numOfPerformedDamage;
   }
 
   @Override

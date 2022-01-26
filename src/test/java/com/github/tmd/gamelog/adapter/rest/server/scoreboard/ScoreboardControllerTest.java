@@ -6,19 +6,13 @@ import com.github.tmd.gamelog.domain.Game;
 import com.github.tmd.gamelog.domain.Game.GameId;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.score.entity.Scoreboard;
-import com.github.tmd.gamelog.domain.score.vo.AggregatedGameScore;
-import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
-import io.restassured.RestAssured.*;
-import io.restassured.matcher.RestAssuredMatchers.*;
-import io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
+import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import org.hamcrest.Matchers.*;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
-import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -54,10 +48,10 @@ class ScoreboardControllerTest {
         .log().ifValidationFails()
         .statusCode(200)
         .body("scoreboard", hasSize(2))
-        .body("scoreboard[0].score", equalTo(202.0f))
+        .body("scoreboard[0].totalScore", notNullValue())
         .body("scoreboard[0].player.id", equalTo("bc234084-c980-41eb-8ff3-c94c46d81a46"))
         .body("scoreboard[0].player.name", equalTo("Leonie"))
-        .body("scoreboard[1].score", equalTo(112.0f))
+        .body("scoreboard[1].totalScore", notNullValue())
         .body("scoreboard[1].player.id", equalTo("e67180fb-3582-4772-9c0b-411a1b1b8306"))
         .body("scoreboard[1].player.name", equalTo("Karl-Peter"));
   }
@@ -78,10 +72,10 @@ class ScoreboardControllerTest {
         .log().all()
         .statusCode(200)
         .body("scoreboard", hasSize(2))
-        .body("scoreboard[0].score", equalTo(202.0f))
+        .body("scoreboard[0].totalScore", notNullValue())
         .body("scoreboard[0].player.id", equalTo("bc234084-c980-41eb-8ff3-c94c46d81a46"))
         .body("scoreboard[0].player.name", equalTo("Leonie"))
-        .body("scoreboard[1].score", equalTo(112.0f))
+        .body("scoreboard[1].totalScore", notNullValue())
         .body("scoreboard[1].player.id", equalTo("e67180fb-3582-4772-9c0b-411a1b1b8306"))
         .body("scoreboard[1].player.name", equalTo("Karl-Peter"));
   }
@@ -90,36 +84,47 @@ class ScoreboardControllerTest {
     var player1 = new Player(UUID.fromString("e67180fb-3582-4772-9c0b-411a1b1b8306"), "Karl-Peter");
     var player2 = new Player(UUID.fromString("bc234084-c980-41eb-8ff3-c94c46d81a46"), "Leonie");
 
-    var player1_round1 = AggregatedRoundScore.builder()
+    var player1_round1 = AggregatedScore.builder()
         .fightingScore(1.1)
         .miningScore(2.2)
         .robotScore(3.3)
         .movementScore(4.4)
         .build();
 
-    var player1_round2 = AggregatedRoundScore.builder()
+    var player1_round2 = AggregatedScore.builder()
         .fightingScore(10.1)
         .miningScore(20.2)
         .robotScore(30.3)
         .movementScore(40.4)
         .build();
 
-    var player2_round1 = AggregatedRoundScore.builder()
+    var player2_round1 = AggregatedScore.builder()
         .fightingScore(11.1)
         .miningScore(22.2)
         .robotScore(33.3)
         .movementScore(44.4)
         .build();
 
-    var player2_round2 = AggregatedRoundScore.builder()
+    var player2_round2 = AggregatedScore.builder()
         .fightingScore(21.1)
         .miningScore(22.2)
         .robotScore(23.3)
         .movementScore(24.4)
         .build();
 
-    var player1_game = new AggregatedGameScore(112.0);
-    var player2_game = new AggregatedGameScore(202.0);
+    var player1_game = AggregatedScore.builder()
+        .fightingScore(11.1)
+        .miningScore(22.2)
+        .robotScore(33.3)
+        .movementScore(44.4)
+        .build();
+
+    var player2_game = AggregatedScore.builder()
+        .fightingScore(32.2)
+        .miningScore(44.4)
+        .robotScore(56.6)
+        .movementScore(68.8)
+        .build();
 
     return Scoreboard.builder()
         .game(game)

@@ -33,7 +33,10 @@ public class ScoreboardViewController {
 
     var placements = scoreboard.getGameScores().entrySet().stream()
         .sorted((o1, o2) -> o2.getValue().score().compareTo(o1.getValue().score()))
-        .map(score -> new Placement(score.getValue().score(), score.getKey().getName(), score.getKey().getId().toString()))
+        .map(score -> {
+          var s = score.getValue();
+          return new Placement(s.score(), s.getFightingScore(), s.getMiningScore(), s.getMovementScore(), s.getRobotScore(), s.getTradingScore(), score.getKey().getName(), score.getKey().getId().toString());
+        })
         .collect(Collectors.toList());
 
     model.addAttribute("placements", placements);
