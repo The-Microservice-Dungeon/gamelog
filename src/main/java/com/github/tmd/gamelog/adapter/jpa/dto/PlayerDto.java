@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import org.hibernate.annotations.Type;
 
 /**
  * DTO class for persistent storage of the Player.
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class PlayerDto {
 
     @Id
+    @Type(type = "uuid-char")
     @Column(name = "player_id")
     private UUID id;
 
