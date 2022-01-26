@@ -14,7 +14,7 @@ public class MetricService {
 
   private final MeterRegistry meterRegistry;
   private final AtomicInteger atomicRound = new AtomicInteger();
-  private final AtomicInteger atomicGame = new AtomicInteger();
+  private final AtomicInteger atomicRoundStatus = new AtomicInteger();
   private final Map<String, AtomicInteger> atomicItemPrices = new HashMap<>();
   private final Map<String, AtomicInteger> atomicResourcePrices = new HashMap<>();
   private final Map<String, AtomicReference<Double>> atomicTotalScores = new HashMap<>();
@@ -26,44 +26,52 @@ public class MetricService {
 
   public MetricService(MeterRegistry meterRegistry) {
     this.meterRegistry = meterRegistry;
-    // this.initMetrics();
+    this.init();
   }
 
-  // Just for testing and Grafana setup
-  private void initMetrics() {
-    this.publishRoundNumber(0);
-    this.publishRoundStatus(-1);
-    this.publishItemPrice("rocket", 100);
-    this.publishItemPrice("robot", 120);
-    this.publishItemPrice("xxx", 50);
+  public void reset() {
+    this.meterRegistry.find(DungeonMetrics.DUNGEON_PREFIX)
+        .meters()
+        .forEach(meter -> this.meterRegistry.remove(meter));
+  }
 
-    this.publishResourcePrice("COAL", 10);
-    this.publishResourcePrice("IRON", 20);
-    this.publishResourcePrice("GEM", 30);
-
-    this.publishScores("Player 1", 120.0, 10.0, 11.0, 12.0, 13.0, 14.0);
-    this.publishScores("Player 2", 140.0, 15.0, 20.0, 22.0, 23.0, 24.0);
+  public void init() {
+    this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), this.atomicRound);
+    this.meterRegistry.gauge(DungeonMetrics.ROUND_STATUS_INFO, Tags.empty(), this.atomicRoundStatus);
   }
 
   public void publishRoundNumber(int roundNumber) {
     this.atomicRound.set(roundNumber);
-    this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), this.atomicRound.get());
   }
 
   public void publishRoundStatus(int value) {
-    this.atomicGame.set(value);
-    this.meterRegistry.gauge(DungeonMetrics.ROUND_STATUS_INFO, Tags.empty(), this.atomicGame.get());
+    this.atomicRoundStatus.set(value);
   }
 
   public void publishItemPrice(String itemName, int value) {
-    this.atomicItemPrices.put(itemName, new AtomicInteger(value));
-    this.meterRegistry.gauge(DungeonMetrics.TRADING_ITEM_PRICES, Tags.of("name", itemName), this.atomicItemPrices.get(itemName).get());
+    var atomicRef = this.atomicItemPrices.getOrDefault(itemName, new AtomicInteger());
+    atomicRef.set(value);
+
+    var scoreMetric = DungeonMetrics.TRADING_ITEM_PRICES;
+    var tags = Tags.of("name", itemName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicItemPrices.get(itemName), ref -> ref.get());
+    }
   }
 
   public void publishResourcePrice(String resourceName, int value) {
-    this.atomicResourcePrices.put(resourceName, new AtomicInteger(value));
-    this.meterRegistry.gauge(DungeonMetrics.TRADING_RESOURCE_PRICES, Tags.of("name", resourceName),
-        this.atomicResourcePrices.get(resourceName).get());
+    var atomicRef = this.atomicResourcePrices.getOrDefault(resourceName, new AtomicInteger());
+    atomicRef.set(value);
+
+    var scoreMetric = DungeonMetrics.TRADING_RESOURCE_PRICES;
+    var tags = Tags.of("name", resourceName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicResourcePrices.get(resourceName), ref -> ref.get());
+    }
   }
 
   public void publishScores(String playerName, double totalScore, double tradingScore,
@@ -76,40 +84,85 @@ public class MetricService {
     this.publishRobotScore(playerName, robotScore);
   }
 
+  private void createScoreGaugeIfNotExists(String name, Tags tags, AtomicReference<Double> scoreRef) {
+  }
+
   private void publishTotalScore(String playerName, double score) {
-    this.atomicTotalScores.put(playerName, new AtomicReference<>(score));
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_TOTAL, Tags.of("player.name", playerName),
-        this.atomicTotalScores.get(playerName).get());
+    var atomicRef = this.atomicTotalScores.getOrDefault(playerName, new AtomicReference<>());
+    atomicRef.set(score);
+
+    var scoreMetric = DungeonMetrics.SCORE_TOTAL;
+    var tags = Tags.of("player.name", playerName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicTotalScores.get(playerName), ref -> ref.get());
+    }
   }
 
   private void publishTradingScore(String playerName, double score) {
-    this.atomicTradingScores.put(playerName, new AtomicReference<>(score));
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_TRADING, Tags.of("player.name", playerName),
-        this.atomicTradingScores.get(playerName).get());
+    var atomicRef = this.atomicTradingScores.getOrDefault(playerName, new AtomicReference<>());
+    atomicRef.set(score);
+
+    var scoreMetric = DungeonMetrics.SCORE_TRADING;
+    var tags = Tags.of("player.name", playerName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicTradingScores.get(playerName), ref -> ref.get());
+    }
   }
 
   private void publishFightingScore(String playerName, double score) {
-    this.atomicFightingScores.put(playerName, new AtomicReference<>(score));
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_FIGHTING, Tags.of("player.name", playerName),
-        this.atomicFightingScores.get(playerName).get());
+    var atomicRef = this.atomicFightingScores.getOrDefault(playerName, new AtomicReference<>());
+    atomicRef.set(score);
+
+    var scoreMetric = DungeonMetrics.SCORE_FIGHTING;
+    var tags = Tags.of("player.name", playerName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicFightingScores.get(playerName), ref -> ref.get());
+    }
   }
 
   private void publishMiningScore(String playerName, double score) {
-    this.atomicMiningScores.put(playerName, new AtomicReference<>(score));
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_MINING, Tags.of("player.name", playerName),
-        this.atomicMiningScores.get(playerName).get());
+    var atomicRef = this.atomicMiningScores.getOrDefault(playerName, new AtomicReference<>());
+    atomicRef.set(score);
+
+    var scoreMetric = DungeonMetrics.SCORE_MINING;
+    var tags = Tags.of("player.name", playerName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicMiningScores.get(playerName), ref -> ref.get());
+    }
   }
 
   private void publishMovementScore(String playerName, double score) {
-    this.atomicMovementScores.put(playerName, new AtomicReference<>(score));
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_MOVEMENT, Tags.of("player.name", playerName),
-        this.atomicMovementScores.get(playerName).get());
+    var atomicRef = this.atomicMovementScores.getOrDefault(playerName, new AtomicReference<>());
+    atomicRef.set(score);
+
+    var scoreMetric = DungeonMetrics.SCORE_MOVEMENT;
+    var tags = Tags.of("player.name", playerName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicMovementScores.get(playerName), ref -> ref.get());
+    }
   }
 
   private void publishRobotScore(String playerName, double score) {
-    this.atomicRobotScores.put(playerName, new AtomicReference<>(score));
-    this.meterRegistry.gauge(DungeonMetrics.SCORE_ROBOT, Tags.of("player.name", playerName),
-        this.atomicRobotScores.get(playerName).get());
+    var atomicRef = this.atomicRobotScores.getOrDefault(playerName, new AtomicReference<>());
+    atomicRef.set(score);
+
+    var scoreMetric = DungeonMetrics.SCORE_ROBOT;
+    var tags = Tags.of("player.name", playerName);
+
+    var found = this.meterRegistry.find(scoreMetric).tags(tags).gauge();
+    if(found == null) {
+      this.meterRegistry.gauge(scoreMetric, tags, this.atomicRobotScores.get(playerName), ref -> ref.get());
+    }
   }
 
   // We need strong references to maintain the metrics.

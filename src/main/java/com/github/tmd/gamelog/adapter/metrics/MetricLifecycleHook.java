@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.adapter.metrics;
 
+import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
@@ -31,6 +32,14 @@ public class MetricLifecycleHook implements GameLifecycleHook {
       RoundScoreService roundScoreService) {
     this.metricService = metricService;
     this.roundScoreService = roundScoreService;
+  }
+
+  @Override
+  public void onGameStatus(GameStatusEvent event, Instant timestamp) {
+    if(event.status() == GameStatus.STARTED) {
+      this.metricService.reset();
+      this.metricService.init();
+    }
   }
 
   @Override
