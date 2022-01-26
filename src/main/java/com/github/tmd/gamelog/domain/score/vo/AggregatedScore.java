@@ -27,7 +27,11 @@ public class AggregatedScore implements ScorableScore {
   @Override
   public Double score() {
     // We simply use the average to prevent complex weighting - don't tell anybody
-    return Math.log((fightingScore + miningScore + movementScore  + robotScore + tradingScore) / 5) * 100;
+    Double avgScore = (fightingScore + miningScore + movementScore  + robotScore + tradingScore) / 5;
+    if(avgScore == 0.0) {
+      return 0.0;
+    }
+    return Math.log(avgScore) * 100;
   }
 
   // TODO: How will the weighting be applied? Is it really necessary?
