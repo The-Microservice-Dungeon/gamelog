@@ -3,10 +3,9 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.PlayerStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
-import com.github.tmd.gamelog.adapter.metrics.MetricService;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
-import com.github.tmd.gamelog.application.PlayerService;
-import com.github.tmd.gamelog.application.score.service.RoundScoreService;
+import com.github.tmd.gamelog.application.GameService;
+import com.github.tmd.gamelog.domain.Game;
 import java.nio.ByteBuffer;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -31,11 +30,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class GameEventListeners {
   private final List<GameLifecycleHook> lifecycleHooks;
+  private final GameService gameService;
 
   @Autowired
   public GameEventListeners(
-      List<GameLifecycleHook> lifecycleHooks) {
+      List<GameLifecycleHook> lifecycleHooks,
+      GameService gameService) {
     this.lifecycleHooks = lifecycleHooks;
+    this.gameService = gameService;
   }
 
   @DltHandler
@@ -68,8 +70,15 @@ public class GameEventListeners {
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
-      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader,
-      @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID gameId) {
+      @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
+
+    // TODO: HACK!!! Last minute Change
+    //  The playerStatus Event does not include the gameId but we heavily rely on it and dont have
+    //  the time to adapt a query.
+    var gameId = this.gameService.findActiveGame()
+        .map(game -> game.getId().id())
+        .orElse(UUID.randomUUID()); // This is really dumb...
+
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     lifecycleHooks.forEach(hook -> hook.onPlayerStatus(event, gameId, timestamp));
   }
