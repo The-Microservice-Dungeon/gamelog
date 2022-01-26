@@ -21,6 +21,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.kafka.common.protocol.types.Field.Str;
 import org.hibernate.annotations.Type;
 
 /**
@@ -45,6 +46,6 @@ public class RoundScoreJpa {
    */
   @ElementCollection
   @CollectionTable(name = "player_round_scores", joinColumns = {@JoinColumn(name = "round_id")})
-  @MapKeyColumn(name = "player_id", columnDefinition = "varchar(255)")
-  private Map<UUID, RoundScoreJpaEmbeddable> playerRoundScores;
+  @MapKeyColumn(name = "player_id")
+  private Map<String, RoundScoreJpaEmbeddable> playerRoundScores;
 }

@@ -42,7 +42,7 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
       for(var singleScore : roundScore.getPlayerRoundScores().entrySet()) {
         var list = mapThingy.getOrDefault(singleScore.getKey(), new ArrayList<>());
         list.add(this.roundScoreMapper.toAggregatedRoundScore(singleScore.getValue()));
-        mapThingy.put(singleScore.getKey(), list);
+        mapThingy.put(UUID.fromString(singleScore.getKey()), list);
       }
     }
 

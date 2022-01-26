@@ -31,20 +31,20 @@ public class RoundScoreMapper {
         .build();
   }
 
-  public Map<UUID, AggregatedRoundScore> toAggregatedRoundScoreMap(Map<UUID,
+  public Map<UUID, AggregatedRoundScore> toAggregatedRoundScoreMap(Map<String,
       RoundScoreJpaEmbeddable> embeddableMap) {
     return embeddableMap.entrySet().stream()
         .collect(Collectors.toMap(
-            e -> e.getKey(),
+            e -> UUID.fromString(e.getKey()),
             e -> this.toAggregatedRoundScore(e.getValue())
         ));
   }
 
-  public Map<UUID, RoundScoreJpaEmbeddable> toPersistenceMap(Map<UUID,
+  public Map<String, RoundScoreJpaEmbeddable> toPersistenceMap(Map<UUID,
       AggregatedRoundScore> embeddableMap) {
     return embeddableMap.entrySet().stream()
         .collect(Collectors.toMap(
-            e -> e.getKey(),
+            e -> e.getKey().toString(),
             e -> this.toPersistence(e.getValue())
         ));
   }
