@@ -34,22 +34,11 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   }
 
   @Override
-  public void onGameStatus(GameStatusEvent event, Instant timestamp) {
-    log.debug("Received GameStatus Event: {}, At: {}", event, timestamp);
-
-    try {
-      this.metricService.publishGameStatus(event.status().ordinal());
-    } catch (Exception e) {
-      // Pokémon catch
-      log.error("Couldn't publish metric", e);
-    }
-  }
-
-  @Override
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
     log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
 
     try {
+      this.metricService.publishRoundStatus(event.roundStatus().ordinal());
       this.metricService.publishRoundNumber(event.roundNumber());
     } catch (Exception e) {
       // Pokémon catch

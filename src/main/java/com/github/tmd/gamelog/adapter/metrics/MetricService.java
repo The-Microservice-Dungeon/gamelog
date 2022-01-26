@@ -32,7 +32,7 @@ public class MetricService {
   // Just for testing and Grafana setup
   private void initMetrics() {
     this.publishRoundNumber(0);
-    this.publishGameStatus(-1);
+    this.publishRoundStatus(-1);
     this.publishItemPrice("rocket", 100);
     this.publishItemPrice("robot", 120);
     this.publishItemPrice("xxx", 50);
@@ -50,9 +50,9 @@ public class MetricService {
     this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), this.atomicRound.get());
   }
 
-  public void publishGameStatus(int value) {
+  public void publishRoundStatus(int value) {
     this.atomicGame.set(value);
-    this.meterRegistry.gauge(DungeonMetrics.GAME_STATUS_INFO, Tags.empty(), this.atomicGame.get());
+    this.meterRegistry.gauge(DungeonMetrics.ROUND_STATUS_INFO, Tags.empty(), this.atomicGame.get());
   }
 
   public void publishItemPrice(String itemName, int value) {
