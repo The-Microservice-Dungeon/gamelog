@@ -23,7 +23,7 @@ public class PlayerStatisticsRepositoryImpl {
         this.playerStatisticsDtoMapper = playerStatisticsDtoMapper;
     }
 
-    Set<PlayerStatistics> getPlayerStatisticsForGame(UUID gameId) {
+    public Set<PlayerStatistics> getPlayerStatisticsForGame(UUID gameId) {
         Set<PlayerStatisticsDto> playerStatisticsDtos = playerStatisticsJpaRepository.getPlayerStatisticsForGame(gameId);
         Set<PlayerStatistics> playerStatistics = new HashSet<>();
         for (PlayerStatisticsDto playerStatisticsDto :
