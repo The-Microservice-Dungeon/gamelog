@@ -5,6 +5,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.adapter.jpa.*;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
 import com.github.tmd.gamelog.domain.PlayerStatistics;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -49,6 +50,7 @@ public class RoundbasedTrophiesHook implements GameLifecycleHook {
      * @param timestamp Timestamp of the status change.
      */
     @Override
+    @Transactional
     public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
         if (event.roundStatus() == RoundStatus.ENDED) {
             awardTrophiesToPlayers(gameId);

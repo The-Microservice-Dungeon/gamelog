@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,6 +26,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         this.playerDtoMapper = playerDtoMapper;
     }
 
+    @Transactional
     public ArrayList<Player> findAll() {
         List<PlayerDto> playerDtos = playerJpaRepository.findAll();
         ArrayList<Player> players = new ArrayList<>();
@@ -34,11 +36,13 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         return players;
     }
 
+    @Transactional
     public Optional<Player> findById(UUID playerId) {
         return playerJpaRepository.findById(playerId)
             .map(playerDtoMapper::mapDtoToEntity);
     }
 
+    @Transactional
     public void upsert(Player player) {
         PlayerDto playerDto = playerDtoMapper.mapEntityToDto(player);
         playerJpaRepository.save(playerDto);
