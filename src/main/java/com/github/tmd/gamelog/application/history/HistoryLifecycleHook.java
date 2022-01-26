@@ -18,11 +18,16 @@ import java.util.Set;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * A lifecycle hook which fills in the event log, has the highest precedence as other hooks may
+ * depend on it.
+ */
 @Component
-@Order(value = 1)
+@Order(value = Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class HistoryLifecycleHook implements GameLifecycleHook {
   private final GameHistoryService gameHistoryService;

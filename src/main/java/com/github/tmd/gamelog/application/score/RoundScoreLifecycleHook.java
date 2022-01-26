@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * A lifecycle hook which creates the round scores at the end of a round
+ */
 @Component
 @Order(3)
 @Slf4j

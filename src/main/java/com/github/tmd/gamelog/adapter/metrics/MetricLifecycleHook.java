@@ -15,6 +15,10 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * Hook to provide some interesting metrics. Has the lowest precedence as it might depend
+ * on other hooks (like scores)
+ */
 @Component
 @Order(value = Ordered.LOWEST_PRECEDENCE)
 @Slf4j

@@ -14,6 +14,13 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Allows to create a hook into the gameplay events. The event listener will propagate all
+ * events into every bean-registered hook. This decouples our features from the event listeners.
+ * The Ordering is important, as Hooks with the lowest defined precedence will be used first.
+ * Also, the exception handling within the hooks is crucial, as there is no global exeception
+ * handler defined in the event listeners. Every exception needs to be taken care of.
+ */
 public interface GameLifecycleHook {
   default void onGameStatus(GameStatusEvent event, Instant timestamp) {
 
