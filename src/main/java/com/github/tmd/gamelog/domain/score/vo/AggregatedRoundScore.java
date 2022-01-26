@@ -27,8 +27,8 @@ public class AggregatedRoundScore implements ScorableScore {
 
   @Override
   public Double score() {
-    // TODO: Weights
-    return fightingScore + miningScore + movementScore + robotScore + tradingScore;
+    // We simply use the average to prevent complex weighting - don't tell anybody
+    return (fightingScore + miningScore + movementScore + robotScore + tradingScore) / 5;
   }
 
   // TODO: How will the weighting be applied? Is it really necessary?
