@@ -47,23 +47,22 @@ public class MetricService {
 
   public void publishRoundNumber(int roundNumber) {
     this.atomicRound.set(roundNumber);
-    buildStrongGauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), this.atomicRound.get());
+    this.meterRegistry.gauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), this.atomicRound.get());
   }
 
   public void publishGameStatus(int value) {
     this.atomicGame.set(value);
-    buildStrongGauge(DungeonMetrics.GAME_STATUS_INFO, Tags.empty(), this.atomicGame.get());
+    this.meterRegistry.gauge(DungeonMetrics.GAME_STATUS_INFO, Tags.empty(), this.atomicGame.get());
   }
 
   public void publishItemPrice(String itemName, int value) {
     this.atomicItemPrices.put(itemName, new AtomicInteger(value));
-    buildStrongGauge(DungeonMetrics.TRADING_ITEM_PRICES, Tags.of("name", itemName),
-        this.atomicItemPrices.get(itemName).get());
+    this.meterRegistry.gauge(DungeonMetrics.TRADING_ITEM_PRICES, Tags.of("name", itemName), this.atomicItemPrices.get(itemName).get());
   }
 
   public void publishResourcePrice(String resourceName, int value) {
     this.atomicResourcePrices.put(resourceName, new AtomicInteger(value));
-    buildStrongGauge(DungeonMetrics.TRADING_RESOURCE_PRICES, Tags.of("name", resourceName),
+    this.meterRegistry.gauge(DungeonMetrics.TRADING_RESOURCE_PRICES, Tags.of("name", resourceName),
         this.atomicResourcePrices.get(resourceName).get());
   }
 
@@ -79,37 +78,37 @@ public class MetricService {
 
   private void publishTotalScore(String playerName, double score) {
     this.atomicTotalScores.put(playerName, new AtomicReference<>(score));
-    buildStrongGauge(DungeonMetrics.SCORE_TOTAL, Tags.of("player.name", playerName),
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_TOTAL, Tags.of("player.name", playerName),
         this.atomicTotalScores.get(playerName).get());
   }
 
   private void publishTradingScore(String playerName, double score) {
     this.atomicTradingScores.put(playerName, new AtomicReference<>(score));
-    buildStrongGauge(DungeonMetrics.SCORE_TRADING, Tags.of("player.name", playerName),
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_TRADING, Tags.of("player.name", playerName),
         this.atomicTradingScores.get(playerName).get());
   }
 
   private void publishFightingScore(String playerName, double score) {
     this.atomicFightingScores.put(playerName, new AtomicReference<>(score));
-    buildStrongGauge(DungeonMetrics.SCORE_FIGHTING, Tags.of("player.name", playerName),
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_FIGHTING, Tags.of("player.name", playerName),
         this.atomicFightingScores.get(playerName).get());
   }
 
   private void publishMiningScore(String playerName, double score) {
     this.atomicMiningScores.put(playerName, new AtomicReference<>(score));
-    buildStrongGauge(DungeonMetrics.SCORE_MINING, Tags.of("player.name", playerName),
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_MINING, Tags.of("player.name", playerName),
         this.atomicMiningScores.get(playerName).get());
   }
 
   private void publishMovementScore(String playerName, double score) {
     this.atomicMovementScores.put(playerName, new AtomicReference<>(score));
-    buildStrongGauge(DungeonMetrics.SCORE_MOVEMENT, Tags.of("player.name", playerName),
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_MOVEMENT, Tags.of("player.name", playerName),
         this.atomicMovementScores.get(playerName).get());
   }
 
   private void publishRobotScore(String playerName, double score) {
     this.atomicRobotScores.put(playerName, new AtomicReference<>(score));
-    buildStrongGauge(DungeonMetrics.SCORE_ROBOT, Tags.of("player.name", playerName),
+    this.meterRegistry.gauge(DungeonMetrics.SCORE_ROBOT, Tags.of("player.name", playerName),
         this.atomicRobotScores.get(playerName).get());
   }
 
