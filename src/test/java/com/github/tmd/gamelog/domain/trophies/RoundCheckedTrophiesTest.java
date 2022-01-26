@@ -35,7 +35,6 @@ public class RoundCheckedTrophiesTest {
 
     UUID gameId = UUID.randomUUID();
 
-    @BeforeEach
     void setup() {
         trophyRepository = new TrophyRepository(trophyJpaRepository, new TrophyDtoMapper());
         trophyRepository.initRepository();
