@@ -51,7 +51,7 @@ public class ScoreboardViewController {
 
               score.getKey().getName(), score.getKey().getId().toString());
         })
-        .sorted((o1, o2) -> o2.totalPlacement().compareTo(o1.totalPlacement()))
+        .sorted(Comparator.comparing(Placement::totalPlacement))
         .collect(Collectors.toList());
 
     model.addAttribute("placements", placements);
