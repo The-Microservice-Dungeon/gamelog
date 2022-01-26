@@ -34,6 +34,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 })
 public class RobotHistoryJpa {
   @Id
+  @Type(type = "uuid-char")
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id = UUID.randomUUID();
 

@@ -23,6 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class GameRoundStatusHistoryJpa {
   @Id
+  @Type(type = "uuid-char")
   @Column(name = "id", updatable = false, nullable = false, unique = true)
   private UUID id = UUID.randomUUID();
 

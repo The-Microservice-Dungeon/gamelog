@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
+import org.hibernate.annotations.Type;
 
 /**
  * DTO class for persistent storage of the PlayerTrophies.
@@ -26,6 +27,7 @@ public class PlayerTrophyDto {
     @JoinColumn(name = "trophy_id", referencedColumnName = "trophy_id")
     private TrophyDto trophyDto;
 
+    @Type(type = "uuid-char")
     @Column(name = "game_id", nullable = false, updatable = false)
     private UUID gameId;
 

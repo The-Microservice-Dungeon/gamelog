@@ -2,6 +2,8 @@ package com.github.tmd.gamelog.adapter.jpa.score;
 
 import java.util.Map;
 import java.util.UUID;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -43,6 +45,6 @@ public class RoundScoreJpa {
    */
   @ElementCollection
   @CollectionTable(name = "player_round_scores", joinColumns = {@JoinColumn(name = "round_id")})
-  @MapKeyColumn(name = "player_id")
+  @MapKeyColumn(name = "player_id", columnDefinition = "varchar(255)")
   private Map<UUID, RoundScoreJpaEmbeddable> playerRoundScores;
 }
