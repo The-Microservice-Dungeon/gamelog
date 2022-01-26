@@ -72,8 +72,8 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
       for (var player : gameHistoryService.getAllParticipatingPlayersInGame(gameId)) {
         this.robotHistoryService.insertRobotRoundHistoryForPlayer(roundId, player);
       }
-
       this.tradingHistoryService.insertBalanceHistory(roundId, event.roundNumber());
+      this.gameHistoryService.insertExecutedCommandsHistory(gameId, event.roundNumber());
     }
   }
 
