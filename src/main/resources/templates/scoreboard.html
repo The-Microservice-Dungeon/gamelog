@@ -21,22 +21,45 @@
   </tr>
   </thead>
   <tbody>
-    <tr th:each="placement,iter: ${placements}">
+    <tr th:each="placement: ${placements}">
       <td>
-        <span th:switch="${iter.count}">
-          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20First%20Place.png" width="75"/>
-          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20Second%20Place.png" width="75"/>
-          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20Third%20Place.png" width="75"/>
+        <span th:switch="${placement.totalPlacement()}">
+          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20First%20Place.png" width="75" alt="Game Score First Place" title="Game Score First Place"/>
+          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20Second%20Place.png" width="75" alt="Game Score Second Place" title="Game Score Second Place"/>
+          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Game%20Score%20-%20Third%20Place.png" width="75" alt="Game Score Third Place" title="Game Score Third Place"/>
+        </span>
+        <span th:switch="${placement.fightingPlacement()}">
+          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Fighting%20Score%20-%20First%20Place.png" width="75" alt="Fighting Score First Place" title="Fighting Score First Place"/>
+          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Fighting%20Score%20-%20Second%20Place.png" width="75" alt="Fighting Score Second Place" title="Fighting Score Second Place"/>
+          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Fighting%20Score%20-%20Third%20Place.png" width="75" alt="Fighting Score Third Place" title="Fighting Score Third Place"/>
+        </span>
+        <span th:switch="${placement.miningPlacement()}">
+          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Mining%20Score%20-%20First%20Place.png" width="75" alt="Mining Score First Place" title="Mining Score First Place"/>
+          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Mining%20Score%20-%20Second%20Place.png" width="75" alt="Mining Score Second Place" title="Mining Score Second Place"/>
+          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Mining%20Score%20-%20Third%20Place.png" width="75" alt="Mining Score Third Place" title="Mining Score Third Place"/>
+        </span>
+        <span th:switch="${placement.tradingPlacement()}">
+          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Trading%20Score%20-%20First%20Place.png" width="75" alt="Trading Score First Place" title="Trading Score First Place"/>
+          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Trading%20Score%20-%20Second%20Place.png" width="75" alt="Trading Score Second Place" title="Trading Score Second Place"/>
+          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Trading%20Score%20-%20Third%20Place.png" width="75" alt="Trading Score Third Place" title="Trading Score Third Place"/>
+        </span>
+        <span th:switch="${placement.movementPlacement()}">
+          <img th:case="1" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Traveling%20Score%20-%20First%20Place.png" width="75" alt="Traveling Score First Place" title="Traveling Score First Place"/>
+          <img th:case="2" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Traveling%20Score%20-%20Second%20Place.png" width="75" alt="Traveling Score Second Place" title="Traveling Score Second Place"/>
+          <img th:case="3" src="https://raw.githubusercontent.com/wiki/The-Microservice-Dungeon/gamelog/assets/pictures/trophies/scoreboard/Traveling%20Score%20-%20Third%20Place.png" width="75" alt="Traveling Score Third Place" title="Traveling Score Third Place"/>
         </span>
       </td>
-      <td th:text="${iter.count}"></td>
+      <td th:text="${placement.totalPlacement()}"></td>
       <td th:text="${#numbers.formatDecimal(placement.totalScore(), 2, 2)}"></td>
       <td th:text="${placement.fightingScore}"></td>
       <td th:text="${placement.miningScore}"></td>
       <td th:text="${placement.movementScore}"></td>
       <td th:text="${placement.robotScore}"></td>
       <td th:text="${placement.tradingScore}"></td>
-      <td th:text="${placement.playerName} + ' (' + ${placement.playerId} + ')'"></td>
+      <td>
+        <p th:text="${placement.playerName}"></p>
+        <p th:text="' (' + ${placement.playerId} + ')'"></p>
+      </td>
     </tr>
   </tbody>
 </table>

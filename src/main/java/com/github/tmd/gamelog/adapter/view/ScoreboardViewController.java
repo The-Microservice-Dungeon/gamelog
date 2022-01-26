@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @Controller
 public class ScoreboardViewController {
+
   private final ScoreboardService scoreboardService;
 
   @Autowired
@@ -28,15 +29,29 @@ public class ScoreboardViewController {
 
   @GetMapping(value = "/scoreboard", produces = MediaType.TEXT_HTML_VALUE)
   public String getScoreboardView(Model model) {
-    var scoreboard = this.scoreboardService.getScoreboardOfActiveGame().orElseThrow(() -> new ResponseStatusException(
-        HttpStatus.NOT_FOUND));
+    var scoreboard = this.scoreboardService.getScoreboardOfActiveGame()
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND));
 
-    var placements = scoreboard.getGameScores().entrySet().stream()
-        .sorted((o1, o2) -> o2.getValue().score().compareTo(o1.getValue().score()))
+    var gameScores = scoreboard.getGameScores();
+    var placements = gameScores.entrySet().stream()
         .map(score -> {
           var s = score.getValue();
-          return new Placement(s.score(), s.getFightingScore(), s.getMiningScore(), s.getMovementScore(), s.getRobotScore(), s.getTradingScore(), score.getKey().getName(), score.getKey().getId().toString());
+
+          var totalPlacement = scoreboard.getTotalPlacementOfPlayer(score.getKey());
+          var fightingPlacement = scoreboard.getFightingPlacementOfPlayer(score.getKey());
+          var miningPlacement = scoreboard.getMiningPlacementOfPlayer(score.getKey());
+          var movementPlacement = scoreboard.getMovementPlacementOfPlayer(score.getKey());
+          var tradingPlacement = scoreboard.getTradingPlacementOfPlayer(score.getKey());
+
+          return new Placement(s.score(), s.getFightingScore(), s.getMiningScore(),
+              s.getMovementScore(), s.getRobotScore(), s.getTradingScore(),
+
+              totalPlacement,fightingPlacement,miningPlacement,movementPlacement, tradingPlacement,
+
+              score.getKey().getName(), score.getKey().getId().toString());
         })
+        .sorted((o1, o2) -> o2.totalPlacement().compareTo(o1.totalPlacement()))
         .collect(Collectors.toList());
 
     model.addAttribute("placements", placements);
