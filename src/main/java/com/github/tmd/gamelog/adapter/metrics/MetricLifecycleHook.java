@@ -16,8 +16,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
- * Hook to provide some interesting metrics. Has the lowest precedence as it might depend
- * on other hooks (like scores)
+ * Hook to provide some interesting metrics. Has the lowest precedence as it might depend on other
+ * hooks (like scores)
  */
 @Component
 @Order(value = Ordered.LOWEST_PRECEDENCE)
@@ -36,14 +36,25 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   @Override
   public void onGameStatus(GameStatusEvent event, Instant timestamp) {
     log.debug("Received GameStatus Event: {}, At: {}", event, timestamp);
-    this.metricService.publishGameStatus(event.status().ordinal());
+
+    try {
+      this.metricService.publishGameStatus(event.status().ordinal());
+    } catch (Exception e) {
+      // Pokémon catch
+      log.error("Couldn't publish metric", e);
+    }
   }
 
   @Override
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
     log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
 
-    this.metricService.publishRoundNumber(event.roundNumber());
+    try {
+      this.metricService.publishRoundNumber(event.roundNumber());
+    } catch (Exception e) {
+      // Pokémon catch
+      log.error("Couldn't publish metric", e);
+    }
 
     if (event.roundStatus() == RoundStatus.ENDED) {
       // We assume that the round scores are already calculated, which should happen, since the
@@ -59,8 +70,13 @@ public class MetricLifecycleHook implements GameLifecycleHook {
         var movementScore = entry.getValue().getMovementScore();
         var robotScore = entry.getValue().getRobotScore();
 
-        metricService.publishScores(playerName, totalScore, tradingScore, fightingScore,
-            miningScore, movementScore, robotScore);
+        try {
+          metricService.publishScores(playerName, totalScore, tradingScore, fightingScore,
+              miningScore, movementScore, robotScore);
+        } catch (Exception e) {
+          // Pokémon catch
+          log.error("Couldn't publish metric", e);
+        }
       }
     }
   }
@@ -70,7 +86,12 @@ public class MetricLifecycleHook implements GameLifecycleHook {
       Instant timestamp) {
     log.debug("Received CurrentItemPrice Event: {}, At: {}", itemPrices, timestamp);
     for (var announcement : itemPrices) {
-      this.metricService.publishItemPrice(announcement.name(), announcement.price());
+      try {
+        this.metricService.publishItemPrice(announcement.name(), announcement.price());
+      } catch (Exception e) {
+        // Pokémon catch
+        log.error("Couldn't publish metric", e);
+      }
     }
   }
 
@@ -79,7 +100,12 @@ public class MetricLifecycleHook implements GameLifecycleHook {
       Instant timestamp) {
     log.debug("Received CurrentResourcePrice Event: {}, At: {}", resourcePrices, timestamp);
     for (var announcement : resourcePrices) {
-      this.metricService.publishResourcePrice(announcement.name(), announcement.price());
+      try {
+        this.metricService.publishResourcePrice(announcement.name(), announcement.price());
+      } catch (Exception e) {
+        // Pokémon catch
+        log.error("Couldn't publish metric", e);
+      }
     }
   }
 }

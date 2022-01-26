@@ -1,22 +1,28 @@
 package com.github.tmd.gamelog.adapter.metrics;
 
 import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.kafka.common.protocol.types.Field.Str;
+import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MetricService {
 
   private final MeterRegistry meterRegistry;
+  private final AtomicInteger atomicRound = new AtomicInteger();
+  private final AtomicInteger atomicGame = new AtomicInteger();
+  private final Map<String, AtomicInteger> atomicItemPrices = new HashMap<>();
+  private final Map<String, AtomicInteger> atomicResourcePrices = new HashMap<>();
+  private final Map<String, AtomicReference<Double>> atomicTotalScores = new HashMap<>();
+  private final Map<String, AtomicReference<Double>> atomicTradingScores = new HashMap<>();
+  private final Map<String, AtomicReference<Double>> atomicFightingScores = new HashMap<>();
+  private final Map<String, AtomicReference<Double>> atomicMiningScores = new HashMap<>();
+  private final Map<String, AtomicReference<Double>> atomicMovementScores = new HashMap<>();
+  private final Map<String, AtomicReference<Double>> atomicRobotScores = new HashMap<>();
 
   public MetricService(MeterRegistry meterRegistry) {
     this.meterRegistry = meterRegistry;
@@ -40,19 +46,25 @@ public class MetricService {
   }
 
   public void publishRoundNumber(int roundNumber) {
-    buildStrongGauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), roundNumber);
+    this.atomicRound.set(roundNumber);
+    buildStrongGauge(DungeonMetrics.ROUND_GAUGE, Tags.empty(), this.atomicRound.get());
   }
 
   public void publishGameStatus(int value) {
-    buildStrongGauge(DungeonMetrics.GAME_STATUS_INFO, Tags.empty(), value);
+    this.atomicGame.set(value);
+    buildStrongGauge(DungeonMetrics.GAME_STATUS_INFO, Tags.empty(), this.atomicGame.get());
   }
 
   public void publishItemPrice(String itemName, int value) {
-    buildStrongGauge(DungeonMetrics.TRADING_ITEM_PRICES, Tags.of("name", itemName), value);
+    this.atomicItemPrices.put(itemName, new AtomicInteger(value));
+    buildStrongGauge(DungeonMetrics.TRADING_ITEM_PRICES, Tags.of("name", itemName),
+        this.atomicItemPrices.get(itemName).get());
   }
 
   public void publishResourcePrice(String resourceName, int value) {
-    buildStrongGauge(DungeonMetrics.TRADING_RESOURCE_PRICES, Tags.of("name", resourceName), value);
+    this.atomicResourcePrices.put(resourceName, new AtomicInteger(value));
+    buildStrongGauge(DungeonMetrics.TRADING_RESOURCE_PRICES, Tags.of("name", resourceName),
+        this.atomicResourcePrices.get(resourceName).get());
   }
 
   public void publishScores(String playerName, double totalScore, double tradingScore,
@@ -66,27 +78,39 @@ public class MetricService {
   }
 
   private void publishTotalScore(String playerName, double score) {
-    buildStrongGauge(DungeonMetrics.SCORE_TOTAL, Tags.of("player.name", playerName), score);
+    this.atomicTotalScores.put(playerName, new AtomicReference<>(score));
+    buildStrongGauge(DungeonMetrics.SCORE_TOTAL, Tags.of("player.name", playerName),
+        this.atomicTotalScores.get(playerName).get());
   }
 
   private void publishTradingScore(String playerName, double score) {
-    buildStrongGauge(DungeonMetrics.SCORE_TRADING, Tags.of("player.name", playerName), score);
+    this.atomicTradingScores.put(playerName, new AtomicReference<>(score));
+    buildStrongGauge(DungeonMetrics.SCORE_TRADING, Tags.of("player.name", playerName),
+        this.atomicTradingScores.get(playerName).get());
   }
 
   private void publishFightingScore(String playerName, double score) {
-    buildStrongGauge(DungeonMetrics.SCORE_FIGHTING, Tags.of("player.name", playerName), score);
+    this.atomicFightingScores.put(playerName, new AtomicReference<>(score));
+    buildStrongGauge(DungeonMetrics.SCORE_FIGHTING, Tags.of("player.name", playerName),
+        this.atomicFightingScores.get(playerName).get());
   }
 
   private void publishMiningScore(String playerName, double score) {
-    buildStrongGauge(DungeonMetrics.SCORE_MINING, Tags.of("player.name", playerName), score);
+    this.atomicMiningScores.put(playerName, new AtomicReference<>(score));
+    buildStrongGauge(DungeonMetrics.SCORE_MINING, Tags.of("player.name", playerName),
+        this.atomicMiningScores.get(playerName).get());
   }
 
   private void publishMovementScore(String playerName, double score) {
-    buildStrongGauge(DungeonMetrics.SCORE_MOVEMENT, Tags.of("player.name", playerName), score);
+    this.atomicMovementScores.put(playerName, new AtomicReference<>(score));
+    buildStrongGauge(DungeonMetrics.SCORE_MOVEMENT, Tags.of("player.name", playerName),
+        this.atomicMovementScores.get(playerName).get());
   }
 
   private void publishRobotScore(String playerName, double score) {
-    buildStrongGauge(DungeonMetrics.SCORE_ROBOT, Tags.of("player.name", playerName), score);
+    this.atomicRobotScores.put(playerName, new AtomicReference<>(score));
+    buildStrongGauge(DungeonMetrics.SCORE_ROBOT, Tags.of("player.name", playerName),
+        this.atomicRobotScores.get(playerName).get());
   }
 
   // We need strong references to maintain the metrics.
