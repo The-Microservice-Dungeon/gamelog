@@ -35,6 +35,12 @@ public class GameRepositoryImpl implements GameRepository {
   }
 
   @Override
+  public Optional<Game> findLatestGame() {
+    return gameStatusHistoryJpaRepository.findLatestGame()
+        .map(gameMapper::toDomain);
+  }
+
+  @Override
   public Set<Game> findAllGames() {
     return StreamSupport.stream(gameStatusHistoryJpaRepository.findAll().spliterator(), false)
         .map(gameMapper::toDomain)

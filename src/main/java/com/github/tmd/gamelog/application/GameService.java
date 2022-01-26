@@ -21,4 +21,8 @@ public class GameService {
   public Optional<Game> findActiveGame() {
     return this.gameRepository.findActiveGame();
   }
+
+  public Optional<Game> findLatestGame() {
+    return gameRepository.findLatestGame();
+  }
 }

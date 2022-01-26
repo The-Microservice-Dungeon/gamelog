@@ -8,5 +8,6 @@ import java.util.Set;
 public interface GameRepository {
   Optional<Game> findGameById(GameId gameId);
   Optional<Game> findActiveGame();
+  Optional<Game> findLatestGame();
   Set<Game> findAllGames();
 }

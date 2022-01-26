@@ -71,15 +71,15 @@ public class GameEventListeners {
   @KafkaListener(topics = "playerStatus")
   public void playerStatusChangedEvent(@Payload PlayerStatusChangedEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
-
+    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     // TODO: HACK!!! Last minute Change
     //  The playerStatus Event does not include the gameId but we heavily rely on it and dont have
     //  the time to adapt a query.
-    var gameId = this.gameService.findActiveGame()
+    //  therefore we're just assuming that the player joined the latest game
+    var gameId = this.gameService.findLatestGame()
         .map(game -> game.getId().id())
         .orElse(UUID.randomUUID()); // This is really dumb...
 
-    var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     lifecycleHooks.forEach(hook -> hook.onPlayerStatus(event, gameId, timestamp));
   }
 
