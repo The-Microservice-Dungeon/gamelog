@@ -10,9 +10,14 @@ import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(value = Ordered.LOWEST_PRECEDENCE)
+@Slf4j
 public class MetricLifecycleHook implements GameLifecycleHook {
 
   private final MetricService metricService;
@@ -26,11 +31,14 @@ public class MetricLifecycleHook implements GameLifecycleHook {
 
   @Override
   public void onGameStatus(GameStatusEvent event, Instant timestamp) {
+    log.debug("Received GameStatus Event: {}, At: {}", event, timestamp);
     this.metricService.publishGameStatus(event.status().ordinal());
   }
 
   @Override
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
+    log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
+
     this.metricService.publishRoundNumber(event.roundNumber());
 
     if (event.roundStatus() == RoundStatus.ENDED) {
@@ -56,6 +64,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   @Override
   public void onCurrentItemPricesAnnouncement(Set<CurrentItemPriceEvent> itemPrices,
       Instant timestamp) {
+    log.debug("Received CurrentItemPrice Event: {}, At: {}", itemPrices, timestamp);
     for (var announcement : itemPrices) {
       this.metricService.publishItemPrice(announcement.name(), announcement.price());
     }
@@ -64,6 +73,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   @Override
   public void onCurrentResourcePricesAnnouncement(Set<CurrentResourcePriceEvent> resourcePrices,
       Instant timestamp) {
+    log.debug("Received CurrentResourcePrice Event: {}, At: {}", itemPrices, timestamp);
     for (var announcement : resourcePrices) {
       this.metricService.publishResourcePrice(announcement.name(), announcement.price());
     }

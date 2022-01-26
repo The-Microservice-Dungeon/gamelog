@@ -7,11 +7,13 @@ import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.time.Instant;
 import java.util.UUID;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @Order(3)
+@Slf4j
 public class RoundScoreLifecycleHook implements GameLifecycleHook {
   private final RoundScoreService roundScoreService;
 
@@ -23,6 +25,7 @@ public class RoundScoreLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
+    log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
     if(event.roundStatus() == RoundStatus.ENDED) {
       this.roundScoreService.accumulateAndSaveRoundScoresForRound(event.roundId());
     }
