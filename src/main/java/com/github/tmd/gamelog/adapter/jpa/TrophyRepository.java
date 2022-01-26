@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.adapter.jpa;
 import com.github.tmd.gamelog.adapter.jpa.dto.TrophyDto;
 import com.github.tmd.gamelog.adapter.jpa.mapper.TrophyDtoMapper;
 import com.github.tmd.gamelog.domain.trophies.Trophy;
+import com.github.tmd.gamelog.domain.trophies.TrophyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,10 @@ public class TrophyRepository implements com.github.tmd.gamelog.domain.TrophyRep
             trophies.add(trophyDtoMapper.mapDtoToEntity(trophyDto));
         }
         return trophies;
+    }
+
+    public Trophy findByTrophyType(TrophyType trophyType) {
+        return trophyDtoMapper.mapDtoToEntity(trophyJpaRepository.findByTrophyType(trophyType));
     }
 
     @Override
