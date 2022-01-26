@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * Service that aggregates all categorized scores into a single Aggregation
  */
 @Service
+@Slf4j
 public class RoundScoreAggregator {
   // Inject every categorized accumulator
   private final List<AbstractCategorizedRoundScoreAccumulator<?>> roundScoreAccumulators;
@@ -31,6 +33,8 @@ public class RoundScoreAggregator {
    * @return Map of Player ID as key and AggregatedRoundScore as value
    */
   public Map<UUID, AggregatedRoundScore> aggregateRoundScoresForRound(UUID roundId) {
+    log.debug("Aggregating round scores for round with Id {}", roundId);
+
     // Holds wip aggregations for each player
     Map<UUID, AggregatedRoundScore.AggregatedRoundScoreBuilder> scoreBuilders =
         new HashMap<>();
@@ -62,7 +66,15 @@ public class RoundScoreAggregator {
     }
 
     // Build Aggregations
-    return scoreBuilders.entrySet().stream()
+    var roundScores = scoreBuilders.entrySet().stream()
         .collect(Collectors.toMap(Entry::getKey, sb -> sb.getValue().build()));
+
+    if(log.isDebugEnabled()) {
+      for(var entry : roundScores.entrySet()) {
+        log.debug("Aggregated score {} for player {}", entry.getValue(), entry.getKey());
+      }
+    }
+
+    return roundScores;
   }
 }

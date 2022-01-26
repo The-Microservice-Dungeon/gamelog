@@ -36,6 +36,14 @@ public class RoundScoreService {
           .entrySet()
           .stream()
           .collect(Collectors.toMap(gs -> resolvePlayerId(gs.getKey()), gs -> gs.getValue()));
+
+      if(log.isDebugEnabled()) {
+        for(var r : result.entrySet()) {
+          log.debug("Got {} scores ({}) for player {}", r.getValue().size(), r.getValue(), r.getKey());
+        }
+        log.debug("Got aggregated scores for {} players", result.size());
+      }
+
       return result;
     } catch (RuntimeException e) {
       log.error("Could not aggregate rounds for game with ID %s".formatted(gameId), e);
@@ -49,6 +57,13 @@ public class RoundScoreService {
         .stream()
         .collect(Collectors.toMap(rs -> resolvePlayerId(rs.getKey()), rs -> rs.getValue()));
 
+    if(log.isDebugEnabled()) {
+      for(var r : foundScores.entrySet()) {
+        log.debug("Got scores {} for player {}", r.getValue(), r.getKey());
+      }
+      log.debug("Got aggregated round score for {} players", foundScores.size());
+    }
+
     // If somehow there are no scores, we could just create them - however this is not useful
     // since that most likely happens if we're in the middle of a synchronous call and therefore
     // would store incorrect scores...
@@ -60,11 +75,16 @@ public class RoundScoreService {
   }
 
   public Map<Player, AggregatedRoundScore> accumulateAndSaveRoundScoresForRound(UUID roundId) {
-    var roundScoreBuilder = RoundScoreJpa.builder()
-        .roundId(roundId);
-
     Map<UUID, AggregatedRoundScore> scores =
         this.roundScoreAggregator.aggregateRoundScoresForRound(roundId);
+
+    if(log.isDebugEnabled()) {
+      for(var r : scores.entrySet()) {
+        log.debug("Accumulated score {} for player {}", r.getValue(), r.getKey());
+      }
+      log.debug("Accumulated {} scores in round {}", scores.size(), roundId);
+      log.debug("Saving scores now...");
+    }
 
     this.roundScoreRepository.saveAggregatedRoundScoresForRound(roundId, scores);
 

@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class FightingRoundScoreAccumulator extends
     AbstractCategorizedRoundScoreAccumulator<FightingRoundScore> {
   private final RobotHistoryService robotHistoryService;
@@ -23,6 +25,8 @@ public class FightingRoundScoreAccumulator extends
 
   @Override
   public Map<UUID, FightingRoundScore> accumulateRoundScores(UUID roundId) {
+    log.debug("Accumulating round scores in round {}", roundId);
+
     var damageInRound = robotHistoryService.getGivenDamageInRound(roundId);
     var killsInRound = robotHistoryService.getNumberOfKillsInRound(roundId);
     var victimsInRound = robotHistoryService.getNumberOfVictimsInRound(roundId);
@@ -38,6 +42,12 @@ public class FightingRoundScoreAccumulator extends
       var kills = killsInRound.getOrDefault(id, 0);
       var victims = victimsInRound.getOrDefault(id, 0);
       fightingRoundScores.put(id, new FightingRoundScore(kills, victims, damage));
+    }
+
+    if(log.isDebugEnabled()) {
+      for(var entry : fightingRoundScores.entrySet()) {
+        log.debug("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
+      }
     }
 
     return fightingRoundScores;

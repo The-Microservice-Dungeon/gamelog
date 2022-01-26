@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class TradingRoundScoreAccumulator extends
     AbstractCategorizedRoundScoreAccumulator<TradingRoundScore> {
   private final TradingHistoryService tradingHistoryService;
@@ -21,6 +23,7 @@ public class TradingRoundScoreAccumulator extends
 
   @Override
   public Map<UUID, TradingRoundScore> accumulateRoundScores(UUID roundId) {
+    log.debug("Accumulating round scores in round {}", roundId);
     var playerBalances = tradingHistoryService.getPlayerBalancesInRound(roundId);
     var playerTrades = tradingHistoryService.getNumberOfTradesInRound(roundId);
 
@@ -33,6 +36,12 @@ public class TradingRoundScoreAccumulator extends
       var balance = playerBalances.getOrDefault(id, 0);
       var numOfTrades = playerTrades.getOrDefault(id, 0);
       tradingRoundScores.put(id, new TradingRoundScore(balance, numOfTrades));
+    }
+
+    if(log.isDebugEnabled()) {
+      for(var entry : tradingRoundScores.entrySet()) {
+        log.debug("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
+      }
     }
 
     return tradingRoundScores;
