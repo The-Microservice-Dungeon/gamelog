@@ -1,4 +1,4 @@
-package com.github.tmd.gamelog.application.score.accumulator;
+package com.github.tmd.gamelog.application.score;
 
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.score.vo.AggregatedRoundScore;
@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GameScoreAccumulator  {
+public class GameScoreAggregator {
   private final RoundScoreService roundScoreService;
 
-  public GameScoreAccumulator(
+  public GameScoreAggregator(
       RoundScoreService roundScoreService) {
     this.roundScoreService = roundScoreService;
   }
 
-  public Map<Player, AggregatedGameScore> accumulateGameScore(UUID gameId) {
+  public Map<Player, AggregatedGameScore> aggregateGameScore(UUID gameId) {
     return this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
         .collect(Collectors.toMap(
