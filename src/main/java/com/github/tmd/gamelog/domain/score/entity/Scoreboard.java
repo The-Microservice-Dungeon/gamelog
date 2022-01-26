@@ -25,7 +25,7 @@ public class Scoreboard {
     var numberOfPlayersWithMorePoints = gameScores.values().stream()
         .filter(s -> s.score() > totalScore).count();
 
-    return 1 - (int) numberOfPlayersWithMorePoints;
+    return 1 + (int) numberOfPlayersWithMorePoints;
   }
 
   public int getFightingPlacementOfPlayer(Player player) {
@@ -33,7 +33,7 @@ public class Scoreboard {
     var numberOfPlayersWithMorePoints = gameScores.values().stream()
         .filter(s -> s.getFightingScore() > fightingScore).count();
 
-    return 1 - (int) numberOfPlayersWithMorePoints;
+    return 1 + (int) numberOfPlayersWithMorePoints;
   }
 
   public int getMiningPlacementOfPlayer(Player player) {
@@ -41,7 +41,7 @@ public class Scoreboard {
     var numberOfPlayersWithMorePoints = gameScores.values().stream()
         .filter(s -> s.getMiningScore() > miningScore).count();
 
-    return 1 - (int) numberOfPlayersWithMorePoints;
+    return 1 + (int) numberOfPlayersWithMorePoints;
   }
 
   public int getMovementPlacementOfPlayer(Player player) {
@@ -49,7 +49,7 @@ public class Scoreboard {
     var numberOfPlayersWithMorePoints = gameScores.values().stream()
         .filter(s -> s.getMovementScore() > movementScore).count();
 
-    return 1 - (int) numberOfPlayersWithMorePoints;
+    return 1 + (int) numberOfPlayersWithMorePoints;
   }
 
   public int getRobotPlacementOfPlayer(Player player) {
@@ -57,7 +57,7 @@ public class Scoreboard {
     var numberOfPlayersWithMorePoints = gameScores.values().stream()
         .filter(s -> s.getRobotScore() > robotScore).count();
 
-    return 1 - (int) numberOfPlayersWithMorePoints;
+    return 1 + (int) numberOfPlayersWithMorePoints;
   }
 
   public int getTradingPlacementOfPlayer(Player player) {
@@ -65,6 +65,6 @@ public class Scoreboard {
     var numberOfPlayersWithMorePoints = gameScores.values().stream()
         .filter(s -> s.getTradingScore() > tradingScore).count();
 
-    return 1 - (int) numberOfPlayersWithMorePoints;
+    return 1 + (int) numberOfPlayersWithMorePoints;
   }
 }
