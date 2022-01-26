@@ -73,7 +73,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   @Override
   public void onCurrentResourcePricesAnnouncement(Set<CurrentResourcePriceEvent> resourcePrices,
       Instant timestamp) {
-    log.debug("Received CurrentResourcePrice Event: {}, At: {}", itemPrices, timestamp);
+    log.debug("Received CurrentResourcePrice Event: {}, At: {}", resourcePrices, timestamp);
     for (var announcement : resourcePrices) {
       this.metricService.publishResourcePrice(announcement.name(), announcement.price());
     }
