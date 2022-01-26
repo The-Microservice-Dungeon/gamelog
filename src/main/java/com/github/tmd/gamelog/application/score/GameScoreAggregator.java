@@ -40,19 +40,17 @@ public class GameScoreAggregator {
   }
 
   private AggregatedScore calculateGameScore(List<AggregatedScore> aggregatedScores) {
-    return aggregatedScores.stream().reduce(AggregatedScore.builder().build(), (aggregatedScore, aggregatedScore2) -> {
-      Double fightingScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
-      Double miningScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
-      Double movementScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
-      Double robotScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
-      Double tradingScore = aggregatedScore.getFightingScore() + aggregatedScore2.getFightingScore();
+    Double sumFightingScore = aggregatedScores.stream().collect(Collectors.summingDouble(AggregatedScore::getFightingScore));
+    Double sumMiningScore = aggregatedScores.stream().collect(Collectors.summingDouble(AggregatedScore::getMiningScore));
+    Double sumMovementScore = aggregatedScores.stream().collect(Collectors.summingDouble(AggregatedScore::getMovementScore));
+    Double sumRobotScore = aggregatedScores.stream().collect(Collectors.summingDouble(AggregatedScore::getRobotScore));
+    Double sumTradingScore = aggregatedScores.stream().collect(Collectors.summingDouble(AggregatedScore::getTradingScore));
 
-      return AggregatedScore.builder().fightingScore(fightingScore)
-          .miningScore(miningScore)
-          .movementScore(movementScore)
-          .robotScore(robotScore)
-          .tradingScore(tradingScore)
+    return AggregatedScore.builder().fightingScore(sumFightingScore)
+          .miningScore(sumMiningScore)
+          .movementScore(sumMovementScore)
+          .robotScore(sumRobotScore)
+          .tradingScore(sumTradingScore)
           .build();
-    });
   }
 }
