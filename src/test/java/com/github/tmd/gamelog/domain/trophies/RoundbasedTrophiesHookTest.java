@@ -41,6 +41,10 @@ class RoundbasedTrophiesHookTest {
     @Autowired
     TrophyJpaRepository trophyJpaRepository;
     TrophyRepository trophyRepository;
+
+    @Autowired
+    RoundbasedTrophiesHook roundbasedTrophiesHook;
+
     Player playerLoser = new Player(UUID.randomUUID(), "Loser", new HashSet<>());
     Player player3rdPlace = new Player(UUID.randomUUID(), "Third Place", new HashSet<>());
     Player player2ndPlace = new Player(UUID.randomUUID(), "Second Place", new HashSet<>());
@@ -116,7 +120,6 @@ class RoundbasedTrophiesHookTest {
      * Run the method under test.
      */
     private void runMethodUnderTest() {
-        RoundbasedTrophiesHook roundbasedTrophiesHook = new RoundbasedTrophiesHook(playerStatisticsRepository, playerRepository, trophyRepository);
         RoundStatusChangedEvent roundStatusChangedEvent = new RoundStatusChangedEvent(gameId, roundId, 1, RoundStatus.ENDED);
         roundbasedTrophiesHook.onRoundStatus(roundStatusChangedEvent, gameId, Instant.now());
     }

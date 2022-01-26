@@ -3,6 +3,7 @@ package com.github.tmd.gamelog.adapter.jpa;
 import com.github.tmd.gamelog.adapter.jpa.dto.PlayerStatisticsDto;
 import com.github.tmd.gamelog.adapter.jpa.mapper.PlayerStatisticsDtoMapper;
 import com.github.tmd.gamelog.domain.PlayerStatistics;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
@@ -15,9 +16,10 @@ import java.util.UUID;
 @Repository
 public class PlayerStatisticsRepositoryImpl {
 
-    private PlayerStatisticsJpaRepository playerStatisticsJpaRepository;
-    private PlayerStatisticsDtoMapper playerStatisticsDtoMapper;
+    private final PlayerStatisticsJpaRepository playerStatisticsJpaRepository;
+    private final PlayerStatisticsDtoMapper playerStatisticsDtoMapper;
 
+    @Autowired
     public PlayerStatisticsRepositoryImpl(PlayerStatisticsJpaRepository playerStatisticsJpaRepository, PlayerStatisticsDtoMapper playerStatisticsDtoMapper) {
         this.playerStatisticsJpaRepository = playerStatisticsJpaRepository;
         this.playerStatisticsDtoMapper = playerStatisticsDtoMapper;

@@ -3,12 +3,8 @@ package com.github.tmd.gamelog.domain.trophies;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
 import com.github.tmd.gamelog.adapter.jpa.*;
-import com.github.tmd.gamelog.adapter.jpa.mapper.PlayerDtoMapper;
-import com.github.tmd.gamelog.adapter.jpa.mapper.PlayerStatisticsDtoMapper;
-import com.github.tmd.gamelog.adapter.jpa.mapper.TrophyDtoMapper;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
 import com.github.tmd.gamelog.domain.PlayerStatistics;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -21,38 +17,27 @@ import java.util.UUID;
  */
 @Component
 public class RoundbasedTrophiesHook implements GameLifecycleHook {
+    private final PlayerStatisticsJpaRepository playerStatisticsJpaRepository;
+    private final PlayerStatisticsRepositoryImpl playerStatisticsRepository;
 
-    @Autowired
-    PlayerStatisticsJpaRepository playerStatisticsJpaRepository;
-    PlayerStatisticsRepositoryImpl playerStatisticsRepository;
+    private final PlayerJpaRepository playerJpaRepository;
+    private final PlayerRepositoryImpl playerRepository;
 
-    @Autowired
-    PlayerJpaRepository playerJpaRepository;
-    PlayerRepositoryImpl playerRepository;
+    private final TrophyJpaRepository trophyJpaRepository;
+    private final TrophyRepository trophyRepository;
 
-    @Autowired
-    TrophyJpaRepository trophyJpaRepository;
-    TrophyRepository trophyRepository;
-
-    /**
-     * Default constructor.
-     */
-    public RoundbasedTrophiesHook() {
-        playerStatisticsRepository = new PlayerStatisticsRepositoryImpl(playerStatisticsJpaRepository, new PlayerStatisticsDtoMapper());
-        playerRepository = new PlayerRepositoryImpl(playerJpaRepository, new PlayerDtoMapper());
-        trophyRepository = new TrophyRepository(trophyJpaRepository, new TrophyDtoMapper());
-    }
-
-    /**
-     * Constructor for unit tests.
-     * Allows for plugging in a mocked PlayerStatisticsRepositoryImpl.
-     * @param playerStatisticsRepository Repository of the PlayerStatistics.
-     * @param playerRepository Repository of the Players.
-     * @param trophyRepository Repository of the Trophies.
-     */
-    public RoundbasedTrophiesHook(PlayerStatisticsRepositoryImpl playerStatisticsRepository, PlayerRepositoryImpl playerRepository, TrophyRepository trophyRepository) {
+    public RoundbasedTrophiesHook(
+        PlayerStatisticsJpaRepository playerStatisticsJpaRepository,
+        PlayerStatisticsRepositoryImpl playerStatisticsRepository,
+        PlayerJpaRepository playerJpaRepository,
+        PlayerRepositoryImpl playerRepository,
+        TrophyJpaRepository trophyJpaRepository,
+        TrophyRepository trophyRepository) {
+        this.playerStatisticsJpaRepository = playerStatisticsJpaRepository;
         this.playerStatisticsRepository = playerStatisticsRepository;
+        this.playerJpaRepository = playerJpaRepository;
         this.playerRepository = playerRepository;
+        this.trophyJpaRepository = trophyJpaRepository;
         this.trophyRepository = trophyRepository;
     }
 
