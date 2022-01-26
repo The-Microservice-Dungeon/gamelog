@@ -51,6 +51,7 @@ public class MetricService {
   public void publishItemPrice(String itemName, int value) {
     var atomicRef = this.atomicItemPrices.getOrDefault(itemName, new AtomicInteger());
     atomicRef.set(value);
+    this.atomicResourcePrices.put(itemName, atomicRef);
 
     var scoreMetric = DungeonMetrics.TRADING_ITEM_PRICES;
     var tags = Tags.of("name", itemName);
@@ -64,6 +65,7 @@ public class MetricService {
   public void publishResourcePrice(String resourceName, int value) {
     var atomicRef = this.atomicResourcePrices.getOrDefault(resourceName, new AtomicInteger());
     atomicRef.set(value);
+    this.atomicResourcePrices.put(resourceName, atomicRef);
 
     var scoreMetric = DungeonMetrics.TRADING_RESOURCE_PRICES;
     var tags = Tags.of("name", resourceName);
@@ -90,6 +92,7 @@ public class MetricService {
   private void publishTotalScore(String playerName, double score) {
     var atomicRef = this.atomicTotalScores.getOrDefault(playerName, new AtomicReference<>());
     atomicRef.set(score);
+    this.atomicTotalScores.put(playerName, atomicRef);
 
     var scoreMetric = DungeonMetrics.SCORE_TOTAL;
     var tags = Tags.of("player.name", playerName);
@@ -103,6 +106,7 @@ public class MetricService {
   private void publishTradingScore(String playerName, double score) {
     var atomicRef = this.atomicTradingScores.getOrDefault(playerName, new AtomicReference<>());
     atomicRef.set(score);
+    this.atomicTradingScores.put(playerName, atomicRef);
 
     var scoreMetric = DungeonMetrics.SCORE_TRADING;
     var tags = Tags.of("player.name", playerName);
@@ -116,6 +120,7 @@ public class MetricService {
   private void publishFightingScore(String playerName, double score) {
     var atomicRef = this.atomicFightingScores.getOrDefault(playerName, new AtomicReference<>());
     atomicRef.set(score);
+    this.atomicFightingScores.put(playerName, atomicRef);
 
     var scoreMetric = DungeonMetrics.SCORE_FIGHTING;
     var tags = Tags.of("player.name", playerName);
@@ -129,6 +134,7 @@ public class MetricService {
   private void publishMiningScore(String playerName, double score) {
     var atomicRef = this.atomicMiningScores.getOrDefault(playerName, new AtomicReference<>());
     atomicRef.set(score);
+    this.atomicMiningScores.put(playerName, atomicRef);
 
     var scoreMetric = DungeonMetrics.SCORE_MINING;
     var tags = Tags.of("player.name", playerName);
@@ -142,6 +148,7 @@ public class MetricService {
   private void publishMovementScore(String playerName, double score) {
     var atomicRef = this.atomicMovementScores.getOrDefault(playerName, new AtomicReference<>());
     atomicRef.set(score);
+    this.atomicMovementScores.put(playerName, atomicRef);
 
     var scoreMetric = DungeonMetrics.SCORE_MOVEMENT;
     var tags = Tags.of("player.name", playerName);
@@ -155,6 +162,7 @@ public class MetricService {
   private void publishRobotScore(String playerName, double score) {
     var atomicRef = this.atomicRobotScores.getOrDefault(playerName, new AtomicReference<>());
     atomicRef.set(score);
+    this.atomicRobotScores.put(playerName, atomicRef);
 
     var scoreMetric = DungeonMetrics.SCORE_ROBOT;
     var tags = Tags.of("player.name", playerName);
