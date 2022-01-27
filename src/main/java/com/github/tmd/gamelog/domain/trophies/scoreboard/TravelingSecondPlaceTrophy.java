@@ -8,12 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TravelingSecondPlaceTrophy extends Trophy implements ScoreboardTrophy {
+public class TravelingSecondPlaceTrophy extends ScoreboardChangingTrophy implements ScoreboardTrophy {
 
     private long id;
     private String name = "Traveling - Second Place";
@@ -21,10 +22,10 @@ public class TravelingSecondPlaceTrophy extends Trophy implements ScoreboardTrop
 
     @Override
     public void awardToQualifiedPlayer(Scoreboard scoreboard) {
-        Set<Player> players = scoreboard.getGameScores().keySet();
+        List<Player> players = scoreboard.getGameScores().keySet().stream().toList();
         for (Player player : players) {
             if (scoreboard.getMovementPlacementOfPlayer(player) == 2) {
-                player.awardTrophy(this, scoreboard.getGame().getId().id());
+                awardTrophyAndUpdateScoreboard(scoreboard, player);
             }
         }
     }

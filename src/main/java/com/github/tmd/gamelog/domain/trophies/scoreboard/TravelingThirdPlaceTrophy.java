@@ -10,12 +10,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TravelingThirdPlaceTrophy extends Trophy implements ScoreboardTrophy {
+public class TravelingThirdPlaceTrophy extends ScoreboardChangingTrophy implements ScoreboardTrophy {
 
     private long id;
     private String name = "Traveling - Third Place";
@@ -23,10 +24,10 @@ public class TravelingThirdPlaceTrophy extends Trophy implements ScoreboardTroph
 
     @Override
     public void awardToQualifiedPlayer(Scoreboard scoreboard) {
-        Set<Player> players = scoreboard.getGameScores().keySet();
+        List<Player> players = scoreboard.getGameScores().keySet().stream().toList();
         for (Player player : players) {
             if (scoreboard.getMovementPlacementOfPlayer(player) == 3) {
-                player.awardTrophy(this, scoreboard.getGame().getId().id());
+                awardTrophyAndUpdateScoreboard(scoreboard, player);
             }
         }
     }

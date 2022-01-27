@@ -169,8 +169,6 @@ public class ScoreboardTrophiesTest {
         for (Player unqualifiedPlayer : unqualifiedPlayers) {
             assertThat(unqualifiedPlayer.trophyAlreadyEarned(trophy, scoreboard.getGame().getId().id())).isFalse();
         }
-
-        qualifiedPlayer.setEarnedTrophies(new HashSet<>()); // Reset the earned trophies (or else the HashMap breaks).
     }
 
     /**

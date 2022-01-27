@@ -3,17 +3,17 @@ package com.github.tmd.gamelog.domain.trophies.scoreboard;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.score.entity.Scoreboard;
 import com.github.tmd.gamelog.domain.trophies.ScoreboardTrophy;
-import com.github.tmd.gamelog.domain.trophies.Trophy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameThirdPlaceTrophy extends Trophy implements ScoreboardTrophy {
+public class GameThirdPlaceTrophy extends ScoreboardChangingTrophy implements ScoreboardTrophy {
 
     private long id;
     private String name = "Game - Third Place";
@@ -21,10 +21,10 @@ public class GameThirdPlaceTrophy extends Trophy implements ScoreboardTrophy {
 
     @Override
     public void awardToQualifiedPlayer(Scoreboard scoreboard) {
-        Set<Player> players = scoreboard.getGameScores().keySet();
+        List<Player> players = scoreboard.getGameScores().keySet().stream().toList();
         for (Player player : players) {
             if (scoreboard.getTotalPlacementOfPlayer(player) == 3) {
-                player.awardTrophy(this, scoreboard.getGame().getId().id());
+                awardTrophyAndUpdateScoreboard(scoreboard, player);
             }
         }
     }
