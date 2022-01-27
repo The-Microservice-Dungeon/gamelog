@@ -5,8 +5,8 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'swagger/**'
-      - '**/README.md'
       - '**/.gitignore'
+      - '**/README.md'
     branches:
       - 'main'
 
