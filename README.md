@@ -49,8 +49,21 @@ The service provides a scoreboard for the total scores of the players. Whoever r
 The service also provides categorized scoreboards in 4 categories to enable competing in different aspects of the game. Those categories are:
 - Fighting
 - Mining
+- Robot Stats
 - Trading
 - Traveling
+
+The scoreboard is reachable under the `/scorebard` endpoint as defined in the [API Spec](docs/api-spec.yaml). 
+However, if you call it from the browser it will render a static view of the scoreboard. 
+
+![Scoreboard View](docs/img/scoreboard.png)
+
+### Grafana Dashboard
+
+We developed a Grafana Dashboard to provide various metrics including scores to the participants of 
+the codefight/hackathon. 
+
+![Grafana Dashboard](docs/img/dashboard.png)
 
 ### Achievements and Trophies
 

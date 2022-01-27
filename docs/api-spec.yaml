@@ -2,7 +2,7 @@ openapi: 3.0.3
 
 info:
   title: Game Log
-  version: 1.0.0
+  version: 2.0.0
 
 paths:
   "/scoreboard":
@@ -73,10 +73,24 @@ components:
       properties:
         player:
           $ref: '#/components/schemas/Player'
-        score:
-          type: integer
-          format: int32
-          example: 1234
+        totalScore:
+          type: number
+          example: 1234.4
+        fightingScore:
+          type: number
+          example: 1234.4
+        miningScore:
+          type: number
+          example: 1234.4
+        movementScore:
+          type: number
+          example: 1234.4
+        robotScore:
+          type: number
+          example: 1234.4
+        tradingScore:
+          type: number
+          example: 1234.4
     Scoreboard:
       type: object
       required: 
