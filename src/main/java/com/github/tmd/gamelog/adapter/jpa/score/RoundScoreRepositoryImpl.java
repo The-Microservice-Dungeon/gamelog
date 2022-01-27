@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -40,9 +41,10 @@ public class RoundScoreRepositoryImpl implements AggregatedRoundScoreRepository 
 
     for(var roundScore : foundRoundScores) {
       for(var singleScore : roundScore.getPlayerRoundScores().entrySet()) {
-        var list = mapThingy.getOrDefault(singleScore.getKey(), new ArrayList<>());
+        var playerId = UUID.fromString(singleScore.getKey());
+        var list = mapThingy.getOrDefault(playerId, new ArrayList<>());
         list.add(this.roundScoreMapper.toAggregatedRoundScore(singleScore.getValue()));
-        mapThingy.put(UUID.fromString(singleScore.getKey()), list);
+        mapThingy.put(playerId, list);
       }
     }
 
