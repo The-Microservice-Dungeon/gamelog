@@ -22,7 +22,7 @@ public class GameScoreAggregator {
   }
 
   public Map<Player, AggregatedScore> aggregateGameScore(UUID gameId) {
-    log.debug("Aggregating game scores for game with Id {}", gameId);
+    log.trace("Aggregating game scores for game with Id {}", gameId);
     var gameScores = this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
         .collect(Collectors.toMap(
@@ -32,7 +32,7 @@ public class GameScoreAggregator {
 
     if(log.isDebugEnabled()) {
       for(var entry : gameScores.entrySet()) {
-        log.debug("Aggregated score {} for player {}", entry.getValue(), entry.getKey());
+        log.trace("Aggregated score {} for player {}", entry.getValue(), entry.getKey());
       }
     }
 

@@ -23,7 +23,7 @@ public class TradingRoundScoreAccumulator extends
 
   @Override
   public Map<UUID, TradingRoundScore> accumulateRoundScores(UUID roundId) {
-    log.debug("Accumulating round scores in round {}", roundId);
+    log.trace("Accumulating round scores in round {}", roundId);
     var playerBalances = tradingHistoryService.getPlayerBalancesInRound(roundId);
     var playerTrades = tradingHistoryService.getNumberOfTradesInRound(roundId);
 
@@ -40,7 +40,7 @@ public class TradingRoundScoreAccumulator extends
 
     if(log.isDebugEnabled()) {
       for(var entry : tradingRoundScores.entrySet()) {
-        log.debug("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
+        log.trace("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
       }
     }
 

@@ -28,14 +28,14 @@ public class PlayerRegistrationLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onPlayerStatus(PlayerStatusChangedEvent event, UUID gameId, Instant timestamp) {
-    log.debug("Received PlayerStatusChanged Event: {}, Game: {}, At: {}", event, gameId, timestamp);
+    log.trace("Received PlayerStatusChanged Event: {}, Game: {}, At: {}", event, gameId, timestamp);
     playerService.createOrUpdatePlayer(event.userId(), event.userName());
   }
 
   @Override
   @Transactional
   public void onGameStatus(GameStatusEvent event, Instant timestamp) {
-    log.debug("Received GameStatusEvent Event: {}, At: {}", event, timestamp);
+    log.trace("Received GameStatusEvent Event: {}, At: {}", event, timestamp);
     if(event.status() == GameStatus.STARTED) {
       this.playerService.findParticipatingPlayersInGame(event.gameId())
           .forEach(player -> {

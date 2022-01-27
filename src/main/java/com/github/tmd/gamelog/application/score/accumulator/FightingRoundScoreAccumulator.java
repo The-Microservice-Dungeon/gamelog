@@ -25,7 +25,7 @@ public class FightingRoundScoreAccumulator extends
 
   @Override
   public Map<UUID, FightingRoundScore> accumulateRoundScores(UUID roundId) {
-    log.debug("Accumulating round scores in round {}", roundId);
+    log.trace("Accumulating round scores in round {}", roundId);
 
     var damageInRound = robotHistoryService.getGivenDamageInRound(roundId);
     var killsInRound = robotHistoryService.getNumberOfKillsInRound(roundId);
@@ -46,7 +46,7 @@ public class FightingRoundScoreAccumulator extends
 
     if(log.isDebugEnabled()) {
       for(var entry : fightingRoundScores.entrySet()) {
-        log.debug("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
+        log.trace("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
       }
     }
 

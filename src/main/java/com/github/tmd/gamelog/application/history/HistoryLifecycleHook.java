@@ -46,21 +46,21 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onGameStatus(GameStatusEvent event, Instant timestamp) {
-    log.debug("Received GameStatus Event: {}, At: {}", event, timestamp);
+    log.trace("Received GameStatus Event: {}, At: {}", event, timestamp);
     gameHistoryService.insertGameStatusHistory(event.gameId(), event.status(), timestamp);
   }
 
   @Override
   @Transactional
   public void onPlayerStatus(PlayerStatusChangedEvent event, UUID gameId, Instant timestamp) {
-    log.debug("Received PlayerStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
+    log.trace("Received PlayerStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
     gameHistoryService.insertGamePlayerStatusHistory(gameId, event.userId(), event.userName(), timestamp);
   }
 
   @Override
   @Transactional
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
-    log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
+    log.trace("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
     var roundId = event.roundId();
     gameHistoryService.insertGameRoundStatusHistory(gameId, roundId, event.roundNumber(),
         event.roundStatus(), timestamp);
@@ -80,7 +80,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onRobotMovement(MovementEvent event, UUID transactionId, Instant timestamp) {
-    log.debug("Received RobotMovement Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
+    log.trace("Received RobotMovement Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
     if (event.success()) {
       robotHistoryService.insertMovementHistory(transactionId, event.robots(), event.planet()
           .planetId(), event.planet().movementDifficulty(), timestamp);
@@ -91,7 +91,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
   @Transactional
   public void onRobotPlanetBlocked(PlanetBlockedEvent event, UUID transactionId,
       Instant timestamp) {
-    log.debug("Received PlanetBlocked Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
+    log.trace("Received PlanetBlocked Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
     if (event.success()) {
       robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId(), timestamp);
     }
@@ -100,7 +100,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onRobotMining(MiningEvent event, UUID transactionId, Instant timestamp) {
-    log.debug("Received Mining Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
+    log.trace("Received Mining Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
     if (event.success()) {
       robotHistoryService.insertMiningHistory(transactionId, event.updateInventory(),
           event.resourceType(), timestamp);
@@ -110,7 +110,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onRobotFighting(FightingEvent event, UUID transactionId, Instant timestamp) {
-    log.debug("Received Fighting Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
+    log.trace("Received Fighting Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
     if (event.success()) {
       robotHistoryService.insertFightHistory(transactionId, event.attacker(), event.defender(),
           event.remainingDefenderHealth(), timestamp);
@@ -120,7 +120,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onTrade(TradingEvent event, UUID transactionId, Instant timestamp) {
-    log.debug("Received Trading Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
+    log.trace("Received Trading Event: {}, Transaction: {}, At: {}", event, transactionId, timestamp);
     if (event.success()) {
       this.tradingHistoryService.insertTradingHistory(transactionId, event.amount(), timestamp);
     }

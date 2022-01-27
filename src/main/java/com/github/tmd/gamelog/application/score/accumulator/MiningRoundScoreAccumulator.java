@@ -24,7 +24,7 @@ public class MiningRoundScoreAccumulator extends
 
   @Override
   public Map<UUID, MiningRoundScore> accumulateRoundScores(UUID roundId) {
-    log.debug("Accumulating round scores in round {}", roundId);
+    log.trace("Accumulating round scores in round {}", roundId);
     var minedResources = this.robotHistoryService.getMinedResourceInRound(roundId);
 
     var allPlayerIds = new HashSet<>(minedResources.keySet());
@@ -37,7 +37,7 @@ public class MiningRoundScoreAccumulator extends
 
     if(log.isDebugEnabled()) {
       for(var entry : miningRoundScores.entrySet()) {
-        log.debug("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
+        log.trace("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
       }
     }
 

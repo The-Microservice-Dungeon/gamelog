@@ -41,7 +41,7 @@ public class KafkaLoggingInterceptor implements ConsumerInterceptor<Object, Obje
       var headers = headersToString(record.headers());
 
       // Log everything
-      log.trace("""
+      log.debug("""
           Received Message in consumer
           Topic: %s
           Partition: %s

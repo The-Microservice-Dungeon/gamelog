@@ -23,7 +23,7 @@ public class MovementRoundScoreAccumulator extends
 
   @Override
   public Map<UUID, MovementRoundScore> accumulateRoundScores(UUID roundId) {
-    log.debug("Accumulating round scores in round {}", roundId);
+    log.trace("Accumulating round scores in round {}", roundId);
     var passedMovementDifficulty = robotHistoryService.getPassedMovementDifficultyInRound(roundId);
 
     // Ugly but readable hack, since I don't know how to combine them in a fancy manner
@@ -37,7 +37,7 @@ public class MovementRoundScoreAccumulator extends
 
     if(log.isDebugEnabled()) {
       for(var entry : movementRoundScores.entrySet()) {
-        log.debug("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
+        log.trace("Accumulated score {} for player {}", entry.getValue(), entry.getKey());
       }
     }
 

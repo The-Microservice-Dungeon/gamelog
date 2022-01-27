@@ -28,7 +28,7 @@ public class RoundScoreLifecycleHook implements GameLifecycleHook {
   @Override
   @Transactional
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
-    log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
+    log.trace("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
     if(event.roundStatus() == RoundStatus.ENDED) {
       this.roundScoreService.accumulateAndSaveRoundScoresForRound(event.roundId());
     }

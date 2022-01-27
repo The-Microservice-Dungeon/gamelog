@@ -33,7 +33,7 @@ public class RoundScoreAggregator {
    * @return Map of Player ID as key and AggregatedRoundScore as value
    */
   public Map<UUID, AggregatedScore> aggregateRoundScoresForRound(UUID roundId) {
-    log.debug("Aggregating round scores for round with Id {}", roundId);
+    log.trace("Aggregating round scores for round with Id {}", roundId);
 
     // Holds wip aggregations for each player
     Map<UUID, AggregatedScore.AggregatedScoreBuilder> scoreBuilders =
@@ -71,7 +71,7 @@ public class RoundScoreAggregator {
 
     if(log.isDebugEnabled()) {
       for(var entry : roundScores.entrySet()) {
-        log.debug("Aggregated score {} for player {}", entry.getValue(), entry.getKey());
+        log.trace("Aggregated score {} for player {}", entry.getValue(), entry.getKey());
       }
     }
 

@@ -44,7 +44,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
 
   @Override
   public void onRoundStatus(RoundStatusChangedEvent event, UUID gameId, Instant timestamp) {
-    log.debug("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
+    log.trace("Received RoundStatus Event: {}, Game: {}, At: {}", event, gameId, timestamp);
 
     try {
       this.metricService.publishRoundStatus(event.roundStatus().ordinal());
@@ -82,7 +82,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   @Override
   public void onCurrentItemPricesAnnouncement(Set<CurrentItemPriceEvent> itemPrices,
       Instant timestamp) {
-    log.debug("Received CurrentItemPrice Event: {}, At: {}", itemPrices, timestamp);
+    log.trace("Received CurrentItemPrice Event: {}, At: {}", itemPrices, timestamp);
     for (var announcement : itemPrices) {
       try {
         this.metricService.publishItemPrice(announcement.name(), announcement.price());
@@ -96,7 +96,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
   @Override
   public void onCurrentResourcePricesAnnouncement(Set<CurrentResourcePriceEvent> resourcePrices,
       Instant timestamp) {
-    log.debug("Received CurrentResourcePrice Event: {}, At: {}", resourcePrices, timestamp);
+    log.trace("Received CurrentResourcePrice Event: {}, At: {}", resourcePrices, timestamp);
     for (var announcement : resourcePrices) {
       try {
         this.metricService.publishResourcePrice(announcement.name(), announcement.price());

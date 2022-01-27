@@ -38,9 +38,9 @@ public class RoundScoreService {
 
       if(log.isDebugEnabled()) {
         for(var r : result.entrySet()) {
-          log.debug("Got {} scores ({}) for player {}", r.getValue().size(), r.getValue(), r.getKey());
+          log.trace("Got {} scores ({}) for player {}", r.getValue().size(), r.getValue(), r.getKey());
         }
-        log.debug("Got aggregated scores for {} players", result.size());
+        log.trace("Got aggregated scores for {} players", result.size());
       }
 
       return result;
@@ -58,9 +58,9 @@ public class RoundScoreService {
 
     if(log.isDebugEnabled()) {
       for(var r : foundScores.entrySet()) {
-        log.debug("Got scores {} for player {}", r.getValue(), r.getKey());
+        log.trace("Got scores {} for player {}", r.getValue(), r.getKey());
       }
-      log.debug("Got aggregated round score for {} players", foundScores.size());
+      log.trace("Got aggregated round score for {} players", foundScores.size());
     }
 
     // If somehow there are no scores, we could just create them - however this is not useful
@@ -79,10 +79,10 @@ public class RoundScoreService {
 
     if(log.isDebugEnabled()) {
       for(var r : scores.entrySet()) {
-        log.debug("Accumulated score {} for player {}", r.getValue(), r.getKey());
+        log.trace("Accumulated score {} for player {}", r.getValue(), r.getKey());
       }
-      log.debug("Accumulated {} scores in round {}", scores.size(), roundId);
-      log.debug("Saving scores now...");
+      log.trace("Accumulated {} scores in round {}", scores.size(), roundId);
+      log.trace("Saving scores now...");
     }
 
     this.roundScoreRepository.saveAggregatedRoundScoresForRound(roundId, scores);
