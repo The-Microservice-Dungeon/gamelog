@@ -6,8 +6,8 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'swagger/**'
-      - '**/README.md'
       - '**/.gitignore'
+      - '**/README.md'
     branches:
       - 'main'
     # This workflow executes every time a pull request is opened,
