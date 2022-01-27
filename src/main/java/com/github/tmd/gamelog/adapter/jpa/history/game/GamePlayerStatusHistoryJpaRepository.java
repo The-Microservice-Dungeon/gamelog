@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface GamePlayerStatusHistoryJpaRepository extends CrudRepository<GamePlayerStatusHistoryJpa, UUID> {
   @Query("select p.userId from GamePlayerStatusHistoryJpa p where p.gameId = ?1")
   Set<UUID> findAllParticipatingPlayersInGame(UUID gameId);
+
+  boolean existsByGameIdAndUserId(UUID gameId, UUID playerId);
 }

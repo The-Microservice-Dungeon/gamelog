@@ -92,4 +92,9 @@ public class GameHistoryService {
     this.gameStatusHistoryJpaRepository.save(
         new GameStatusHistoryJpa(gameId, GameStatusJpa.fromGameStatus(gameStatus), Instant.from(timestamp)));
   }
+
+  @Transactional
+  public boolean playerHistoryExists(UUID gameId, UUID playerId) {
+    return this.gamePlayerStatusHistoryJpaRepository.existsByGameIdAndUserId(gameId, playerId);
+  }
 }
