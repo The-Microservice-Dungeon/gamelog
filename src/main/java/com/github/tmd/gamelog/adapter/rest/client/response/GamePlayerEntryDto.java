@@ -6,7 +6,8 @@ import java.util.UUID;
 public record GamePlayerEntryDto(
     @JsonProperty("playerToken") UUID playerToken,
     @JsonProperty("userName") String userName,
-    @JsonProperty("mailAddress") String mailAddress
+    @JsonProperty("mailAddress") String mailAddress,
+    @JsonProperty("_links") GamePlayerLinksDto links
     ) {
 
 }

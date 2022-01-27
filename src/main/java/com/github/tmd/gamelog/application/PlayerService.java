@@ -43,7 +43,10 @@ public class PlayerService {
   public Set<Player> findParticipatingPlayersInGame(UUID gameId) {
     return this.gameRestClient.getParticipatingPlayers(gameId)
         .gamePlayersWrapper().players()
-        .stream().map(entry -> new Player(entry.playerToken(), entry.userName()))
+        .stream().map(entry -> {
+          // We don't have the ID in the request body, therfore we need to extract it from the embedded links
+          return new Player(entry.links().getPlayerId(), entry.userName());
+        })
         .collect(Collectors.toSet());
   }
 }

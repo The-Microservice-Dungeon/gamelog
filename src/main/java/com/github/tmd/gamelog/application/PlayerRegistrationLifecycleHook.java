@@ -46,7 +46,7 @@ public class PlayerRegistrationLifecycleHook implements GameLifecycleHook {
             playerService.createOrUpdatePlayer(player);
           });
 
-      
+
 
     }
   }
