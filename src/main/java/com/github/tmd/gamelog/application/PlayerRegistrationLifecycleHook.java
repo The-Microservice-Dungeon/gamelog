@@ -29,7 +29,9 @@ public class PlayerRegistrationLifecycleHook implements GameLifecycleHook {
   @Transactional
   public void onPlayerStatus(PlayerStatusChangedEvent event, UUID gameId, Instant timestamp) {
     log.trace("Received PlayerStatusChanged Event: {}, Game: {}, At: {}", event, gameId, timestamp);
-    playerService.createOrUpdatePlayer(event.userId(), event.userName());
+    // TODO: Disabled as we cannot rely on the gameId since it is more random. We're using the
+    //  synchronous call below
+    //playerService.createOrUpdatePlayer(event.userId(), event.userName());
   }
 
   @Override
@@ -45,9 +47,6 @@ public class PlayerRegistrationLifecycleHook implements GameLifecycleHook {
             }
             playerService.createOrUpdatePlayer(player);
           });
-
-
-
     }
   }
 }
