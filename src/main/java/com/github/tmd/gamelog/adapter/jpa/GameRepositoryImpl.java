@@ -36,7 +36,7 @@ public class GameRepositoryImpl implements GameRepository {
 
   @Override
   public Optional<Game> findLatestGame() {
-    return gameStatusHistoryJpaRepository.findLatestGame()
+    return gameStatusHistoryJpaRepository.findFirstByOrderByTimestampDesc()
         .map(gameMapper::toDomain);
   }
 
