@@ -1,5 +1,6 @@
 package com.github.tmd.gamelog.application.score;
 
+import com.github.tmd.gamelog.application.history.GameHistoryService;
 import com.github.tmd.gamelog.domain.Player;
 import com.github.tmd.gamelog.domain.score.vo.AggregatedScore;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
@@ -15,16 +16,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class GameScoreAggregator {
   private final RoundScoreService roundScoreService;
+  private final GameHistoryService gameHistoryService;
 
   public GameScoreAggregator(
-      RoundScoreService roundScoreService) {
+      RoundScoreService roundScoreService,
+      GameHistoryService gameHistoryService) {
     this.roundScoreService = roundScoreService;
+    this.gameHistoryService = gameHistoryService;
   }
 
   public Map<Player, AggregatedScore> aggregateGameScore(UUID gameId) {
     log.trace("Aggregating game scores for game with Id {}", gameId);
+    var participating = gameHistoryService.getAllParticipatingPlayersInGame(gameId);
     var gameScores = this.roundScoreService.getAllOrderedAggregatedScoresInGame(gameId)
         .entrySet().stream()
+        .filter(entry -> participating.contains(entry.getKey().getId())) // Include only players that are playing
         .collect(Collectors.toMap(
             Entry::getKey,
             c -> this.calculateGameScore(c.getValue())
