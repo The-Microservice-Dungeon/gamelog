@@ -8,7 +8,7 @@ public record TradingRoundScore(Integer balance, Integer numOfTrades) implements
 
   @Override
   public Integer accumulate() {
-    return numOfTrades * 100;
+    return numOfTrades * 25;
   }
 
   @Override
