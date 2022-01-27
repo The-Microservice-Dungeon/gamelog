@@ -7,6 +7,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
+import com.github.tmd.gamelog.application.score.service.GameScoreService;
 import com.github.tmd.gamelog.application.score.service.RoundScoreService;
 import java.time.Instant;
 import java.util.Set;
@@ -27,11 +28,14 @@ public class MetricLifecycleHook implements GameLifecycleHook {
 
   private final MetricService metricService;
   private final RoundScoreService roundScoreService;
+  private final GameScoreService gameScoreService;
 
   public MetricLifecycleHook(MetricService metricService,
-      RoundScoreService roundScoreService) {
+      RoundScoreService roundScoreService,
+      GameScoreService gameScoreService) {
     this.metricService = metricService;
     this.roundScoreService = roundScoreService;
+    this.gameScoreService = gameScoreService;
   }
 
   @Override
@@ -55,11 +59,11 @@ public class MetricLifecycleHook implements GameLifecycleHook {
     }
 
     if (event.roundStatus() == RoundStatus.ENDED) {
-      // We assume that the round scores are already calculated, which should happen, since the
+      // We assume that the game scores are already calculated, which should happen, since the
       // RoundScoreLifecycle Hook has a higher precedence than the Metric Lifecycle Hook.
-      var roundScores = roundScoreService.getAggregatedRoundScoresForRound(event.roundId());
+      var gameScores = gameScoreService.getScoresInGame(gameId);
 
-      for (var entry : roundScores.entrySet()) {
+      for (var entry : gameScores.entrySet()) {
         var playerName = entry.getKey().getName();
         var totalScore = entry.getValue().score();
         var tradingScore = entry.getValue().getTradingScore();
