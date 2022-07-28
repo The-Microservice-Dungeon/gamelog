@@ -79,7 +79,7 @@ class RobotEventListenersIntegrationTest {
     verify(robotHistoryService, after(5000).only()).insertMovementHistory(eq(transactionId), robotArg.capture(), eq(UUID.fromString("5e7773ed-265a-4e7b-bece-86392407afef")), eq(5), any());
     assertThat(robotArg.getValue()).containsExactlyInAnyOrder(UUID.fromString("497f6eca-6276-4993-bfeb-53cbbbba6f08"));
   }
-
+/*
   @Test
   void shouldConsumePlanetBlockedEvent() {
     // Given
@@ -108,7 +108,7 @@ class RobotEventListenersIntegrationTest {
 
     // Then
     verify(robotHistoryService, after(5000).only()).insertPlanetBlockHistory(eq(transactionId), eq(UUID.fromString("5e7773ed-265a-4e7b-bece-86392407afef")), any());
-  }
+  }*/
 
   @Test
   void shouldConsumeMiningEvent() {

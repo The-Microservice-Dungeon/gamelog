@@ -63,7 +63,7 @@ class TradingEventListenersIntegrationTest {
     verify(testLifeCycleHook, after(5000).only()).onTrade(any(), eq(transactionId), any());
   }
 
-  @Test
+ /* @Test
   void currentItemPricesChangedEvent() {
     // Given
     var transactionId = UUID.randomUUID();
@@ -87,7 +87,7 @@ class TradingEventListenersIntegrationTest {
     // Then
     verify(testLifeCycleHook, after(5000).only()).onCurrentItemPricesAnnouncement(any(), any());
   }
-
+*/
   @Test
   void currentResourcePricesChangedEvent() {
     // Given

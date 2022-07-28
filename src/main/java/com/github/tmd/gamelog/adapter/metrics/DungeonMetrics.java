@@ -5,7 +5,7 @@ public class DungeonMetrics {
   
   public static final String ROUND_GAUGE = DUNGEON_PREFIX + "." + "game.round";
   public static final String ROUND_STATUS_INFO = DUNGEON_PREFIX + "." + "round.status.info";
-  public static final String TRADING_ITEM_PRICES = DUNGEON_PREFIX + "." + "trading.item.price";
+ // public static final String TRADING_ITEM_PRICES = DUNGEON_PREFIX + "." + "trading.item.price";
   public static final String TRADING_RESOURCE_PRICES = DUNGEON_PREFIX + "." + "trading.resource.price";
 
   public static final String SCORE_TOTAL = DUNGEON_PREFIX + "." + "score.total";

@@ -15,7 +15,7 @@ public class MetricService {
   private final MeterRegistry meterRegistry;
   private final AtomicInteger atomicRound = new AtomicInteger();
   private final AtomicInteger atomicRoundStatus = new AtomicInteger();
-  private final Map<String, AtomicInteger> atomicItemPrices = new HashMap<>();
+ // private final Map<String, AtomicInteger> atomicItemPrices = new HashMap<>();
   private final Map<String, AtomicInteger> atomicResourcePrices = new HashMap<>();
   private final Map<String, AtomicReference<Double>> atomicTotalScores = new HashMap<>();
   private final Map<String, AtomicReference<Double>> atomicTradingScores = new HashMap<>();
@@ -48,7 +48,7 @@ public class MetricService {
     this.atomicRoundStatus.set(value);
   }
 
-  public void publishItemPrice(String itemName, int value) {
+ /* public void publishItemPrice(String itemName, int value) {
     var atomicRef = this.atomicItemPrices.getOrDefault(itemName, new AtomicInteger());
     atomicRef.set(value);
     this.atomicItemPrices.put(itemName, atomicRef);
@@ -61,7 +61,7 @@ public class MetricService {
       this.meterRegistry.gauge(scoreMetric, tags, this.atomicItemPrices.get(itemName), ref -> ref.get());
     }
   }
-
+*/
   public void publishResourcePrice(String resourceName, int value) {
     var atomicRef = this.atomicResourcePrices.getOrDefault(resourceName, new AtomicInteger());
     atomicRef.set(value);

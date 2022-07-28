@@ -115,7 +115,7 @@ create table movement_history_jpa_robots
     movement_history_jpa_id varchar(255) not null,
     robots                  varchar(255)
 ) engine = InnoDB;
-create table planet_block_history_jpa
+/*create table planet_block_history_jpa
 (
     id             varchar(255) not null,
     created_at     datetime(6)  not null,
@@ -124,7 +124,7 @@ create table planet_block_history_jpa
     transaction_id varchar(255) not null,
     primary key (id)
 ) engine = InnoDB;
-create table player_round_scores
+*/create table player_round_scores
 (
     round_id       varchar(255)  not null,
     fighting_score double precision,

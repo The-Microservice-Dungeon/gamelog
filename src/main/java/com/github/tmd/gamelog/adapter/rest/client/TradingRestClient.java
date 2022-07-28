@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.adapter.rest.client;
 
-import com.github.tmd.gamelog.adapter.rest.client.response.ItemPriceHistoryEntryDto;
+//import com.github.tmd.gamelog.adapter.rest.client.response.ItemPriceHistoryEntryDto;
 import com.github.tmd.gamelog.adapter.rest.client.response.PlayerBalanceEntryDto;
 import com.github.tmd.gamelog.adapter.rest.client.response.PlayerBalanceRoundEntryDto;
 import com.github.tmd.gamelog.adapter.rest.client.response.ResourcePriceHistoryEntryDto;
@@ -22,8 +22,8 @@ public interface TradingRestClient {
   @RequestMapping(method = RequestMethod.GET, path = "balances/{round-number}")
   List<PlayerBalanceRoundEntryDto> getAllPlayerBalancesOfRound(@PathVariable("round-number") Integer roundNumber);
 
-  @RequestMapping(method = RequestMethod.GET, path = "items/history/price")
-  List<ItemPriceHistoryEntryDto> getItemPriceHistory();
+  //@RequestMapping(method = RequestMethod.GET, path = "items/history/price")
+  //List<ItemPriceHistoryEntryDto> getItemPriceHistory();
 
   @RequestMapping(method = RequestMethod.GET, path = "resources/history/price")
   List<ResourcePriceHistoryEntryDto> getResourcePriceHistory();

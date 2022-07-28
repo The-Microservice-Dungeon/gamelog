@@ -3,7 +3,7 @@ package com.github.tmd.gamelog.adapter.event.kafka;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
 import com.github.tmd.gamelog.adapter.metrics.MetricService;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
 import java.nio.ByteBuffer;
@@ -67,7 +67,7 @@ public class RobotEventListeners {
     lifecycleHooks.forEach(hook -> hook.onRobotMovement(event, transactionId, timestamp));
   }
 
-  @RetryableTopic(attempts = "3", backoff = @Backoff)
+/*  @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "planet-blocked")
   public void planetBlockedEvent(@Payload PlanetBlockedEvent event,
       @Header(name = KafkaDungeonHeader.KEY_TRANSACTION_ID) UUID transactionId,
@@ -76,7 +76,7 @@ public class RobotEventListeners {
 
     lifecycleHooks.forEach(hook -> hook.onRobotPlanetBlocked(event, transactionId, timestamp));
   }
-
+*/
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "mining")
   public void miningEvent(@Payload MiningEvent event,

@@ -4,7 +4,7 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.GameStatusEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatus;
 import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
 import com.github.tmd.gamelog.application.score.service.GameScoreService;
@@ -83,7 +83,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
     }
   }
 
-  @Override
+ /* @Override
   public void onCurrentItemPricesAnnouncement(Set<CurrentItemPriceEvent> itemPrices,
       Instant timestamp) {
     log.trace("Received CurrentItemPrice Event: {}, At: {}", itemPrices, timestamp);
@@ -96,7 +96,7 @@ public class MetricLifecycleHook implements GameLifecycleHook {
       }
     }
   }
-
+*/
   @Override
   public void onCurrentResourcePricesAnnouncement(Set<CurrentResourcePriceEvent> resourcePrices,
       Instant timestamp) {

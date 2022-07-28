@@ -7,9 +7,9 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
 import com.github.tmd.gamelog.application.GameLifecycleHook;
 import java.time.Instant;
@@ -87,7 +87,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
     }
   }
 
-  @Override
+  /*@Override
   @Transactional
   public void onRobotPlanetBlocked(PlanetBlockedEvent event, UUID transactionId,
       Instant timestamp) {
@@ -96,7 +96,7 @@ public class HistoryLifecycleHook implements GameLifecycleHook {
       robotHistoryService.insertPlanetBlockHistory(transactionId, event.planetId(), timestamp);
     }
   }
-
+*/
   @Override
   @Transactional
   public void onRobotMining(MiningEvent event, UUID transactionId, Instant timestamp) {

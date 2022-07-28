@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 /**
  * History of planet block events
  */
+/*
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
@@ -52,3 +53,4 @@ public class PlanetBlockHistoryJpa {
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdDate;
 }
+*/

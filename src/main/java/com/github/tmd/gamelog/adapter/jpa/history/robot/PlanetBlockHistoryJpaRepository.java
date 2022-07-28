@@ -1,5 +1,5 @@
 package com.github.tmd.gamelog.adapter.jpa.history.robot;
-
+/*
 import com.github.tmd.gamelog.adapter.jpa.history.robot.projections.OnlyPlayerAndBlockCountProjection;
 import java.util.Set;
 import java.util.UUID;
@@ -19,3 +19,4 @@ public interface PlanetBlockHistoryJpaRepository extends CrudRepository<PlanetBl
   """)
   Set<OnlyPlayerAndBlockCountProjection> findPlanetBlockCountInRound(UUID roundId);
 }
+*/

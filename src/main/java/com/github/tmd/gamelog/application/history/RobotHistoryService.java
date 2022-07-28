@@ -8,8 +8,8 @@ import com.github.tmd.gamelog.adapter.jpa.history.robot.MiningHistoryJpaReposito
 import com.github.tmd.gamelog.adapter.jpa.history.robot.MiningHistoryResourceJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.MovementHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.MovementHistoryJpaRepository;
-import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpa;
-import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRepository;
+//import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpa;
+//import com.github.tmd.gamelog.adapter.jpa.history.robot.PlanetBlockHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpa;
 import com.github.tmd.gamelog.adapter.jpa.history.robot.RobotHistoryJpaRepository;
 import com.github.tmd.gamelog.adapter.rest.client.RobotRestClient;
@@ -39,7 +39,7 @@ public class RobotHistoryService {
   private final FightHistoryJpaRepository fightHistoryJpaRepository;
   private final MiningHistoryJpaRepository miningHistoryJpaRepository;
   private final MovementHistoryJpaRepository movementHistoryJpaRepository;
-  private final PlanetBlockHistoryJpaRepository planetBlockHistoryJpaRepository;
+//  private final PlanetBlockHistoryJpaRepository planetBlockHistoryJpaRepository;
   private final RobotHistoryJpaRepository robotHistoryJpaRepository;
   private final RobotRestClient robotRestClient;
 
@@ -47,13 +47,13 @@ public class RobotHistoryService {
       FightHistoryJpaRepository fightHistoryJpaRepository,
       MiningHistoryJpaRepository miningHistoryJpaRepository,
       MovementHistoryJpaRepository movementHistoryJpaRepository,
-      PlanetBlockHistoryJpaRepository planetBlockHistoryJpaRepository,
+    //  PlanetBlockHistoryJpaRepository planetBlockHistoryJpaRepository,
       RobotHistoryJpaRepository robotHistoryJpaRepository,
       RobotRestClient robotRestClient) {
     this.fightHistoryJpaRepository = fightHistoryJpaRepository;
     this.miningHistoryJpaRepository = miningHistoryJpaRepository;
     this.movementHistoryJpaRepository = movementHistoryJpaRepository;
-    this.planetBlockHistoryJpaRepository = planetBlockHistoryJpaRepository;
+  //  this.planetBlockHistoryJpaRepository = planetBlockHistoryJpaRepository;
     this.robotHistoryJpaRepository = robotHistoryJpaRepository;
     this.robotRestClient = robotRestClient;
   }
@@ -80,10 +80,10 @@ public class RobotHistoryService {
   }
 
   @Transactional
-  public void insertPlanetBlockHistory(UUID transactionId, UUID planetId, Temporal timestamp) {
+  /*public void insertPlanetBlockHistory(UUID transactionId, UUID planetId, Temporal timestamp) {
     this.planetBlockHistoryJpaRepository.save(new PlanetBlockHistoryJpa(transactionId, planetId, Instant.from(timestamp)));
   }
-
+*/
   // TODO: Well this could take a loooooong time
 
   /**

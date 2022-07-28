@@ -1,5 +1,5 @@
 package com.github.tmd.gamelog.adapter.event.gameEvent.robot;
-
+/*
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Set;
 
@@ -11,3 +11,4 @@ public record RepairItemUsedEvent(
     ) {
 
 }
+*/

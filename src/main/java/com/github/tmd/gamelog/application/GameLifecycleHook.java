@@ -6,8 +6,8 @@ import com.github.tmd.gamelog.adapter.event.gameEvent.game.RoundStatusChangedEve
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.FightingEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MiningEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.robot.MovementEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
-import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.robot.PlanetBlockedEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
 import java.time.Instant;
@@ -38,9 +38,9 @@ public interface GameLifecycleHook {
 
   }
 
-  default void onRobotPlanetBlocked(PlanetBlockedEvent event, UUID transactionId, Instant timestamp) {
+  //default void onRobotPlanetBlocked(PlanetBlockedEvent event, UUID transactionId, Instant timestamp) {
 
-  }
+  //}
 
   default void onRobotMining(MiningEvent miningEvent, UUID transactionId, Instant timestamp) {
 
@@ -54,9 +54,9 @@ public interface GameLifecycleHook {
 
   }
 
-  default void onCurrentItemPricesAnnouncement(Set<CurrentItemPriceEvent> itemPrices, Instant timestamp) {
+ // default void onCurrentItemPricesAnnouncement(Set<CurrentItemPriceEvent> itemPrices, Instant timestamp) {
 
-  }
+  //}
 
   default void onCurrentResourcePricesAnnouncement(Set<CurrentResourcePriceEvent> resourcePrices, Instant timestamp) {
 

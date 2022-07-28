@@ -1,6 +1,6 @@
 package com.github.tmd.gamelog.adapter.event.kafka;
 
-import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
+//import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentItemPriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.CurrentResourcePriceEvent;
 import com.github.tmd.gamelog.adapter.event.gameEvent.trading.TradingEvent;
 import com.github.tmd.gamelog.adapter.metrics.MetricService;
@@ -67,14 +67,14 @@ public class TradingEventListeners {
     lifecycleHooks.forEach(hook -> hook.onTrade(event, transactionId, timestamp));
   }
   
-  @RetryableTopic(attempts = "3", backoff = @Backoff)
+  /*@RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "current-item-prices")
   public void currentItemPricesChangedEvent(@Payload Set<CurrentItemPriceEvent> event,
       @Header(name = KafkaDungeonHeader.KEY_TIMESTAMP) String timestampHeader) {
     var timestamp = ZonedDateTime.parse(timestampHeader).toInstant();
     lifecycleHooks.forEach(hook -> hook.onCurrentItemPricesAnnouncement(event, timestamp));
   }
-
+*/
   @RetryableTopic(attempts = "3", backoff = @Backoff)
   @KafkaListener(topics = "current-resource-prices")
   public void currentResourcePricesChangedEvent(@Payload Set<CurrentResourcePriceEvent> event,

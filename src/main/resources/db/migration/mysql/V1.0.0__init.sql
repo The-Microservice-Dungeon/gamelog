@@ -72,14 +72,14 @@ CREATE TABLE movement_history_jpa (id binary(255) NOT NULL,
 CREATE TABLE movement_history_jpa_robots (movement_history_jpa_id binary(255) NOT NULL,
                                           robots varchar(255)) ENGINE=InnoDB;
 
-
+/*
 CREATE TABLE planet_block_history_jpa (id binary(255) NOT NULL,
                                        created_at datetime(6) NOT NULL,
                                        planet_id varchar(255) NOT NULL,
                                        TIMESTAMP datetime(6) NOT NULL,
                                        transaction_id varchar(255) NOT NULL,
                                        PRIMARY KEY (id)) ENGINE=InnoDB;
-
+*/
 
 CREATE TABLE player_balance_history_jpa (id binary(255) NOT NULL,
                                          balance integer NOT NULL,
@@ -157,8 +157,8 @@ ALTER TABLE mining_history_jpa ADD CONSTRAINT UK_b2h358d6vqi4bggkkfdurl0wf UNIQU
 ALTER TABLE movement_history_jpa ADD CONSTRAINT UK_i2tlsj052cxi52l75roffrsm9 UNIQUE (transaction_id);
 
 
-ALTER TABLE planet_block_history_jpa ADD CONSTRAINT UK_jcnkd8lt0b245smbekx3xp7yq UNIQUE (transaction_id);
-
+/*ALTER TABLE planet_block_history_jpa ADD CONSTRAINT UK_jcnkd8lt0b245smbekx3xp7yq UNIQUE (transaction_id);
+*/
 
 ALTER TABLE player_balance_history_jpa ADD CONSTRAINT UK6bbr48kk29it2ecs248uegyi9 UNIQUE (player_id,
                                                                                           assumed_round_id);
